@@ -1,3 +1,5 @@
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 # CMake Template Project
 
 A relativly simple template for a cmake project setup with a separation between binaries and libraries, in addition to testing via [Catch2](https://github.com/catchorg/Catch2) and documentation via [Doxygen](https://doxygen.nl).
