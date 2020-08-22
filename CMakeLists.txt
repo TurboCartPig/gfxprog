@@ -33,4 +33,4 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 endif()
 
 add_subdirectory(lib)
-add_subdirectory(bin)
+add_subdirectory(apps)
