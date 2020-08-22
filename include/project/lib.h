@@ -5,6 +5,8 @@
  * @file lib.h
  */
 
+#pragma once
+
 /**
  * Add the two arguments together.
  *
