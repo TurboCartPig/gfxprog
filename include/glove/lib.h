@@ -1,5 +1,8 @@
 /**
- * Main include of library "lib".
+ * Main include of library glove.
+ *
+ * Glove is a bad opengl library meant to make me write more modular code. It
+ * should not be used by anyone else due to the fact that it's terrible.
  *
  * @author Dennis Kristiansen, NTNU
  * @file lib.h
@@ -8,7 +11,6 @@
 #pragma once
 
 #include <GL/glew.h>
-#include <iostream>
 #include <string>
 #include <vector>
 
@@ -19,7 +21,7 @@
  */
 class ShaderProgram {
   public:
-	explicit ShaderProgram(std::vector<std::string> &paths);
+	explicit ShaderProgram(const std::vector<std::string> &paths);
 	~ShaderProgram();
 	void   use();
 	GLuint getProgram() const { return program; }
