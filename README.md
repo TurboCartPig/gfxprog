@@ -1,10 +1,12 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-# CMake Template Project
+# Graphics Programming
 
-A relativly simple template for a cmake project setup with a separation between binaries and libraries, in addition to testing via [Catch2](https://github.com/catchorg/Catch2) and documentation via [Doxygen](https://doxygen.nl).
+A series of labs completed in association with the course PROG2002 at NTNU.
 
 ### How to build
+
+To build the user must have the following libraries available for cmake to discover: GLFW3, GLEW, GLM and native OpenGL headers.
 
 Configure:
 ```bash
@@ -25,9 +27,4 @@ Docs:
 ```bash
 cmake --build build/ --target docs
 ```
-
-### Further Reading
-
-- [Modern CMake Tutorial](https://cliutils.gitlab.io/modern-cmake)
-- [Catch2 Tutorial](https://github.com/catchorg/Catch2/blob/master/docs/tutorial.md#top)
 
