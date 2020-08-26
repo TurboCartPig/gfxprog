@@ -1,8 +1,4 @@
-add_executable(hello hello.cpp)
-target_compile_options(hello PRIVATE ${COMPILER_WARNINGS_AND_ERRORS})
-target_precompile_headers(hello PUBLIC <iostream>)
-
-add_executable(add add.cpp)
-target_compile_options(add PRIVATE ${COMPILER_WARNINGS_AND_ERRORS})
-target_link_libraries(add lib)
-target_precompile_headers(add REUSE_FROM hello)
+add_executable(triangle triangle.cpp)
+target_compile_options(triangle PRIVATE ${COMPILER_WARNINGS_AND_ERROR})
+target_link_libraries(triangle PRIVATE lib GLEW::GLEW glfw glm OpenGL::GL)
+target_precompile_headers(triangle PRIVATE <iostream> <string> <vector>)
