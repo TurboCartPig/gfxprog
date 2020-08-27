@@ -55,10 +55,11 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 endif()
 
 # Dependencies
+find_package(OpenGL REQUIRED)
 find_package(GLEW 2.1 REQUIRED)
 find_package(glfw3 3.3 REQUIRED)
 find_package(glm REQUIRED)
-find_package(OpenGL REQUIRED)
+find_package(imgui REQUIRED)
 
 add_subdirectory(lib)
 add_subdirectory(apps)
