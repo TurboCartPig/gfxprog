@@ -64,9 +64,9 @@ int main() {
 
 	// 2. Vertex Buffer Object
 	std::array<Vertex2D, 3> content = {
-	    (Vertex2D){-0.6f, -0.4f, 0.0f, 1.0f, 0.0f},
-	    (Vertex2D){0.6f, -0.4f, 0.0f, 0.0f, 1.0f},
-	    (Vertex2D){0.0f, 0.6f, 1.0f, 0.0f, 0.0f}};
+	    Vertex2D{-0.6f, -0.4f, 0.0f, 1.0f, 0.0f},
+        Vertex2D{0.6f, -0.4f, 0.0f, 0.0f, 1.0f},
+	    Vertex2D{0.0f, 0.6f, 1.0f, 0.0f, 0.0f}};
 	GLuint vbo;
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -81,8 +81,8 @@ int main() {
 	glEnableVertexAttribArray(1);
 
 	// 4. Shaders
-	std::vector<std::string> paths = {"apps/triangle.vert",
-	                                  "apps/triangle.frag"};
+	std::vector<std::string> paths = {"./apps/triangle.vert",
+	                                  "./apps/triangle.frag"};
 	ShaderProgram            program(paths);
 
 	// Main game loop

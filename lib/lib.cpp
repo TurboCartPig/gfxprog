@@ -14,10 +14,10 @@
  *
  * @param paths An array of paths to the shader source code.
  */
-ShaderProgram::ShaderProgram(std::vector<std::string> &paths) {
+ShaderProgram::ShaderProgram(const std::vector<std::string> &paths) {
 	// Load all shaders from disk and compile them
 	std::vector<GLuint> shaders;
-	shaders.reserve(paths.size());
+
 	for (const auto &path : paths) {
 		// Open the file for reading
 		std::ifstream file(path, std::ifstream::in);
@@ -158,6 +158,5 @@ void glDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severity,
 			std::cout << "Severity: notification";
 			break;
 	}
-	std::cout << std::endl;
 	std::cout << std::endl;
 }
