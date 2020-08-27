@@ -6,11 +6,9 @@ A series of labs completed in association with the course PROG2002 at NTNU.
 
 ### How to build
 
-To build the user must have the following libraries available for cmake to discover: GLFW3, GLEW, GLM and native OpenGL headers.
-
 Configure:
 ```bash
-cmake -G Ninja -S . -B build
+cmake -G Ninja -S . -B build/
 ```
 
 Build:
@@ -18,13 +16,37 @@ Build:
 cmake --build build/
 ```
 
-Test:
+Tests:
 ```bash
-cmake --build build/ --target test
+cmake --build build/ --target tests
 ```
 
 Docs:
 ```bash
 cmake --build build/ --target docs
+```
+
+To build the user must have the following libraries available for cmake to discover: GLFW3, GLEW, GLM and native OpenGL headers.
+
+### Using vcpkg
+
+[Vcpkg](https://github.com/Microsoft/vcpkg) is a ports like package manager for libraries that is the closest to a sane way of obtaining dependencies on Windows.
+
+Install vcpkg:
+```bash
+git clone https://github.com/Microsoft/vcpkg.git
+cd vcpkg
+.\bootstrap-vcpkg.bat -disableMetrics
+.\vcpkg integrate install
+```
+
+The last command above gives you a cmake variable. Pass it to cmake as such:
+```bash
+cmake -G Ninja -S . -B build -DCMAKE_TOOLCHAIN_FILE="C:\path\to\vcpkg.cmake"
+```
+
+Install dependencies:
+```bash
+.\vcpkg install glfw3 glm glew catch opengl
 ```
 
