@@ -30,5 +30,6 @@ class ShaderProgram {
 	GLuint program;
 };
 
-void glDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severity,
-                   GLsizei length, const char *message, const void *userParam);
+void GLAPIENTRY glDebugOutput(GLenum source, GLenum type, GLuint id,
+                              GLenum severity, GLsizei length,
+                              const char *message, const void *userParam);
