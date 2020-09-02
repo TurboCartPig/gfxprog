@@ -4,11 +4,6 @@
 #include <glove/lib.h>
 #include <iostream>
 
-struct Vertex2D {
-	float x, y;
-	float r, g, b;
-};
-
 int main() {
 	if (!glfwInit()) {
 		throw std::runtime_error("GLFW3 Failed to initialize.");
@@ -66,18 +61,20 @@ int main() {
 	glBindVertexArray(vao);
 
 	// 2. Vertex Buffer Object
-	std::array<Vertex2D, 3> content = {Vertex2D{-0.6f, -0.4f, 0.0f, 1.0f, 0.0f},
-	                                   Vertex2D{0.6f, -0.4f, 0.0f, 0.0f, 1.0f},
-	                                   Vertex2D{0.0f, 0.6f, 1.0f, 0.0f, 0.0f}};
-	GLuint                  vbo;
+	std::array<Vertex2DRgb, 3> content = {
+	    Vertex2DRgb{-0.6f, -0.4f, 0.0f, 1.0f, 0.0f},
+	    Vertex2DRgb{0.6f, -0.4f, 0.0f, 0.0f, 1.0f},
+	    Vertex2DRgb{0.0f, 0.6f, 1.0f, 0.0f, 0.0f}};
+
+	GLuint vbo;
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, content.size() * sizeof(Vertex2D),
+	glBufferData(GL_ARRAY_BUFFER, content.size() * sizeof(Vertex2DRgb),
 	             content.data(), GL_STATIC_DRAW);
 
 	// 3. Attributes
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), 0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex2D),
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2DRgb), 0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex2DRgb),
 	                      (void *)(sizeof(float) * 2));
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
@@ -106,6 +103,9 @@ int main() {
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+
+	glDeleteBuffers(1, &vbo);
+	glDeleteVertexArrays(1, &vao);
 
 	glfwDestroyWindow(window);
 	glfwTerminate();
