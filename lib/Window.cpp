@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+#include <gl/glew.h>
 #include <glove/Window.h>
 #include <glove/lib.h>
 #include <iostream>

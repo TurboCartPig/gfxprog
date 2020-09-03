@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+#include <gl/glew.h>
 #include <GLFW/glfw3.h>
 #include <array>
 #include <glove/lib.h>
