@@ -2,7 +2,6 @@
 #include <glove/Window.h>
 #include <glove/lib.h>
 #include <iostream>
-#include <stdexcept>
 
 Window::Window(const std::string &title, const uint32_t width,
                const uint32_t height) {
