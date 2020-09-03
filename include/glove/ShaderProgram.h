@@ -13,7 +13,7 @@ class ShaderProgram {
   public:
 	explicit ShaderProgram(const std::vector<std::string> &paths);
 	~ShaderProgram();
-	void   use();
+	void   use() const;
 	GLuint getProgram() const { return program; }
 
   private:

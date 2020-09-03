@@ -103,4 +103,4 @@ ShaderProgram::~ShaderProgram() { glDeleteProgram(program); }
 /**
  * Use this shader program for future graphics processing.
  */
-void ShaderProgram::use() { glUseProgram(program); }
+void ShaderProgram::use() const { glUseProgram(program); }
