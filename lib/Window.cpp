@@ -49,6 +49,8 @@ Window::Window(const std::string &title, const uint32_t width,
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(glDebugOutput, 0);
 
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
     std::cout << "Vendor: " << glGetString(GL_VENDOR) << std::endl
               << "Renderer: " << glGetString(GL_RENDERER) << std::endl
               << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
@@ -71,4 +73,6 @@ void Window::swapBuffers() {
     int height, width;
     glfwGetFramebufferSize(m_window, &width, &height);
     glViewport(0, 0, width, height);
+
+	glClear(GL_COLOR_BUFFER_BIT);
 }
