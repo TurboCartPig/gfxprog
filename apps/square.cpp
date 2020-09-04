@@ -5,8 +5,8 @@
 int main() {
 	auto window = Window("Square", 640, 480);
 
-	std::vector<std::string> paths    = {"./apps/triangle.frag",
-                                      "./apps/triangle.vert"};
+	std::vector<std::string> paths    = {"./shaders/triangle.frag",
+                                      "./shaders/triangle.vert"};
 	std::vector<Vertex2DRgb> vertices = {
 	    Vertex2DRgb{-0.5f, -0.5f, 1.0f, 1.0f, 1.0f},
 	    Vertex2DRgb{-0.5f, 0.5f, 1.0f, 1.0f, 1.0f},

@@ -80,8 +80,8 @@ int main() {
 	glEnableVertexAttribArray(1);
 
 	// 4. Shaders
-	std::vector<std::string> paths = {"./apps/triangle.vert",
-	                                  "./apps/triangle.frag"};
+	std::vector<std::string> paths = {"./shaders/triangle.vert",
+	                                  "./shaders/triangle.frag"};
 	ShaderProgram            program(paths);
 
 	// Main game loop
