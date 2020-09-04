@@ -2,17 +2,6 @@
 #include <iostream>
 #include <fstream>
 
-/**
- * Construct a shader program from multiple shader stages.
- *
- * The shaders stage is determent based on the file extension.
- * Eg. .vert for vertex shader and .geom for geometry shader.
- *
- * @note Does not handle being passed multiple shaders for the same stage.
- * @note Does not handle tessellation or compute shaders
- *
- * @param paths An array of paths to the shader source code.
- */
 ShaderProgram::ShaderProgram(const std::vector<std::string> &paths) {
     // Load all shaders from disk and compile them
     std::vector<GLuint> shaders;
@@ -74,17 +63,17 @@ ShaderProgram::ShaderProgram(const std::vector<std::string> &paths) {
     }
 
     // Build and link a shader program
-    program = glCreateProgram();
+    m_program = glCreateProgram();
     for (const auto shader : shaders)
-        glAttachShader(program, shader);
+        glAttachShader(m_program, shader);
 
-    glLinkProgram(program);
+    glLinkProgram(m_program);
 
     // Get the link status
     GLint success;
     char  log[512];
-    glGetProgramiv(program, GL_LINK_STATUS, &success);
-    glGetProgramInfoLog(program, 512, nullptr, log);
+    glGetProgramiv(m_program, GL_LINK_STATUS, &success);
+    glGetProgramInfoLog(m_program, 512, nullptr, log);
 
     std::cout << "Linking Program: " << std::endl;
     if (success == GL_FALSE) {
@@ -98,9 +87,26 @@ ShaderProgram::ShaderProgram(const std::vector<std::string> &paths) {
         glDeleteShader(shader);
 }
 
-ShaderProgram::~ShaderProgram() { glDeleteProgram(program); }
+ShaderProgram::~ShaderProgram() { glDeleteProgram(m_program); }
 
-/**
- * Use this shader program for future graphics processing.
- */
-void ShaderProgram::use() const { glUseProgram(program); }
+void ShaderProgram::use() { glUseProgram(m_program); }
+
+void ShaderProgram::setUniform(const std::string &name, const float x) {
+	auto loc = glGetUniformLocation(m_program, name.c_str());
+	glUniform1f(loc, x);
+}
+
+void ShaderProgram::setUniform(const std::string &name, const glm::vec2 v) {
+    auto loc = glGetUniformLocation(m_program, name.c_str());
+    glUniform2f(loc, v.x, v.y);
+}
+
+void ShaderProgram::setUniform(const std::string &name, const glm::vec3 v) {
+    auto loc = glGetUniformLocation(m_program, name.c_str());
+    glUniform3f(loc, v.x, v.y, v.z);
+}
+
+void ShaderProgram::setUniform(const std::string &name, const glm::vec4 v) {
+    auto loc = glGetUniformLocation(m_program, name.c_str());
+    glUniform4f(loc, v.x, v.y, v.z, v.w);
+}
