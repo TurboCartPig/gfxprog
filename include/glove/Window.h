@@ -14,7 +14,7 @@ class Window {
 	 * @param width Width of the window.
 	 * @param height Height of the window.
 	 */
-	Window(const std::string& title, uint32_t width, uint32_t height);
+	Window(const std::string &title, uint32_t width, uint32_t height);
 
 	~Window();
 

@@ -4,7 +4,8 @@
 #include <vector>
 
 /**
- * VertexBufferObject is a class for representing a vertex buffer and freeing the resources on deconstruction.
+ * VertexBufferObject is a class for representing a vertex buffer and freeing
+ * the resources on deconstruction.
  *
  * @tparam VertexFormat
  */
@@ -18,11 +19,13 @@ class VertexBufferObject {
 	explicit VertexBufferObject(const std::vector<VertexFormat> &vertices);
 
 	/**
-	 * Construct a VBO containing both a vertex buffer and an index buffer representing triangles.
+	 * Construct a VBO containing both a vertex buffer and an index buffer
+	 * representing triangles.
 	 * @param vertices
 	 * @param indices
 	 */
-	VertexBufferObject(const std::vector<VertexFormat> &vertices, const std::vector<GLuint> &indices);
+	VertexBufferObject(const std::vector<VertexFormat> &vertices,
+	                   const std::vector<GLuint> &      indices);
 
 	~VertexBufferObject();
 
@@ -32,7 +35,7 @@ class VertexBufferObject {
 	void draw();
 
   private:
-	bool m_indexed;
+	bool   m_indexed;
 	GLuint m_primitive_count;
 	GLuint m_vbo;
 	GLuint m_ebo;

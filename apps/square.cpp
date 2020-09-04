@@ -1,5 +1,5 @@
-#include <glove/lib.h>
 #include <GL/glew.h>
+#include <glove/lib.h>
 #include <iostream>
 
 int main() {
