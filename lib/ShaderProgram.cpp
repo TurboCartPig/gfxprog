@@ -3,7 +3,8 @@
 #include <fstream>
 #include <iostream>
 
-ShaderProgram::ShaderProgram(const std::vector<std::string> &paths) {
+ShaderProgram::ShaderProgram(
+    const std::initializer_list<const std::string> paths) {
 	// Load all shaders from disk and compile them
 	std::vector<GLuint> shaders;
 

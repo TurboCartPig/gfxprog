@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#include <initializer_list>
 #include <string>
 #include <vector>
 
@@ -23,7 +24,8 @@ class ShaderProgram {
 	 *
 	 * @param paths An array of paths to the shader source code.
 	 */
-	explicit ShaderProgram(const std::vector<std::string> &paths);
+	explicit ShaderProgram(
+	    const std::initializer_list<const std::string> paths);
 
 	~ShaderProgram();
 

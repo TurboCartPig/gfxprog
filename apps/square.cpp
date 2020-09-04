@@ -10,15 +10,14 @@ using std::chrono::steady_clock;
 int main() {
 	auto window = Window("Square", 640, 480);
 
-	std::vector<std::string> paths    = {"./shaders/square.vert",
-                                      "./shaders/square.frag"};
-	std::vector<Vertex2D>    vertices = {
-        Vertex2D{-0.5f, -0.5f}, Vertex2D{-0.5f, 0.5f}, Vertex2D{0.5f, -0.5f},
-        Vertex2D{0.5f, 0.5f}};
+	std::vector<Vertex2D> vertices = {
+	    Vertex2D{-0.5f, -0.5f}, Vertex2D{-0.5f, 0.5f}, Vertex2D{0.5f, -0.5f},
+	    Vertex2D{0.5f, 0.5f}};
 	std::vector<GLuint> indices = {0, 1, 2, 1, 2, 3};
 
-	auto vbo     = VertexBufferObject(vertices, indices);
-	auto program = ShaderProgram(paths);
+	auto vbo = VertexBufferObject(vertices, indices);
+	auto program =
+	    ShaderProgram({"shaders/shader.vert", "shaders/shader.frag"});
 
 	auto start = steady_clock::now();
 
