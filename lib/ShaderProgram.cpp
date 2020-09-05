@@ -46,10 +46,10 @@ ShaderProgram::ShaderProgram(
 		glCompileShader(shader);
 
 		// Get the compile status
-		GLint success;
-		char  log[512];
+		GLint                 success;
+        std::string log(512, '\0');
 		glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-		glGetShaderInfoLog(shader, 512, nullptr, log);
+		glGetShaderInfoLog(shader, log.capacity(), nullptr, log.data());
 
 		std::cout << "Compiling shader: " << path << std::endl;
 		if (success == GL_FALSE) {
@@ -73,9 +73,9 @@ ShaderProgram::ShaderProgram(
 
 	// Get the link status
 	GLint success;
-	char  log[512];
+    std::string log(512, '\0');
 	glGetProgramiv(m_program, GL_LINK_STATUS, &success);
-	glGetProgramInfoLog(m_program, 512, nullptr, log);
+	glGetProgramInfoLog(m_program, log.capacity(), nullptr, log.data());
 
 	std::cout << "Linking Program: " << std::endl;
 	if (success == GL_FALSE) {
