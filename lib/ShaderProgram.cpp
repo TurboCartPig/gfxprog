@@ -1,5 +1,6 @@
 #include "glove/ShaderProgram.h"
 
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 
@@ -10,19 +11,18 @@ ShaderProgram::ShaderProgram(
 
 	for (const auto &path : paths) {
 		// Open the file for reading
-		std::ifstream file(path, std::ifstream::in);
+		std::ifstream file(path, std::ifstream::in | std::ifstream::binary);
 		if (file.bad() || !file.is_open()) {
 			throw std::runtime_error("Error: Failed to open file.");
 		}
 
-		// Read in the file line by line
-		std::string source;
-		std::string line;
-		while (getline(file, line)) {
-			source.append(line + "\n");
-		}
-		// Why can I not do this?
-		// file >> source;
+		// Get the file size in bytes
+		const auto file_size = std::filesystem::file_size(path);
+		// Preallocate a zeroed string
+		std::string source(file_size, '\0');
+		// Read in the whole file to the preallocated string
+		file.read(source.data(), file_size);
+
 		file.close();
 
 		// Find the shader type
