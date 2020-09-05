@@ -17,7 +17,7 @@ int main() {
 
 	auto vbo = VertexBufferObject(vertices, indices);
 	auto program =
-	    ShaderProgram({"shaders/shader.vert", "shaders/shader.frag"});
+	    ShaderProgram({"shaders/square.vert", "shaders/square.frag"});
 
 	auto start = steady_clock::now();
 
