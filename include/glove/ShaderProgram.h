@@ -1,7 +1,9 @@
 #pragma once
 
 #include <GL/glew.h>
-#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
 #include <initializer_list>
 #include <string>
 #include <vector>
