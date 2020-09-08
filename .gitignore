@@ -53,19 +53,3 @@ _deps
 *-prefix/
 
 # End of https://www.gitignore.io/api/c++,cmake
-
-### My Custom stuff ###
-
-*.pdf
-
-.vscode/
-.idea/
-.vs/
-.vim/
-.clangd/
-
-exportToHTML/
-
-build/
-cmake-build-debug/
-cmake-build-release/
