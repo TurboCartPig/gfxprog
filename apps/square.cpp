@@ -27,7 +27,7 @@ int main() {
 		auto             ggg = (dur.count() - std::floor(dur.count())) / 3.0f;
 
 		program.use();
-		program.setUniform("ui_color", glm::vec3(0.0f, ggg, 0.0f));
+		program.setUniform("u_color", glm::vec3(0.0f, ggg, 0.0f));
 		vbo.draw();
 
 		window.swapBuffers();
