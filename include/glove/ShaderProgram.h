@@ -34,7 +34,7 @@ class ShaderProgram {
 	 *
 	 * @param paths An array of paths to the shader source code.
 	 */
-	explicit ShaderProgram(
+	ShaderProgram(
 	    const std::initializer_list<const std::string> paths);
 
 	/**
@@ -42,6 +42,12 @@ class ShaderProgram {
 	 * @param other
 	 */
 	ShaderProgram(const ShaderProgram &other) = delete;
+
+	ShaderProgram(const ShaderProgram &&other) = delete;
+
+    ShaderProgram operator=(const ShaderProgram &other) = delete;
+
+	ShaderProgram operator=(const ShaderProgram &&other) = delete;
 
 	~ShaderProgram();
 

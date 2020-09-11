@@ -33,6 +33,12 @@ class VertexBufferObject {
 	 */
 	VertexBufferObject(const VertexBufferObject &other) = delete;
 
+	VertexBufferObject(const VertexBufferObject &&other) = delete;
+
+	VertexBufferObject operator=(const VertexBufferObject &other) = delete;
+
+	VertexBufferObject operator=(VertexBufferObject &&other) = delete;
+
 	~VertexBufferObject();
 
 	/**
