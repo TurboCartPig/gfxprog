@@ -10,10 +10,10 @@
 #include <vector>
 
 struct UniformSpec {
-	GLuint index;    //< Index of the uniform
-	GLenum type;     //< Type of the uniform
-	GLint  size;     //< Size of the uniform
-	GLuint location; //< Location of the uniform
+	GLuint index;    ///< Index of the uniform
+	GLenum type;     ///< Type of the uniform
+	GLint  size;     ///< Size of the uniform
+	GLuint location; ///< Location of the uniform
 };
 
 /**
