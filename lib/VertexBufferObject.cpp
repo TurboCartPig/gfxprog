@@ -12,15 +12,13 @@ void setVertexAttribs();
 
 template <>
 void setVertexAttribs<Vertex2D>() {
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D),
-	                      (GLvoid *)0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (GLvoid *)0);
 	glEnableVertexAttribArray(0);
 }
 
 template <>
 void setVertexAttribs<Vertex3D>() {
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3D),
-	                      (GLvoid *)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (GLvoid *)0);
 	glEnableVertexAttribArray(0);
 }
 
@@ -43,8 +41,7 @@ void setVertexAttribs<Vertex3DRgb>() {
 }
 
 template <typename VertexFormat>
-VertexBufferObject<VertexFormat>::VertexBufferObject(
-    const std::vector<VertexFormat> &vertices) {
+VertexBufferObject<VertexFormat>::VertexBufferObject(const std::vector<VertexFormat> &vertices) {
 	m_indexed         = false;
 	m_primitive_count = vertices.size() / 3;
 
@@ -55,16 +52,15 @@ VertexBufferObject<VertexFormat>::VertexBufferObject(
 	// Generate a vbo
 	glGenBuffers(1, &m_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(VertexFormat),
-	             vertices.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(VertexFormat), vertices.data(),
+	             GL_STATIC_DRAW);
 
 	setVertexAttribs<VertexFormat>();
 }
 
 template <typename VertexFormat>
-VertexBufferObject<VertexFormat>::VertexBufferObject(
-    const std::vector<VertexFormat> &vertices,
-    const std::vector<GLuint> &      indices) {
+VertexBufferObject<VertexFormat>::VertexBufferObject(const std::vector<VertexFormat> &vertices,
+                                                     const std::vector<GLuint> &      indices) {
 	m_indexed         = true;
 	m_primitive_count = indices.size();
 
@@ -75,14 +71,14 @@ VertexBufferObject<VertexFormat>::VertexBufferObject(
 	// Generate a vertex buffer
 	glGenBuffers(1, &m_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(VertexFormat),
-	             vertices.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(VertexFormat), vertices.data(),
+	             GL_STATIC_DRAW);
 
 	// Generate element buffer
 	glGenBuffers(1, &m_ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint),
-	             indices.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(),
+	             GL_STATIC_DRAW);
 
 	setVertexAttribs<VertexFormat>();
 }
@@ -101,8 +97,7 @@ template <typename VertexFormat>
 void VertexBufferObject<VertexFormat>::draw() {
 	if (m_indexed) { // Draw indexed
 		glBindVertexArray(m_vao);
-		glDrawElements(GL_TRIANGLES, m_primitive_count, GL_UNSIGNED_INT,
-		               (GLvoid *)0);
+		glDrawElements(GL_TRIANGLES, m_primitive_count, GL_UNSIGNED_INT, (GLvoid *)0);
 	} else { // Draw non indexed
 		glBindVertexArray(m_vao);
 		glDrawArrays(GL_TRIANGLES, 0, m_primitive_count);

@@ -4,8 +4,7 @@
 #include <fstream>
 #include <iostream>
 
-ShaderProgram::ShaderProgram(
-    const std::initializer_list<const std::string> paths) {
+ShaderProgram::ShaderProgram(const std::initializer_list<const std::string> paths) {
 	// Load all shaders from disk and compile them
 	std::vector<GLuint> shaders;
 
@@ -34,8 +33,7 @@ ShaderProgram::ShaderProgram(
 		else if (path.find(".frag") != std::string::npos)
 			type = GL_FRAGMENT_SHADER;
 		else {
-			std::cout << "Error: Shader with unknown file extension: " << path
-			          << std::endl;
+			std::cout << "Error: Shader with unknown file extension: " << path << std::endl;
 			throw std::runtime_error("GL Error: Unknown file extension.");
 		}
 
