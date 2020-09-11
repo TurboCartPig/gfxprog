@@ -27,6 +27,12 @@ class VertexBufferObject {
 	VertexBufferObject(const std::vector<VertexFormat> &vertices,
 	                   const std::vector<GLuint> &      indices);
 
+	/**
+	 * Deleting the copy constructor to avoid double frees.
+	 * @param other
+	 */
+	VertexBufferObject(const VertexBufferObject &other) = delete;
+
 	~VertexBufferObject();
 
 	/**

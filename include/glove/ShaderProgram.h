@@ -37,6 +37,12 @@ class ShaderProgram {
 	explicit ShaderProgram(
 	    const std::initializer_list<const std::string> paths);
 
+	/**
+	 * Deleting the copy constructor to avoid double frees.
+	 * @param other
+	 */
+	ShaderProgram(const ShaderProgram &other) = delete;
+
 	~ShaderProgram();
 
 	void use();
