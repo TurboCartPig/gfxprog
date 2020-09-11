@@ -5,7 +5,7 @@ project(
         DESCRIPTION "A CMake template project"
         LANGUAGES CXX)
 
-# List warnings and errors to be used by internal tergets
+# List warnings and errors to be used by internal targets
 set(COMPILER_WARNINGS_AND_ERRORS
         $<$<CXX_COMPILER_ID:MSVC>:/W4>
         $<$<CXX_COMPILER_ID:MSVC>:/w44061>
@@ -33,6 +33,7 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 
     # Setup compile_commands for clangd
+    # TODO: This is a hack and I should find a better way to do this
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
     execute_process(
             COMMAND

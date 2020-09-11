@@ -87,6 +87,7 @@ int main() {
 	glEnableVertexAttribArray(1);
 
 	// 4. Shaders
+	// TODO: Compile shaders manually here for the sake of completeness
 	ShaderProgram program({"shaders/triangle.vert", "shaders/triangle.frag"});
 
 	// Main game loop
