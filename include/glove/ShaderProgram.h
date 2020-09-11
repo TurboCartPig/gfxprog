@@ -45,7 +45,7 @@ class ShaderProgram {
 
 	~ShaderProgram();
 
-	void use();
+	void use() const;
 
 	void setUniform(const std::string &name, const float x);
 

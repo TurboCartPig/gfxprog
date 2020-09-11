@@ -118,7 +118,7 @@ ShaderProgram::ShaderProgram(const std::initializer_list<const std::string> path
 
 ShaderProgram::~ShaderProgram() { glDeleteProgram(m_program); }
 
-void ShaderProgram::use() { glUseProgram(m_program); }
+void ShaderProgram::use() const { glUseProgram(m_program); }
 
 void ShaderProgram::setUniform(const std::string &name, const float x) {
 	glUniform1f(m_uniforms.at(name).location, x);
