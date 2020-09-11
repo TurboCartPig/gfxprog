@@ -1,5 +1,5 @@
 ---
-Checks: 'clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*,-modernize-use-trailing-return-type,performance-*,portability-*,bugprone-*,readability-*,-readability-magic-numbers,-readability-uppercase-literal-suffix,-readability-braces-around-statements'
+Checks: 'clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*,-modernize-use-trailing-return-type,performance-*,portability-*,bugprone-*,readability-*,-readability-magic-numbers,-readability-uppercase-literal-suffix,-readability-braces-around-statements,-readability-avoid-const-params-in-decls,-abseil-*'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
@@ -89,6 +89,7 @@ CheckOptions:
   - key:             cppcoreguidelines-no-malloc.Reallocations
     value:           '::realloc'
   - key:             cppcoreguidelines-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
+    value:           '1'
   - key:             cppcoreguidelines-owning-memory.LegacyResourceConsumers
     value:           '::free;::realloc;::freopen;::fclose'
   - key:             cppcoreguidelines-owning-memory.LegacyResourceProducers
