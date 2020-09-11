@@ -46,8 +46,8 @@ ShaderProgram::ShaderProgram(
 		glCompileShader(shader);
 
 		// Get the compile status
-		GLint                 success;
-        std::string log(512, '\0');
+		GLint       success;
+		std::string log(512, '\0');
 		glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 		glGetShaderInfoLog(shader, log.capacity(), nullptr, log.data());
 
@@ -72,12 +72,12 @@ ShaderProgram::ShaderProgram(
 	glLinkProgram(m_program);
 
 	// Get the link status
-	GLint success;
-    std::string log(512, '\0');
+	GLint       success;
+	std::string log(512, '\0');
 	glGetProgramiv(m_program, GL_LINK_STATUS, &success);
 	glGetProgramInfoLog(m_program, log.capacity(), nullptr, log.data());
 
-	std::cout << "Linking Program: " << std::endl;
+	std::cout << "Linking Program: (id: " << m_program << ")" << std::endl;
 	if (success == GL_FALSE) {
 		std::cout << "\tLinking status: " << (bool)success << std::endl;
 		std::cout << "\tLinking log:\n" << log << std::endl;
@@ -89,26 +89,50 @@ ShaderProgram::ShaderProgram(
 		glDeleteShader(shader);
 }
 
+	// TODO: Find a way to obtain the vertex specification from the compiled shaders
+
+	GLint               num_active_uniforms;
+	std::vector<GLenum> props = {GL_NAME_LENGTH, GL_TYPE, GL_ARRAY_SIZE, GL_LOCATION};
+	std::vector<GLint>  values(props.size());
+	// Query the number of active uniforms in the current program
+	glGetProgramInterfaceiv(m_program, GL_UNIFORM, GL_ACTIVE_RESOURCES, &num_active_uniforms);
+
+	// Iterate over the uniforms in the current program
+	for (GLuint i = 0; i < (GLuint)num_active_uniforms; i++) {
+		// Query the program for properties specified by 'props'
+		glGetProgramResourceiv(m_program, GL_UNIFORM, i, props.size(), props.data(), values.size(),
+		                       nullptr, values.data());
+		// Preallocate string
+		std::string uniform_name(values[0], '\0');
+
+		// Query for the name of the current uniform
+		glGetProgramResourceName(m_program, GL_UNIFORM, i, uniform_name.size(), nullptr,
+		                         uniform_name.data());
+		// Remove '\0'
+		uniform_name.pop_back();
+
+		// Store the uniform specification for later use
+		m_uniforms.insert({uniform_name, UniformSpec{i, static_cast<GLuint>(values[1]), values[2],
+		                                             static_cast<GLuint>(values[3])}});
+	}
+}
+
 ShaderProgram::~ShaderProgram() { glDeleteProgram(m_program); }
 
 void ShaderProgram::use() { glUseProgram(m_program); }
 
 void ShaderProgram::setUniform(const std::string &name, const float x) {
-	auto loc = glGetUniformLocation(m_program, name.c_str());
-	glUniform1f(loc, x);
+	glUniform1f(m_uniforms.at(name).location, x);
 }
 
 void ShaderProgram::setUniform(const std::string &name, const glm::vec2 v) {
-	auto loc = glGetUniformLocation(m_program, name.c_str());
-	glUniform2f(loc, v.x, v.y);
+	glUniform2f(m_uniforms.at(name).location, v.x, v.y);
 }
 
 void ShaderProgram::setUniform(const std::string &name, const glm::vec3 v) {
-	auto loc = glGetUniformLocation(m_program, name.c_str());
-	glUniform3f(loc, v.x, v.y, v.z);
+	glUniform3f(m_uniforms.at(name).location, v.x, v.y, v.z);
 }
 
 void ShaderProgram::setUniform(const std::string &name, const glm::vec4 v) {
-	auto loc = glGetUniformLocation(m_program, name.c_str());
-	glUniform4f(loc, v.x, v.y, v.z, v.w);
+	glUniform4f(m_uniforms.at(name).location, v.x, v.y, v.z, v.w);
 }

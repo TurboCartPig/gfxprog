@@ -6,7 +6,15 @@
 #include <glm/vec4.hpp>
 #include <initializer_list>
 #include <string>
+#include <unordered_map>
 #include <vector>
+
+struct UniformSpec {
+	GLuint index;    //< Index of the uniform
+	GLenum type;     //< Type of the uniform
+	GLint  size;     //< Size of the uniform
+	GLuint location; //< Location of the uniform
+};
 
 /**
  * A shader program abstraction.
@@ -44,5 +52,6 @@ class ShaderProgram {
 	GLuint getProgram() const { return m_program; }
 
   private:
-	GLuint m_program;
+	GLuint                                       m_program;
+	std::unordered_map<std::string, UniformSpec> m_uniforms;
 };
