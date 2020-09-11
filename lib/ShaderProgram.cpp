@@ -85,9 +85,10 @@ ShaderProgram::ShaderProgram(
 		throw std::runtime_error("GL Error: Failed to link program");
 	}
 
-	for (const auto shader : shaders)
+	for (const auto shader : shaders) {
+		glDetachShader(m_program, shader);
 		glDeleteShader(shader);
-}
+	}
 
 	// TODO: Find a way to obtain the vertex specification from the compiled shaders
 
