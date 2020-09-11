@@ -1,4 +1,10 @@
-#include <GL/glew.h>
+/**
+ * Draw a pulsing square with OpenGL and the utility library I wrote called glove.
+ *
+ * @author Dennis Kristiansen, NTNU
+ * @file square.cpp
+ */
+
 #include <chrono>
 #include <cmath>
 #include <glove/lib.h>

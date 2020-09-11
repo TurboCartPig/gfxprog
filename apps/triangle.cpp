@@ -1,3 +1,10 @@
+/**
+ * Draw a triangle with OpenGL from scratch.
+ *
+ * @author Dennis Kristiansen, NTNU
+ * @file triangle.cpp
+ */
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <array>
