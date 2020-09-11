@@ -21,16 +21,16 @@ int main() {
 	    Vertex2D{0.5f, 0.5f}};
 	std::vector<GLuint> indices = {0, 1, 2, 1, 2, 3};
 
+    auto program =
+        ShaderProgram({"shaders/square.vert", "shaders/square.frag"});
 	auto vbo = VertexBufferObject(vertices, indices);
-	auto program =
-	    ShaderProgram({"shaders/square.vert", "shaders/square.frag"});
 
-	auto start = steady_clock::now();
+	const auto start = steady_clock::now();
 
 	while (!window.pollEvents()) {
-		auto             now = steady_clock::now();
+		const auto       now = steady_clock::now();
 		duration<double> dur = now - start;
-		auto             ggg = (dur.count() - std::floor(dur.count())) / 3.0f;
+		const auto       ggg = (dur.count() - std::floor(dur.count())) / 3.0f;
 
 		program.use();
 		program.setUniform("u_color", glm::vec3(0.0f, ggg, 0.0f));
