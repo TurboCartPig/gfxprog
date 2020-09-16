@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GL/glew.h>
+#include <glm/mat4x4.hpp>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
@@ -45,7 +46,7 @@ class ShaderProgram {
 
 	ShaderProgram(const ShaderProgram &&other) = delete;
 
-    ShaderProgram operator=(const ShaderProgram &other) = delete;
+	ShaderProgram operator=(const ShaderProgram &other) = delete;
 
 	ShaderProgram operator=(const ShaderProgram &&other) = delete;
 
@@ -55,11 +56,13 @@ class ShaderProgram {
 
 	void setUniform(const std::string &name, const float x);
 
-	void setUniform(const std::string &name, const glm::vec2);
+	void setUniform(const std::string &name, const glm::vec2 v);
 
-	void setUniform(const std::string &name, const glm::vec3);
+	void setUniform(const std::string &name, const glm::vec3 v);
 
-	void setUniform(const std::string &name, const glm::vec4);
+	void setUniform(const std::string &name, const glm::vec4 v);
+
+	void setUniform(const std::string &name, const glm::mat4 v);
 
 	GLuint getProgram() const { return m_program; }
 

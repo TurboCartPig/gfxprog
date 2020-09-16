@@ -1,10 +1,11 @@
-#include "glove/ShaderProgram.h"
-
 #include <filesystem>
 #include <fstream>
+#include <glm/gtc/type_ptr.hpp>
+#include <glove/ShaderProgram.h>
 #include <iostream>
 
-ShaderProgram::ShaderProgram(const std::initializer_list<const std::string> paths) {
+ShaderProgram::ShaderProgram(
+    const std::initializer_list<const std::string> paths) {
 	// Load all shaders from disk and compile them
 	std::vector<GLuint> shaders;
 
@@ -33,7 +34,8 @@ ShaderProgram::ShaderProgram(const std::initializer_list<const std::string> path
 		else if (path.find(".frag") != std::string::npos)
 			type = GL_FRAGMENT_SHADER;
 		else {
-			std::cout << "Error: Shader with unknown file extension: " << path << std::endl;
+			std::cout << "Error: Shader with unknown file extension: " << path
+			          << std::endl;
 			throw std::runtime_error("GL Error: Unknown file extension.");
 		}
 
@@ -88,31 +90,37 @@ ShaderProgram::ShaderProgram(const std::initializer_list<const std::string> path
 		glDeleteShader(shader);
 	}
 
-	// TODO: Find a way to obtain the vertex specification from the compiled shaders
+	// TODO: Find a way to obtain the vertex specification from the compiled
+	// shaders
 
 	GLint               num_active_uniforms;
-	std::vector<GLenum> props = {GL_NAME_LENGTH, GL_TYPE, GL_ARRAY_SIZE, GL_LOCATION};
+	std::vector<GLenum> props = {GL_NAME_LENGTH, GL_TYPE, GL_ARRAY_SIZE,
+	                             GL_LOCATION};
 	std::vector<GLint>  values(props.size());
 	// Query the number of active uniforms in the current program
-	glGetProgramInterfaceiv(m_program, GL_UNIFORM, GL_ACTIVE_RESOURCES, &num_active_uniforms);
+	glGetProgramInterfaceiv(m_program, GL_UNIFORM, GL_ACTIVE_RESOURCES,
+	                        &num_active_uniforms);
 
 	// Iterate over the uniforms in the current program
 	for (GLuint i = 0; i < (GLuint)num_active_uniforms; i++) {
 		// Query the program for properties specified by 'props'
-		glGetProgramResourceiv(m_program, GL_UNIFORM, i, props.size(), props.data(), values.size(),
-		                       nullptr, values.data());
+		glGetProgramResourceiv(m_program, GL_UNIFORM, i, props.size(),
+		                       props.data(), values.size(), nullptr,
+		                       values.data());
 		// Preallocate string
 		std::string uniform_name(values[0], '\0');
 
 		// Query for the name of the current uniform
-		glGetProgramResourceName(m_program, GL_UNIFORM, i, uniform_name.size(), nullptr,
-		                         uniform_name.data());
+		glGetProgramResourceName(m_program, GL_UNIFORM, i, uniform_name.size(),
+		                         nullptr, uniform_name.data());
 		// Remove '\0'
 		uniform_name.pop_back();
 
 		// Store the uniform specification for later use
-		m_uniforms.insert({uniform_name, UniformSpec{i, static_cast<GLuint>(values[1]), values[2],
-		                                             static_cast<GLuint>(values[3])}});
+		m_uniforms.insert(
+		    {uniform_name,
+		     UniformSpec{i, static_cast<GLuint>(values[1]), values[2],
+		                 static_cast<GLuint>(values[3])}});
 	}
 }
 
@@ -134,4 +142,9 @@ void ShaderProgram::setUniform(const std::string &name, const glm::vec3 v) {
 
 void ShaderProgram::setUniform(const std::string &name, const glm::vec4 v) {
 	glUniform4f(m_uniforms.at(name).location, v.x, v.y, v.z, v.w);
+}
+
+void ShaderProgram::setUniform(const std::string &name, const glm::mat4 v) {
+	glUniformMatrix4fv(m_uniforms.at(name).location, 1, GL_FALSE,
+	                   glm::value_ptr(v));
 }
