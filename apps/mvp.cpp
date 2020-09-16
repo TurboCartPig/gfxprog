@@ -63,6 +63,11 @@ int main() {
 		transform =
 		    glm::rotate(transform, dt * rot, glm::vec3(0.0f, 0.0f, -1.0f));
 
+		// Update projection to account for the framebuffer's aspect ratio
+		auto [w, h] = window.dimensions();
+		auto ar     = (float)w / (float)h;
+		projection  = glm::ortho(-ar, ar, -1.0f, 1.0f);
+
 		// Update to uniforms
 		program.setUniform("u_transform", transform);
 		program.setUniform("u_view", view);
