@@ -1,9 +1,15 @@
 add_executable(triangle triangle.cpp)
 target_compile_options(triangle PRIVATE ${COMPILER_WARNINGS_AND_ERROR})
 target_link_libraries(triangle PRIVATE lib)
-target_precompile_headers(triangle PRIVATE <iostream> <string> <vector> <array>)
+#target_precompile_headers(triangle PRIVATE <iostream> <string> <vector> <array> <glm/glm.hpp>)
+target_precompile_headers(triangle REUSE_FROM lib)
 
 add_executable(square square.cpp)
 target_compile_options(square PRIVATE ${COMPILER_WARNINGS_AND_ERROR})
 target_link_libraries(square PRIVATE lib)
-target_precompile_headers(square REUSE_FROM triangle)
+target_precompile_headers(square REUSE_FROM lib)
+
+add_executable(mvp mvp.cpp)
+target_compile_options(mvp PRIVATE ${COMPILER_WARNINGS_AND_ERROR})
+target_link_libraries(mvp PRIVATE lib)
+target_precompile_headers(mvp REUSE_FROM lib)

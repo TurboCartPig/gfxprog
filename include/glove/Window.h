@@ -29,6 +29,12 @@ class Window {
 	 */
 	void swapBuffers();
 
+	/**
+	 * Get the internal window pointer for usage width unwrapped glfw calls
+	 * @return The internal window pointer
+	 */
+	GLFWwindow *ptr() const { return m_window; }
+
   private:
 	GLFWwindow *m_window;
 };
