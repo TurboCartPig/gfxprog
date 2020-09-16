@@ -35,6 +35,12 @@ class Window {
 	 */
 	GLFWwindow *ptr() const { return m_window; }
 
+	std::pair<int, int> dimensions() const {
+		auto dim = std::make_pair(0, 0);
+		glfwGetFramebufferSize(m_window, &dim.first, &dim.second);
+		return dim;
+	}
+
   private:
 	GLFWwindow *m_window;
 };
