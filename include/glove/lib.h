@@ -17,8 +17,4 @@
 #include <glove/VertexBufferObject.h>
 #include <glove/VertexFormats.h>
 #include <glove/Window.h>
-
-void GLAPIENTRY glDebugOutput(GLenum source, GLenum type, GLuint id,
-                              GLenum severity, [[maybe_unused]] GLsizei length,
-                              const char *                 message,
-                              [[maybe_unused]] const void *userParam);
+#include <glove/utility.h>
