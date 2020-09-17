@@ -2,4 +2,4 @@ add_library(lib lib.cpp utility.cpp ShaderProgram.cpp VertexBufferObject.cpp Win
 target_compile_options(lib PRIVATE ${COMPILER_WARNINGS_AND_ERRORS})
 target_include_directories(lib PUBLIC ../include)
 target_link_libraries(lib PUBLIC GLEW::GLEW glfw glm OpenGL::GL)
-target_precompile_headers(lib PRIVATE <iostream> <string> <vector> <array> <glm/glm.hpp>)
+target_precompile_headers(lib PRIVATE <iostream> <chrono> <string> <vector> <array> <GL/glew.h> <glm/glm.hpp> <glm/gtc/type_ptr.hpp> <glm/gtc/matrix_transform.hpp>)
