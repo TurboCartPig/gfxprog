@@ -1,7 +1,12 @@
 #include <GL/glew.h>
+#include <functional>
 #include <glove/Window.h>
 #include <glove/lib.h>
 #include <iostream>
+
+static std::function<void(GLFWwindow *, int, int, int, int)>
+    gKeyCallback; ///< Part of hack to allow the key callback to capture the
+                  ///< environment
 
 Window::Window(const std::string &title, const uint32_t width,
                const uint32_t height) {
@@ -28,11 +33,35 @@ Window::Window(const std::string &title, const uint32_t width,
 
 	glfwMakeContextCurrent(m_window);
 	glfwSwapInterval(1);
+
+	// Setup input queue
+	m_input_queue = std::make_shared<std::deque<InputCode>>();
+
+	// Setup key callback
+	auto input = m_input_queue; // Get a copy of the input queue pointer for
+	                            // capture by lambda
+	auto callback = [input](GLFWwindow *window, int key, int scancode,
+	                        int action, int modes) mutable -> void {
+		if (action == GLFW_PRESS) {
+			switch (key) {
+				// TODO: More keys
+				case GLFW_KEY_ESCAPE:
+					glfwSetWindowShouldClose(window, GLFW_TRUE);
+					break;
+				case GLFW_KEY_W: input->push_back(InputCode::W); break;
+				case GLFW_KEY_S: input->push_back(InputCode::S); break;
+				case GLFW_KEY_A: input->push_back(InputCode::A); break;
+				case GLFW_KEY_D: input->push_back(InputCode::D); break;
+			}
+		}
+	};
+
+	// Hack to make the key callback to work with lambda's that capture the
+	// environment
+	gKeyCallback = std::move(callback);
 	glfwSetKeyCallback(m_window, [](GLFWwindow *window, int key, int scancode,
 	                                int action, int modes) {
-		if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-			glfwSetWindowShouldClose(window, GLFW_TRUE);
-		}
+		gKeyCallback(window, key, scancode, action, modes);
 	});
 
 	// Setup GLEW
@@ -43,7 +72,7 @@ Window::Window(const std::string &title, const uint32_t width,
 		throw std::runtime_error("GLEW Failed to initialize.");
 	}
 
-	// Debug
+	// Enable debugging
 	glEnable(GL_DEBUG_OUTPUT);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 	glDebugMessageCallback(glDebugOutput, 0);
@@ -61,7 +90,13 @@ Window::~Window() {
 }
 
 bool Window::pollEvents() {
+	// Clear the input queue to avoid storing all the input events for the
+	// entire game
+	m_input_queue->clear();
+
+	// THEN poll events
 	glfwPollEvents();
+
 	return glfwWindowShouldClose(m_window);
 }
 

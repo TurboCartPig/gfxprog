@@ -35,8 +35,7 @@ class ShaderProgram {
 	 *
 	 * @param paths An array of paths to the shader source code.
 	 */
-	ShaderProgram(
-	    const std::initializer_list<const std::string> paths);
+	ShaderProgram(const std::initializer_list<std::string> paths);
 
 	/**
 	 * Deleting the copy constructor to avoid double frees.

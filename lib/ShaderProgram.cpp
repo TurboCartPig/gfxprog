@@ -4,8 +4,7 @@
 #include <glove/ShaderProgram.h>
 #include <iostream>
 
-ShaderProgram::ShaderProgram(
-    const std::initializer_list<const std::string> paths) {
+ShaderProgram::ShaderProgram(const std::initializer_list<std::string> paths) {
 	// Load all shaders from disk and compile them
 	std::vector<GLuint> shaders;
 
