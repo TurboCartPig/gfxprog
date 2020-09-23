@@ -26,7 +26,16 @@ Docs:
 cmake --build build/ --target docs
 ```
 
-To build the user must have the following libraries available for cmake to discover: GLFW3, GLEW, GLM and native OpenGL headers.
+To build the user must have the following libraries available for cmake to discover: GLFW3, GLEW, GLM, Catch2, ImGui, stb and native OpenGL headers.
+
+### Install dependencies using native package manager
+
+Fedora:
+```bash
+sudo dnf in glfw-devel glew-devel glm-devel catch-devel mesa-{libGL,libEGL}-devel
+```
+
+> ImGui and stb are not currently available in mirrors on fedora, use vcpkg to obtain them.
 
 ### Using vcpkg
 
