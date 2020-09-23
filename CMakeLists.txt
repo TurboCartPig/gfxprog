@@ -62,5 +62,8 @@ find_package(glfw3 3.3 REQUIRED)
 find_package(glm REQUIRED)
 find_package(imgui REQUIRED)
 
+# Stb is a header only library, so all we need to do is find the directory in which it resides
+find_path(STB_INCLUDE_DIRS "stb.h")
+
 add_subdirectory(lib)
 add_subdirectory(apps)

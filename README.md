@@ -47,6 +47,6 @@ cmake -G Ninja -S . -B build -DCMAKE_TOOLCHAIN_FILE="C:\path\to\vcpkg.cmake"
 
 Install dependencies:
 ```bash
-.\vcpkg install glfw3 glm glew catch opengl
+.\vcpkg install glfw3 glm glew catch imgui 'imgui[glfw-binding]' stb opengl
 ```
 
