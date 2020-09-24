@@ -40,8 +40,29 @@ void setVertexAttribs<Vertex3DRgb>() {
 	glEnableVertexAttribArray(1);
 }
 
+template <>
+void setVertexAttribs<Vertex2DTex>() {
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2DTex),
+	                      nullptr);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2DTex),
+	                      (GLvoid *)(sizeof(float) * 2));
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+}
+
+template <>
+void setVertexAttribs<Vertex3DTex>() {
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3DTex),
+	                      nullptr);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex3DTex),
+	                      (GLvoid *)(sizeof(float) * 3));
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+}
+
 template <typename VertexFormat>
-VertexBufferObject<VertexFormat>::VertexBufferObject(const std::vector<VertexFormat> &vertices) {
+VertexBufferObject<VertexFormat>::VertexBufferObject(
+    const std::vector<VertexFormat> &vertices) {
 	m_indexed         = false;
 	m_primitive_count = vertices.size() / 3;
 
@@ -107,5 +128,7 @@ void VertexBufferObject<VertexFormat>::draw() {
 // Explicitly template the class for the provided vertex formats
 template class VertexBufferObject<Vertex2D>;
 template class VertexBufferObject<Vertex2DRgb>;
+template class VertexBufferObject<Vertex2DTex>;
 template class VertexBufferObject<Vertex3D>;
 template class VertexBufferObject<Vertex3DRgb>;
+template class VertexBufferObject<Vertex3DTex>;

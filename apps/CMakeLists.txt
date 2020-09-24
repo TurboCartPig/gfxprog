@@ -6,7 +6,7 @@ add_custom_target(copy-resources COMMAND
         ${CMAKE_CURRENT_BINARY_DIR}/resources
         )
 
-# Executables
+# Labs
 ###############################################################################
 
 add_executable(triangle triangle.cpp)
@@ -26,6 +26,15 @@ add_dependencies(mvp copy-resources)
 target_compile_options(mvp PRIVATE ${COMPILER_WARNINGS_AND_ERROR})
 target_link_libraries(mvp PRIVATE lib)
 target_precompile_headers(mvp REUSE_FROM lib)
+
+add_executable(texture texture.cpp)
+add_dependencies(texture copy-resources)
+target_compile_options(texture PRIVATE ${COMPILER_WARNINGS_AND_ERROR})
+target_link_libraries(texture PRIVATE lib)
+target_precompile_headers(texture REUSE_FROM lib)
+
+# Assignments
+###############################################################################
 
 add_executable(pacman pacman.cpp)
 add_dependencies(pacman copy-resources)

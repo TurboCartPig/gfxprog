@@ -53,6 +53,8 @@ class ShaderProgram {
 
 	void use() const;
 
+	void setUniform(const std::string &name, const unsigned int x);
+
 	void setUniform(const std::string &name, const float x);
 
 	void setUniform(const std::string &name, const glm::vec2 v);

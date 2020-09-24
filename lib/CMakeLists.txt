@@ -1,4 +1,4 @@
-add_library(lib lib.cpp utility.cpp ShaderProgram.cpp VertexBufferObject.cpp Window.cpp)
+add_library(lib lib.cpp utility.cpp ShaderProgram.cpp Texture.cpp VertexBufferObject.cpp Window.cpp)
 target_compile_options(lib PRIVATE ${COMPILER_WARNINGS_AND_ERRORS})
 target_include_directories(lib PUBLIC ${STB_INCLUDE_DIRS})
 target_include_directories(lib PUBLIC ../include)

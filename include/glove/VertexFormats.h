@@ -17,3 +17,13 @@ struct Vertex3DRgb {
 	float x, y, z;
 	float r, g, b;
 };
+
+struct Vertex2DTex {
+	float x, y;
+	float u, v;
+};
+
+struct Vertex3DTex {
+	float x, y, z;
+	float u, v;
+};

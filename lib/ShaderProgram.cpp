@@ -127,6 +127,10 @@ ShaderProgram::~ShaderProgram() { glDeleteProgram(m_program); }
 
 void ShaderProgram::use() const { glUseProgram(m_program); }
 
+void ShaderProgram::setUniform(const std::string &name, const GLuint x) {
+	glUniform1i(m_uniforms.at(name).location, x);
+}
+
 void ShaderProgram::setUniform(const std::string &name, const float x) {
 	glUniform1f(m_uniforms.at(name).location, x);
 }
