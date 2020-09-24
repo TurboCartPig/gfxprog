@@ -88,7 +88,8 @@ int main() {
 
 	// 4. Shaders
 	// TODO: Compile shaders manually here for the sake of completeness
-	ShaderProgram program({"shaders/triangle.vert", "shaders/triangle.frag"});
+	ShaderProgram program(
+	    {"resources/shaders/triangle.vert", "resources/shaders/triangle.frag"});
 
 	// Main game loop
 	while (!glfwWindowShouldClose(window)) {

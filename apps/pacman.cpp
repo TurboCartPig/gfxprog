@@ -78,7 +78,8 @@ class Level {
 		m_quad =
 		    std::make_unique<VertexBufferObject<Vertex2D>>(vertices, indices);
 
-		const auto paths = {"shaders/pacman.vert"s, "shaders/pacman.frag"s};
+		const auto paths = {"resources/shaders/pacman.vert"s,
+		                    "resources/shaders/pacman.frag"s};
 		m_shader_program = std::make_unique<ShaderProgram>(paths);
 		m_shader_program->use();
 
