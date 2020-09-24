@@ -6,7 +6,6 @@
  */
 
 #include <chrono>
-#include <cmath>
 #include <glove/lib.h>
 #include <iostream>
 
