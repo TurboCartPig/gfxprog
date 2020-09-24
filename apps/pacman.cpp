@@ -205,12 +205,17 @@ class Level {
 	 */
 	void movePacman(const size_t old_pos, const size_t new_pos) {
 		if (m_grid[new_pos] != EntityType::Wall) {
-			if (m_grid[new_pos] == EntityType::Pellet)
+			if (m_grid[new_pos] == EntityType::Pellet) {
 				pickupPellet();
-			else if (m_grid[new_pos] == EntityType::Ghost)
-				endGame();
+			}
 
-			m_grid[new_pos] = EntityType::Pacman;
+			if (m_grid[new_pos] == EntityType::Ghost) {
+				m_grid[new_pos] = EntityType::Ghost;
+				endGame();
+			} else {
+				m_grid[new_pos] = EntityType::Pacman;
+			}
+
 			m_grid[old_pos] = EntityType::Tunnel;
 		}
 	}
@@ -235,7 +240,7 @@ class Level {
 		std::replace_if(
 		    m_grid.begin(), m_grid.end(),
 		    [](const EntityType &entity) {
-			    return entity == EntityType::Tunnel && rnd() <= 0.10f;
+			    return entity == EntityType::Tunnel && rnd() <= 0.01f;
 		    },
 		    EntityType::Ghost);
 	}
@@ -301,15 +306,17 @@ int main() {
 	auto start = steady_clock::now();
 
 	// Main game loop
-	while (!window.pollEvents() && !level.gameOver()) {
-		const auto now = steady_clock::now();
+	while (!window.pollEvents()) {
+		if (!level.gameOver()) {
+			const auto now = steady_clock::now();
 
-		level.update();
+			level.update();
 
-		// Run fixed update at fixed interval
-		if ((now - start) > milliseconds(500)) {
-			start = now;
-			level.fixedUpdate();
+			// Run fixed update at fixed interval
+			if ((now - start) > milliseconds(500)) {
+				start = now;
+				level.fixedUpdate();
+			}
 		}
 
 		level.draw();
