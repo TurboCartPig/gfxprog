@@ -10,6 +10,7 @@
 #include <glove/lib.h>
 #include <iostream>
 #include <memory>
+#include <utility>
 
 using namespace std::string_literals;
 
@@ -54,7 +55,7 @@ class Level {
 	 * @param path Path to the level file
 	 */
 	Level(const std::string &path, InputQueue input_queue)
-	    : m_input_queue(input_queue) {
+	    : m_input_queue(std::move(input_queue)) {
 		// Load level file from path
 		std::ifstream file(path);
 		assert(file.good());
