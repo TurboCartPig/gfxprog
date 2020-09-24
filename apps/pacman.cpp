@@ -53,6 +53,7 @@ class Level {
 	 * Load a single level and initialize the game
 	 *
 	 * @param path Path to the level file
+	 * @param input_queue Input queue from window
 	 */
 	Level(const std::string &path, InputQueue input_queue)
 	    : m_input_queue(std::move(input_queue)) {
@@ -66,13 +67,13 @@ class Level {
 		file.ignore();
 		file >> m_height;
 
-		m_grid.reserve(m_width * m_height);
+		m_grid.resize(m_width * m_height);
 
 		// Loop through cells and push them into grid
 		for (size_t i = 0; i < m_width * m_height; i++) {
 			int x;
 			file >> x;
-			m_grid.push_back(static_cast<EntityType>(x));
+			m_grid[i] = static_cast<EntityType>(x);
 		}
 
 		// Create vertex buffer and shader program
@@ -130,8 +131,6 @@ class Level {
 			}
 
 			// Set transform to match position in grid
-			// FIXME: + 0.5 is a magic number and wont work if level size
-			// changes
 			auto x = (float)(i % m_width) - m_width / 2.0f + 0.5f;
 			auto y = (float)(i / m_width) - m_height / 2.0f + 0.5f;
 			auto transform =
