@@ -3,7 +3,7 @@
 add_custom_target(copy-resources COMMAND
         ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/resources
-        ${CMAKE_CURRENT_BINARY_DIR}/apps/resources
+        ${CMAKE_CURRENT_BINARY_DIR}/resources
         )
 
 # Executables
