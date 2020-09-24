@@ -11,6 +11,7 @@
 #include <glove/lib.h>
 #include <iostream>
 #include <memory>
+#include <random>
 #include <utility>
 
 using namespace std::string_literals;
@@ -22,19 +23,7 @@ const std::vector<Vertex2D> vertices = {
     Vertex2D{0.5f, 0.5f}};
 const std::vector<GLuint> indices = {0, 1, 2, 1, 2, 3};
 
-// Steps:
-// 0. Basic setup and init
-//    - Create window
-//    - Create vertex buffer that can be reused for all the entities
-// 1. Load the level
-// 2. 2d array where
-//    - 0' are tunnel
-//    - 1's are walls
-//    - 2's are pacman
-//    - 3's are ghosts
-//    - 4's are pellets
-// 3. Draw the level by drawing all the entities individually
-//    - Set the transform based on position in level grid
+std::function<float()> rnd; ///< Lazily bound function to get random numbers
 
 /**
  * The type/variant of entity in the level grid.
@@ -211,12 +200,11 @@ class Level {
 		std::replace_if(
 		    m_grid.begin(), m_grid.end(),
 		    [](const EntityType &entity) {
-			    return entity == EntityType::Tunnel && rand() % 100 == 0;
+			    return entity == EntityType::Tunnel && rnd() <= 0.10f;
 		    },
 		    EntityType::Ghost);
 	}
 
-	// FIXME: Fix randomness
 	/**
 	 * Spawn pellets into the level grid
 	 */
@@ -224,7 +212,7 @@ class Level {
 		std::replace_if(
 		    m_grid.begin(), m_grid.end(),
 		    [](const EntityType &entity) {
-			    return entity == EntityType::Tunnel && rand() % 100 == 0;
+			    return entity == EntityType::Tunnel;
 		    },
 		    EntityType::Pellet);
 	}
@@ -250,6 +238,14 @@ class Level {
 };
 
 int main() {
+	// Init randomness
+	// *******************************************************************
+	std::random_device                    rd;
+	std::default_random_engine            generator(rd());
+	std::uniform_real_distribution<float> distribution(0.0, 1.0);
+	rnd = std::bind(distribution, generator);
+
+	// Init window
 	auto window = Window("Pacman", 900, 900);
 
 	auto level = Level("resources/levels/level0.txt", window.getInputQueue());
