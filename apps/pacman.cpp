@@ -6,6 +6,7 @@
  */
 
 #include <algorithm>
+#include <chrono>
 #include <fstream>
 #include <glove/lib.h>
 #include <iostream>
@@ -13,6 +14,8 @@
 #include <utility>
 
 using namespace std::string_literals;
+using std::chrono::milliseconds;
+using std::chrono::steady_clock;
 
 const std::vector<Vertex2D> vertices = {
     Vertex2D{-0.5f, -0.5f}, Vertex2D{-0.5f, 0.5f}, Vertex2D{0.5f, -0.5f},
@@ -251,8 +254,21 @@ int main() {
 
 	auto level = Level("resources/levels/level0.txt", window.getInputQueue());
 
-	while (!window.pollEvents()) {
+	// Setup clock for time measurements
+	auto start = steady_clock::now();
+
+	// Main game loop
+	while (!window.pollEvents() && !level.gameOver()) {
+		const auto now = steady_clock::now();
+
 		level.update();
+
+		// Run fixed update at fixed interval
+		if ((now - start) > milliseconds(500)) {
+			start = now;
+			level.fixedUpdate();
+		}
+
 		level.draw();
 
 		window.swapBuffers();
