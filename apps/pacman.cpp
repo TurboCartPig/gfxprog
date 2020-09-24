@@ -37,6 +37,16 @@ enum class EntityType {
 };
 
 /**
+ * Direction of movement.
+ */
+enum class Direction {
+	Left,
+	Right,
+	Up,
+	Down,
+};
+
+/**
  * A level of the game
  */
 class Level {
@@ -102,6 +112,12 @@ class Level {
 		for (size_t i = 0; i < m_grid.size(); i++) {
 			glm::vec3 color;
 
+			// Set transform to match position in grid
+			auto x = (float)(i % m_width) - m_width / 2.0f + 0.5f;
+			auto y = (float)(i / m_width) - m_height / 2.0f + 0.5f;
+			auto transform =
+			    glm::translate(glm::mat4(1.0f), glm::vec3(x, y, 0.0f));
+
 			// Set some uniforms based on entity type
 			switch (m_grid[i]) {
 				case EntityType::Wall:
@@ -118,15 +134,13 @@ class Level {
 				case EntityType::Pellet:
 					// TODO: Use pellet spritesheet or texture
 					color = glm::vec3(0.0f, 0.0f, 1.0f);
+					transform =
+					    glm::scale(transform, glm::vec3(0.5f, 0.5f, 1.0f));
+					transform = glm::rotate(transform, 45.0f,
+					                        glm::vec3(0.0f, 0.0f, 1.0f));
 					break;
 				default: continue; // Nothing to draw
 			}
-
-			// Set transform to match position in grid
-			auto x = (float)(i % m_width) - m_width / 2.0f + 0.5f;
-			auto y = (float)(i / m_width) - m_height / 2.0f + 0.5f;
-			auto transform =
-			    glm::translate(glm::mat4(1.0f), glm::vec3(x, y, 0.0f));
 
 			m_shader_program->setUniform("u_color", color);
 			m_shader_program->setUniform("u_transform", transform);
@@ -139,50 +153,16 @@ class Level {
 	 * Drive the simulation forward
 	 */
 	void update() {
-		// Update the state of the grid based on user input
-
+		// Update pacman's movement direction based on user input
 		if (!m_input_queue->empty()) {
-			auto pacman_move_dir = m_input_queue->back();
-			auto pacman_dirty    = true;
+			auto input = m_input_queue->back();
 
-			// FIXME: Pacman can be found multiple times
-			// I could find pacman first and then only update that one entity
-			// Currently I keep track of whether or not I have updated pacman
-			// this frame
-			// FIXME: Pacman does not pickup stuff or get killed by ghosts
-			for (size_t i = 0; i < m_grid.size(); i++) {
-				switch (m_grid[i]) {
-					case EntityType::Pacman:
-						// Move right
-						if (pacman_move_dir == InputCode::D &&
-						    m_grid[i + 1] != EntityType::Wall && pacman_dirty) {
-							std::swap(m_grid[i], m_grid[i + 1]);
-							pacman_dirty = false;
-						}
-						// Move left
-						if (pacman_move_dir == InputCode::A &&
-						    m_grid[i - 1] != EntityType::Wall && pacman_dirty) {
-							std::swap(m_grid[i - 1], m_grid[i]);
-							pacman_dirty = false;
-						}
-						// Move up
-						if (pacman_move_dir == InputCode::W &&
-						    m_grid[i - m_width] != EntityType::Wall &&
-						    pacman_dirty) {
-							std::swap(m_grid[i - m_width], m_grid[i]);
-							pacman_dirty = false;
-						}
-						// Move down
-						if (pacman_move_dir == InputCode::S &&
-						    m_grid[i + m_width] != EntityType::Wall &&
-						    pacman_dirty) {
-							std::swap(m_grid[i + m_width], m_grid[i]);
-							pacman_dirty = false;
-						}
-						break;
-					case EntityType::Ghost: break;
-					default: continue; // Nothing to simulate
-				}
+			switch (input) {
+				case InputCode::W: m_pacman_move_dir = Direction::Up; break;
+				case InputCode::S: m_pacman_move_dir = Direction::Down; break;
+				case InputCode::A: m_pacman_move_dir = Direction::Left; break;
+				case InputCode::D: m_pacman_move_dir = Direction::Right; break;
+				default: break;
 			}
 		}
 	}
@@ -190,9 +170,64 @@ class Level {
 	/**
 	 * Update state at a regular interval.
 	 */
-	void fixedUpdate() {}
+	void fixedUpdate() {
+		// Find pacman and update his position
+		size_t pacman_pos;
+		for (size_t i = 0; i < m_grid.size(); i++) {
+			if (m_grid[i] == EntityType::Pacman) {
+				pacman_pos = i;
+			}
+		}
 
-	// FIXME: Fix randomness
+		// Move right
+		if (m_pacman_move_dir == Direction::Right) {
+			movePacman(pacman_pos, pacman_pos + 1);
+		}
+		// Move left
+		else if (m_pacman_move_dir == Direction::Left) {
+			movePacman(pacman_pos, pacman_pos - 1);
+		}
+		// Move up
+		else if (m_pacman_move_dir == Direction::Up) {
+			movePacman(pacman_pos, pacman_pos - m_width);
+		}
+		// Move down
+		else if (m_pacman_move_dir == Direction::Down) {
+			movePacman(pacman_pos, pacman_pos + m_width);
+		}
+	}
+
+	/**
+	 * Move pacman from old_pos to new_pos while respecting game rules.
+	 *
+	 * @param old_pos Pacman's old position
+	 * @param new_pos Pacman's new position
+	 */
+	void movePacman(const size_t old_pos, const size_t new_pos) {
+		if (m_grid[new_pos] != EntityType::Wall) {
+			if (m_grid[new_pos] == EntityType::Pellet)
+				pickupPellet();
+			else if (m_grid[new_pos] == EntityType::Ghost)
+				endGame();
+
+			m_grid[new_pos] = EntityType::Pacman;
+			m_grid[old_pos] = EntityType::Tunnel;
+		}
+	}
+
+	/**
+	 * Pickup one pellet.
+	 */
+	void pickupPellet() { m_pellet_count++; }
+
+	/**
+	 * End the game.
+	 */
+	void endGame() {
+		std::cout << "Game Over" << std::endl;
+		m_gameOver = true;
+	}
+
 	/**
 	 * Spawn ghosts into the level grid
 	 */
@@ -227,14 +262,26 @@ class Level {
 		m_shader_program->setUniform("u_projection", projection);
 	}
 
+	/**
+	 * Is the game over?
+	 *
+	 * @return true if the game is over
+	 */
+	bool gameOver() const { return m_gameOver; }
+
   private:
-	bool                                          m_gameOver = false;
-	int                                           m_width;
-	int                                           m_height;
+	bool      m_gameOver        = false;
+	int       m_pellet_count    = 0;
+	Direction m_pacman_move_dir = Direction::Right;
+
+	int m_width;
+	int m_height;
+
+	InputQueue m_input_queue;
+
 	std::vector<EntityType>                       m_grid;
 	std::unique_ptr<VertexBufferObject<Vertex2D>> m_quad;
 	std::unique_ptr<ShaderProgram>                m_shader_program;
-	InputQueue                                    m_input_queue;
 };
 
 int main() {
@@ -268,8 +315,8 @@ int main() {
 		level.draw();
 
 		window.swapBuffers();
-        auto dim = window.dimensions();
-        level.setDimensions(dim);
+		auto dim = window.dimensions();
+		level.setDimensions(dim);
 	}
 
 	return EXIT_SUCCESS;
