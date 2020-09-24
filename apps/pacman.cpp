@@ -172,15 +172,15 @@ class Level {
 							std::swap(m_grid[i - 1], m_grid[i]);
 							pacman_dirty = false;
 						}
-						// Move down
-						if (pacman_move_dir == InputCode::S &&
+						// Move up
+						if (pacman_move_dir == InputCode::W &&
 						    m_grid[i - m_width] != EntityType::Wall &&
 						    pacman_dirty) {
 							std::swap(m_grid[i - m_width], m_grid[i]);
 							pacman_dirty = false;
 						}
-						// Move up
-						if (pacman_move_dir == InputCode::W &&
+						// Move down
+						if (pacman_move_dir == InputCode::S &&
 						    m_grid[i + m_width] != EntityType::Wall &&
 						    pacman_dirty) {
 							std::swap(m_grid[i + m_width], m_grid[i]);
@@ -226,14 +226,12 @@ class Level {
 	}
 
 	// FIXME: Window should always show the entire grid
-	// NOTE: Currently scaling does not work properly
 	void setDimensions(const std::pair<int, int> dim) {
-		auto [w, h]     = dim;
-		auto aspect     = (float)w / (float)h;
-		auto invAspect  = (float)h / (float)w;
-		auto projection = glm::ortho(
-		    -aspect * m_width / 2.0f, aspect * m_width / 2.0f,
-		    -invAspect * m_height / 2.0f, invAspect * m_height / 2.0f);
+		auto [w, h] = dim;
+		auto aspect = (float)w / (float)h;
+		auto projection =
+		    glm::ortho(-aspect * m_width / 2.0f, aspect * m_width / 2.0f,
+		               m_height / 2.0f, -m_height / 2.0f);
 		m_shader_program->setUniform("u_projection", projection);
 	}
 
@@ -252,14 +250,13 @@ int main() {
 
 	auto level = Level("resources/levels/level0.txt", window.getInputQueue());
 
-	auto dim = window.dimensions();
-	level.setDimensions(dim);
-
 	while (!window.pollEvents()) {
 		level.update();
 		level.draw();
 
 		window.swapBuffers();
+        auto dim = window.dimensions();
+        level.setDimensions(dim);
 	}
 
 	return EXIT_SUCCESS;
