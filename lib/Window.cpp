@@ -43,15 +43,21 @@ Window::Window(const std::string &title, const uint32_t width,
 	auto callback = [input](GLFWwindow *window, int key, int scancode,
 	                        int action, int modes) mutable -> void {
 		if (action == GLFW_PRESS) {
-			switch (key) {
-				// TODO: More keys
-				case GLFW_KEY_ESCAPE:
-					glfwSetWindowShouldClose(window, GLFW_TRUE);
-					break;
-				case GLFW_KEY_W: input->push_back(InputCode::W); break;
-				case GLFW_KEY_S: input->push_back(InputCode::S); break;
-				case GLFW_KEY_A: input->push_back(InputCode::A); break;
-				case GLFW_KEY_D: input->push_back(InputCode::D); break;
+			if (key == GLFW_KEY_ESCAPE) {
+				glfwSetWindowShouldClose(window, GLFW_TRUE);
+			} else if (key == GLFW_KEY_F11) {
+				const auto monitor = glfwGetPrimaryMonitor();
+				const auto mode    = glfwGetVideoMode(monitor);
+				glfwSetWindowMonitor(window, monitor, 0, 0, mode->width,
+				                     mode->height, mode->refreshRate);
+			} else {
+				switch (key) {
+					// TODO: More keys
+					case GLFW_KEY_W: input->push_back(InputCode::W); break;
+					case GLFW_KEY_S: input->push_back(InputCode::S); break;
+					case GLFW_KEY_A: input->push_back(InputCode::A); break;
+					case GLFW_KEY_D: input->push_back(InputCode::D); break;
+				}
 			}
 		}
 	};
