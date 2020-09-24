@@ -21,8 +21,8 @@ int main() {
 	    Vertex2D{0.5f, 0.5f}};
 	std::vector<GLuint> indices = {0, 1, 2, 1, 2, 3};
 
-    auto program =
-        ShaderProgram({"shaders/square.vert", "shaders/square.frag"});
+	auto program = ShaderProgram(
+	    {"resources/shaders/square.vert", "resources/shaders/square.frag"});
 	auto vbo = VertexBufferObject(vertices, indices);
 
 	const auto start = steady_clock::now();

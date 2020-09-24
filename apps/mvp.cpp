@@ -14,7 +14,8 @@ int main() {
 
 	auto vbo = VertexBufferObject(vertices, indices);
 
-	auto program = ShaderProgram({"shaders/mvp.vert", "shaders/mvp.frag"});
+	auto program = ShaderProgram(
+	    {"resources/shaders/mvp.vert", "resources/shaders/mvp.frag"});
 	program.use();
 
 	// Create matrices
