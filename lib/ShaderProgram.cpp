@@ -147,6 +147,18 @@ void ShaderProgram::setUniform(const std::string &name, const glm::vec4 v) {
 	glUniform4f(m_uniforms.at(name).location, v.x, v.y, v.z, v.w);
 }
 
+void ShaderProgram::setUniform(const std::string &name, const glm::ivec2 v) {
+	glUniform2i(m_uniforms.at(name).location, v.x, v.y);
+}
+
+void ShaderProgram::setUniform(const std::string &name, const glm::ivec3 v) {
+	glUniform3i(m_uniforms.at(name).location, v.x, v.y, v.z);
+}
+
+void ShaderProgram::setUniform(const std::string &name, const glm::ivec4 v) {
+	glUniform4i(m_uniforms.at(name).location, v.x, v.y, v.z, v.w);
+}
+
 void ShaderProgram::setUniform(const std::string &name, const glm::mat4 v) {
 	glUniformMatrix4fv(m_uniforms.at(name).location, 1, GL_FALSE,
 	                   glm::value_ptr(v));

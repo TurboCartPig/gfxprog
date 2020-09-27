@@ -63,6 +63,12 @@ class ShaderProgram {
 
 	void setUniform(const std::string &name, const glm::vec4 v);
 
+	void setUniform(const std::string &name, const glm::ivec2 v);
+
+	void setUniform(const std::string &name, const glm::ivec3 v);
+
+	void setUniform(const std::string &name, const glm::ivec4 v);
+
 	void setUniform(const std::string &name, const glm::mat4 v);
 
 	GLuint getProgram() const { return m_program; }
