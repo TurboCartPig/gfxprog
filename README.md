@@ -4,7 +4,7 @@
 
 A series of labs completed in association with the course PROG2002 at NTNU.
 
-### How to build
+## How to build
 
 Configure:
 ```bash
@@ -28,14 +28,28 @@ cmake --build build/ --target docs
 
 To build the user must have the following libraries available for cmake to discover: GLFW3, GLEW, GLM, Catch2, ImGui, stb and native OpenGL headers.
 
+## Dependencies
+
+The only hard requirement when it comes to libraries is OpenGL. The rest will be downloaded automatically, if not found.
+
 ### Install dependencies using native package manager
 
 Fedora:
 ```bash
 sudo dnf in glfw-devel glew-devel glm-devel catch-devel mesa-{libGL,libEGL}-devel
 ```
+> ImGui is not currently available in mirrors on fedora and stbi-devel doesn't work, so they will be downloaded automatically
 
-> ImGui and stb are not currently available in mirrors on fedora, use vcpkg to obtain them.
+Ubuntu:
+```bash
+sudo apt install libgl-dev libglfw3-dev libglew-dev libglm-dev catch2
+```
+> Ubuntu instructions are yet to be tested
+
+Windows:
+- Be sure to have the C++ core features package in visual studio installed
+> Windows instructions are yet to be tested
+
 
 ### Using vcpkg
 
