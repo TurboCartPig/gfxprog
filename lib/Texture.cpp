@@ -6,7 +6,10 @@
 #include <glove/Texture.h>
 #include <stb_image.h>
 
-Texture::Texture(const std::string &path) {
+Texture::Texture(const std::string &path, GLuint type) {
+	// Vertical direction of images
+	stbi_set_flip_vertically_on_load(false);
+
 	// Load image from file
 	int  w, h, n;
 	auto data = stbi_load(path.c_str(), &w, &h, &n, 0);
@@ -39,8 +42,8 @@ Texture::Texture(const std::string &path) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexImage2D(GL_TEXTURE_2D, 0, file_format, w, h, 0, image_format,
-	             GL_UNSIGNED_BYTE, data);
+	glTexImage2D(type, 0, file_format, w, h, 0, image_format, GL_UNSIGNED_BYTE,
+	             data);
 
 	stbi_image_free(data);
 }

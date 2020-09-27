@@ -23,7 +23,7 @@ class Texture {
 	 *
 	 * @param path Path to texture file to load
 	 */
-	explicit Texture(const std::string &path);
+	explicit Texture(const std::string &path, GLuint type = GL_TEXTURE_2D);
 
 	Texture(const Texture &other) = delete;
 
