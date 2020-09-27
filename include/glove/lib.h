@@ -17,6 +17,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 // Reexport internal headers
+#include <glove/AnimatedSpriteSheet.h>
 #include <glove/ShaderProgram.h>
 #include <glove/Texture.h>
 #include <glove/VertexBufferObject.h>
