@@ -7,7 +7,9 @@
 
 #include <algorithm>
 #include <chrono>
+#include <cmath>
 #include <fstream>
+#include <functional>
 #include <glove/lib.h>
 #include <iostream>
 #include <memory>
