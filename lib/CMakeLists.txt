@@ -1,4 +1,4 @@
-add_library(lib lib.cpp utility.cpp ShaderProgram.cpp Texture.cpp VertexBufferObject.cpp Window.cpp AnimatedSpriteSheet.cpp)
+add_library(lib lib.cpp utility.cpp ShaderProgram.cpp Texture.cpp VertexBufferObject.cpp Window.cpp AnimatedSpriteSheet.cpp ../include/glove/lib.h ../include/glove/utility.h ../include/glove/ShaderProgram.h ../include/glove/Texture.h ../include/glove/VertexBufferObject.h ../include/glove/Window.h ../include/glove/AnimatedSpriteSheet.h)
 target_compile_options(lib PRIVATE ${COMPILER_WARNINGS_AND_ERRORS})
 target_compile_definitions(lib PUBLIC _USE_MATH_DEFINES)
 target_include_directories(lib PUBLIC ../include)
