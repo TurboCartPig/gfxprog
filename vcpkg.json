@@ -9,7 +9,10 @@
     "opengl",
     "glew",
     "glfw3",
-    "imgui",
-    "catch2"
+    "catch2",
+    {
+      "name": "imgui",
+      "features": [ "glfw-binding", "opengl3-glew-binding" ]
+    }
   ]
 }
