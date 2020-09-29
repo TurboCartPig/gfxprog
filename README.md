@@ -55,6 +55,8 @@ Windows:
 
 [Vcpkg](https://github.com/Microsoft/vcpkg) is a ports like package manager for libraries that is the closest to a sane way of obtaining dependencies on Windows.
 
+This project uses a vcpkg manifest to specify it's dependencies, Meaning that the dependencies will be automatically downloaded and built on cmake configuration. This is a rather new feature of vcpkg so make sure you use a new build.
+
 Install vcpkg:
 ```bash
 git clone https://github.com/Microsoft/vcpkg.git
@@ -67,9 +69,3 @@ The last command above gives you a cmake variable. Pass it to cmake as such:
 ```bash
 cmake -G Ninja -S . -B build -DCMAKE_TOOLCHAIN_FILE="C:\path\to\vcpkg.cmake"
 ```
-
-Install dependencies:
-```bash
-.\vcpkg install glfw3 glm glew catch imgui 'imgui[glfw-binding]' stb opengl
-```
-
