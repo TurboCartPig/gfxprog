@@ -1,7 +1,7 @@
 find_package(Catch2)
 
 if (NOT Catch2_FOUND)
-    message("-- Enabling tests")
+    message(STATUS "Enabling tests")
 
     add_executable(tests test-lib.cpp)
     target_compile_options(tests PRIVATE ${COMPILER_WARNINGS_AND_ERRORS})

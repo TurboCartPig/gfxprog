@@ -50,7 +50,7 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     # Enable docs
     find_package(Doxygen)
     if (Doxygen_FOUND)
-        message("-- Enabling docs")
+        message(STATUS "Enabling docs")
         add_subdirectory(docs)
     endif ()
 endif ()
