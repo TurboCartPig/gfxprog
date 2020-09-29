@@ -1,0 +1,14 @@
+{
+  "name": "gfxprog",
+  "version": "0.1.0",
+  "homepage": "https://github.com/TurboCartPig/gfxprog",
+  "description": "Labs and assignments from PROG2002 Graphics Programming at NTNU",
+  "dependencies": [
+    "stb",
+    "glm",
+    "OpenGL",
+    "glew",
+    "glfw3",
+    "imgui"
+  ]
+}
