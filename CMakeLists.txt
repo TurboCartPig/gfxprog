@@ -142,5 +142,8 @@ if (NOT glm_FOUND)
     FetchContent_MakeAvailable(glm)
 endif ()
 
+# Subdirectories defining actual targets
+##############################################################################
+
 add_subdirectory(lib)
 add_subdirectory(apps)
