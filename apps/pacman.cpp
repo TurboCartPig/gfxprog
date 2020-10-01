@@ -204,22 +204,20 @@ class Level {
 			auto pos = indexToCoord(i);
 			switch (grid[i]) {
 				case EntityType::Wall:
-					m_entities.push_back(Wall(pos, quad));
+					m_entities.emplace_back(Wall(pos, quad));
 					break;
 				case EntityType::Tunnel:
 					m_total_pellets++;
-					m_entities.push_back(Pellet(pos, circle));
+					m_entities.emplace_back(Pellet(pos, circle));
 					break;
 				case EntityType::Pacman:
-					m_entities.push_back(
-					    Pacman(pos, quad,
+					m_entities.emplace_back(Pacman(pos, quad,
 					           std::make_unique<AnimatedSpriteSheet>(
 					               milliseconds(50), m_spritesheet),
 					           std::move(pacman_animations)));
 					break;
 				case EntityType::Ghost:
-					m_entities.push_back(
-					    Ghost(pos, quad,
+					m_entities.emplace_back(Ghost(pos, quad,
 					          std::make_unique<AnimatedSpriteSheet>(
 					              milliseconds(100), m_spritesheet),
 					          ghost_animations));
