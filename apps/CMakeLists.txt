@@ -36,7 +36,7 @@ target_precompile_headers(texture REUSE_FROM lib)
 # Assignments
 ###############################################################################
 
-add_executable(pacman pacman.cpp)
+add_executable(pacman pacman.cpp Entities.cpp)
 add_dependencies(pacman copy-resources)
 target_compile_options(pacman PRIVATE ${COMPILER_WARNINGS_AND_ERROR})
 target_link_libraries(pacman PRIVATE lib)
