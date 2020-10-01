@@ -84,6 +84,7 @@ class AnimatedSpriteSheet {
 	 * @return Uniform data to be sent.
 	 */
 	glm::ivec4 getUniform() const {
+		assert(!m_animation.m_key_frames.empty());
 		return m_animation.m_key_frames[m_current_key_frame];
 	}
 
