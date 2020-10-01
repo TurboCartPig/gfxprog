@@ -88,6 +88,15 @@ class AnimatedSpriteSheet {
 		return m_animation.m_key_frames[m_current_key_frame];
 	}
 
+	/**
+	 * Get a reference to the internally used texture that contains the sprite
+	 * sheet.
+	 * @return Sprite sheet texture.
+	 */
+	const std::shared_ptr<Texture> &getTexture() const {
+		return m_sprite_sheet;
+	}
+
   private:
 	bool                          m_paused            = false;
 	bool                          m_looped            = true;
