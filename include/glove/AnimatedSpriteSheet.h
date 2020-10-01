@@ -17,7 +17,6 @@ class SpriteSheetAnimation {
   public:
 	/**
 	 * Add another key frame to the animation.
-	 *
 	 * @param keyFrame
 	 */
 	void pushKeyFrame(glm::ivec4 keyFrame) { m_key_frames.push_back(keyFrame); }
@@ -52,35 +51,30 @@ class AnimatedSpriteSheet {
 
 	/**
 	 * Drive to animation forwards and loop if necessary.
-	 *
 	 * @param dt
 	 */
 	void update(std::chrono::duration<double> dt);
 
 	/**
 	 * Play a new animation, cancelling the current one.
-	 *
 	 * @param animation The new animation to play.
 	 */
 	void playAnimation(SpriteSheetAnimation animation);
 
 	/**
 	 * Play or pause the animation based on "shouldPlay".
-	 *
 	 * @param shouldPlay Should the animation play?
 	 */
 	void play(bool shouldPlay = true) { m_paused = !shouldPlay; }
 
 	/**
 	 * Set whether the animation should loop.
-	 *
 	 * @param shouldLoop Should the animation loop?
 	 */
 	void loop(bool shouldLoop = true) { m_looped = shouldLoop; }
 
 	/**
 	 * Get the uniform data to send to the shaders.
-	 *
 	 * @return Uniform data to be sent.
 	 */
 	glm::ivec4 getUniform() const {
