@@ -47,7 +47,7 @@ class AnimatedSpriteSheet {
 	 * @param spritesheet Texture of type "GL_TEXTURE_RECTANGLE" containing all
 	 * the sprites involved in the animation
 	 */
-	AnimatedSpriteSheet(milliseconds frameTime, SpriteSheetAnimation animation,
+	AnimatedSpriteSheet(milliseconds             frameTime,
 	                    std::shared_ptr<Texture> spritesheet);
 
 	/**

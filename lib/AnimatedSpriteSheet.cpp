@@ -1,10 +1,8 @@
 #include <glove/AnimatedSpriteSheet.h>
 
 AnimatedSpriteSheet::AnimatedSpriteSheet(milliseconds             frameTime,
-                                         SpriteSheetAnimation     animation,
                                          std::shared_ptr<Texture> spritesheet)
-    : m_frame_time(frameTime), m_animation(std::move(animation)),
-      m_sprite_sheet(std::move(spritesheet)) {}
+    : m_frame_time(frameTime), m_sprite_sheet(std::move(spritesheet)) {}
 
 void AnimatedSpriteSheet::update(std::chrono::duration<double> dt) {
 	if (m_paused)
