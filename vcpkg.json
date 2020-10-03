@@ -12,7 +12,10 @@
     "catch2",
     {
       "name": "imgui",
-      "features": [ "glfw-binding", "opengl3-glew-binding" ]
+      "features": [
+        "glfw-binding",
+        "opengl3-glew-binding"
+      ]
     }
   ]
 }
