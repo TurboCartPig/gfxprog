@@ -1,20 +1,19 @@
 #include "Entities.h"
 
 template <typename T>
-bool checkCollision(
+static bool checkCollision(
     glm::vec2                                                     position,
     const std::vector<std::variant<Wall, Pellet, Ghost, Pacman>> &entities,
-    float dist = 0.95f, std::function<void(const T &entity)> f = nullptr) {
+    float dist = 0.95f, size_t *index = nullptr) {
 	bool collision = false;
 
-	for (const auto &entity : entities) {
-		if (std::holds_alternative<T>(entity)) {
-			auto &t = std::get<T>(entity);
+	for (size_t i = 0; i < entities.size(); i++) {
+		if (std::holds_alternative<T>(entities[i])) {
+			auto &t = std::get<T>(entities[i]);
 			if (glm::length(t.getPosition() - position) <= dist) {
 				collision = true;
-				if (f != nullptr) {
-					f(t);
-				}
+				if (index)
+					*index = i;
 			}
 		}
 	}
@@ -45,8 +44,8 @@ void Pacman::onInput(
 }
 
 void Pacman::update(
-    Duration                                                      dt,
-    const std::vector<std::variant<Wall, Pellet, Ghost, Pacman>> &entities) {
+    Duration                                                dt,
+    std::vector<std::variant<Wall, Pellet, Ghost, Pacman>> &entities) {
 	glm::vec2 delta;
 
 	switch (m_direction) {
@@ -58,12 +57,17 @@ void Pacman::update(
 
 	auto position = m_position + dt.count() * delta;
 
-	bool collision    = checkCollision<Wall>(position, entities);
-	bool pellet_eaten = checkCollision<Pellet>(
-	    position, entities, 0.25f, [](const Pellet &p) { p.pickup(); });
-	bool hit_ghost = checkCollision<Ghost>(position, entities, 0.5f);
+	bool collision = checkCollision<Wall>(position, entities);
 
-	assert(!hit_ghost);
+	size_t index;
+	bool   pellet_eaten =
+	    checkCollision<Pellet>(position, entities, 0.25f, &index);
+	if (pellet_eaten)
+		std::get<Pellet>(entities[index]).deactivate();
+
+	bool hit_ghost = checkCollision<Ghost>(position, entities, 0.5f);
+	if (hit_ghost)
+		this->deactivate();
 
 	if (pellet_eaten)
 		m_pellets_eaten++;
@@ -82,11 +86,9 @@ void Pacman::update(
 	m_spritesheet->update(dt);
 }
 
-void Pacman::draw(ShaderProgram &program) const {
-	auto transform =
-	    glm::translate(glm::mat4(1.0f), glm::vec3(m_position, 0.0f));
-	program.setUniform("u_transform", transform);
-	program.setUniform("u_color", glm::vec4(0.0f));
-	program.setUniform("u_key_frame", m_spritesheet->getUniform());
-	SpriteEntity::draw(program);
+void Ghost::update(
+    Duration                                       dt,
+    const std::vector<std::variant<class Wall, class Pellet, class Ghost,
+                                   class Pacman>> &entities) {
+	m_spritesheet->update(dt);
 }

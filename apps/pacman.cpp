@@ -21,15 +21,7 @@ using namespace std::string_literals;
 using std::chrono::milliseconds;
 using std::chrono::steady_clock;
 
-const size_t                   NUM_GHOSTS = 4;
-const std::vector<Vertex2DTex> vertices   = {
-    Vertex2DTex{0.0f, 0.0f, 1.0f, 1.0f}, Vertex2DTex{0.0f, 1.0f, 1.0f, 0.0f},
-    Vertex2DTex{1.0f, 0.0f, 0.0f, 1.0f}, Vertex2DTex{1.0f, 1.0f, 0.0f, 0.0f}};
-// FIXME: Actually make this a circle
-const std::vector<Vertex2DTex> circle_vertices = {
-    Vertex2DTex{-0.5f, -0.5f, 1.0f, 1.0f}, Vertex2DTex{-0.5f, 0.5f, 1.0f, 0.0f},
-    Vertex2DTex{0.5f, -0.5f, 0.0f, 1.0f}, Vertex2DTex{0.5f, 0.5f, 0.0f, 0.0f}};
-const std::vector<GLuint> indices = {0, 1, 2, 1, 2, 3};
+const size_t NUM_GHOSTS = 4;
 
 std::function<float()> rnd; ///< Lazily bound function to get random numbers
 
@@ -141,12 +133,6 @@ class Level {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_BLEND);
 
-		// Create vertex buffer
-		auto quad = std::make_shared<VertexBufferObject<Vertex2DTex>>(vertices,
-		                                                              indices);
-		auto circle = std::make_shared<VertexBufferObject<Vertex2DTex>>(
-		    circle_vertices, indices);
-
 		// Create shader program
 		const auto paths = {"resources/shaders/pacman.vert"s,
 		                    "resources/shaders/pacman.frag"s};
@@ -161,6 +147,11 @@ class Level {
 		auto pacman_animations = create_pacman_animations();
 		auto ghost_animations  = create_ghost_animations();
 
+		SpriteSheetAnimation default_pacman_animation(
+		    pacman_animations->at(Direction::Right));
+		SpriteSheetAnimation default_ghost_animation(
+		    ghost_animations->at(Direction::Right));
+
 		// Load level file from path
 		std::ifstream file(path);
 		assert(file.good());
@@ -172,7 +163,7 @@ class Level {
 		file >> m_height;
 
 		std::vector<EntityType> grid;
-		grid.resize(m_width * m_height);
+		grid.resize(m_width * (m_height + 1));
 
 		// Load level file into grid
 		for (auto &cell : grid) {
@@ -194,30 +185,27 @@ class Level {
 
 		m_total_pellets = 0;
 
-		SpriteSheetAnimation default_pacman_animation(
-		    pacman_animations->at(Direction::Right));
-		SpriteSheetAnimation default_ghost_animation(
-		    ghost_animations->at(Direction::Right));
-
 		// Spawn in pacman, walls and pellets based on grid
 		for (size_t i = 0; i < grid.size(); ++i) {
 			auto pos = indexToCoord(i);
 			switch (grid[i]) {
 				case EntityType::Wall:
-					m_entities.emplace_back(Wall(pos, quad));
+					m_entities.emplace_back(Wall(pos));
 					break;
 				case EntityType::Tunnel:
 					m_total_pellets++;
-					m_entities.emplace_back(Pellet(pos, circle));
+					m_entities.emplace_back(Pellet(pos));
 					break;
 				case EntityType::Pacman:
-					m_entities.emplace_back(Pacman(pos, quad,
+					m_entities.emplace_back(
+					    Pacman(pos,
 					           std::make_unique<AnimatedSpriteSheet>(
 					               milliseconds(50), m_spritesheet),
 					           std::move(pacman_animations)));
 					break;
 				case EntityType::Ghost:
-					m_entities.emplace_back(Ghost(pos, quad,
+					m_entities.emplace_back(
+					    Ghost(pos,
 					          std::make_unique<AnimatedSpriteSheet>(
 					              milliseconds(100), m_spritesheet),
 					          ghost_animations));
@@ -237,17 +225,52 @@ class Level {
 		m_shader_program->setUniform("u_view", view);
 		m_shader_program->setUniform("u_projection", projection);
 		m_shader_program->setUniform("u_sprite_sheet", sprite_sheet_location);
+
+		m_vbo = std::make_unique<VertexBuffer<Vertex2DTexRgbav>>(
+		    m_entities.size(), true, GL_DYNAMIC_DRAW);
 	}
 
 	/**
 	 * Draw the entities of the level grid
 	 */
 	void draw() {
-		auto &program = m_shader_program;
-		auto  draw = [&program](const auto &entity) { entity.draw(*program); };
+		std::vector<Vertex2DTexRgbav> ver;
+		std::vector<uint32_t>         ind;
+
+		// Generate vertex contents
+		auto draw = [](const auto &entity) { return entity.getAttributes(); };
 		for (const auto &entity : m_entities) {
-			std::visit(draw, entity);
+			auto      attrib = std::visit(draw, entity);
+			glm::vec4 rgba;
+			int       variant = attrib.rgba.index();
+			if (variant == 0) {
+				rgba = std::get<glm::vec4>(attrib.rgba);
+			} else {
+				rgba = std::get<glm::ivec4>(attrib.rgba);
+			}
+			auto offset = ver.size();
+			ver.push_back(
+			    {attrib.scale * glm::vec2(0.0f, 0.0f) + attrib.position,
+			     glm::vec2(1.0f, 1.0f), rgba, variant});
+			ver.push_back(
+			    {attrib.scale * glm::vec2(0.0f, 1.0f) + attrib.position,
+			     glm::vec2(1.0f, 0.0f), rgba, variant});
+			ver.push_back(
+			    {attrib.scale * glm::vec2(1.0f, 0.0f) + attrib.position,
+			     glm::vec2(0.0f, 1.0f), rgba, variant});
+			ver.push_back(
+			    {attrib.scale * glm::vec2(1.0f, 1.0f) + attrib.position,
+			     glm::vec2(0.0f, 0.0f), rgba, variant});
+			ind.push_back(offset + 0);
+			ind.push_back(offset + 1);
+			ind.push_back(offset + 2);
+			ind.push_back(offset + 1);
+			ind.push_back(offset + 2);
+			ind.push_back(offset + 3);
 		}
+
+		m_vbo->uploadWhole(ver, ind);
+		m_vbo->draw();
 	}
 
 	/**
@@ -269,18 +292,6 @@ class Level {
 
 		// Update all entities
 		for (auto &entity : m_entities) {
-			//			std::visit(
-			//			    [dt, &entities](auto &entity) {
-			//				    using T = std::decay_t<decltype(entity)>();
-			//
-			//				    if constexpr (std::is_same_v<T, Pacman>) {
-			//					    entity.update(dt, entities);
-			//					    assert(false);
-			//				    } else if constexpr (std::is_same_v<T, Ghost>) {
-			//					    entity.update(dt, entities);
-			//				    }
-			//			    },
-			//			    entity);
 			if (std::holds_alternative<Pacman>(entity)) {
 				auto &pacman = std::get<Pacman>(entity);
 				pacman.update(dt, entities);
@@ -289,16 +300,25 @@ class Level {
 				ghost.update(dt, entities);
 			}
 		}
+
+		// TODO: Find a more robust way to delete entities
+		for (auto i = m_entities.end() - 1; i != m_entities.begin(); i--) {
+			auto active = std::visit(
+			    [](const auto &entity) { return entity.active(); }, *i);
+			if (!active) {
+				m_entities.erase(i);
+			}
+		}
 	}
 
-	glm::vec2 indexToCoord(int index) {
+	glm::vec2 indexToCoord(int index) const {
 		auto x = index % m_width;
 		auto y = m_height - index / m_width;
 
 		return glm::vec2(x, y);
 	}
 
-	int coordToIndex(std::pair<int, int> coord) {
+	int coordToIndex(std::pair<int, int> coord) const {
 		auto [x, y] = coord;
 
 		int iy = y * m_width;
@@ -328,14 +348,13 @@ class Level {
 	/**
 	 * Set the dimensions and aspect ratio of the orthographic camera
 	 *
-	 * FIXME: Window should always show the entire grid
-	 *
 	 * @param dim Window/Framebuffer dimensions
 	 */
 	void setDimensions(const std::pair<int, int> dim) {
-		auto [w, h]     = dim;
-		auto aspect     = (float)w / (float)h;
-		auto projection = glm::ortho(0, m_width, 0, m_height);
+		auto [w, h]  = dim;
+		float aspect = (float)w / (float)h;
+		auto  projection =
+		    glm::ortho(0.0f, aspect * m_width, 0.0f, (float)m_height);
 		m_shader_program->setUniform("u_projection", projection);
 	}
 
@@ -359,6 +378,7 @@ class Level {
 	std::vector<std::variant<Wall, Pellet, Ghost, Pacman>> m_entities;
 	std::unique_ptr<ShaderProgram>                         m_shader_program;
 	std::shared_ptr<Texture>                               m_spritesheet;
+	std::unique_ptr<VertexBuffer<Vertex2DTexRgbav>>        m_vbo;
 };
 
 int main() {
@@ -388,7 +408,7 @@ int main() {
 		}
 
 		level.draw();
-
+		level.setDimensions(window.dimensions());
 		window.swapBuffers();
 	}
 
