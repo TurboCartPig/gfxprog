@@ -9,7 +9,7 @@ Language: Cpp
 AlignConsecutiveAssignments: true
 AlignConsecutiveDeclarations: true
 AlignConsecutiveMacros: true
-AlignOperands: AlignAfterOperator
+AlignOperands: true
 AlignTrailingComments: true
 AllowShortCaseLabelsOnASingleLine: true
 AllowShortIfStatementsOnASingleLine: Never
