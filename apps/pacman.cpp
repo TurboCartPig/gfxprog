@@ -302,11 +302,12 @@ class Level {
 		}
 
 		// TODO: Find a more robust way to delete entities
-		for (auto i = m_entities.end() - 1; i != m_entities.begin(); i--) {
+		for (auto i = m_entities.size() - 1; i != 0; i--) {
 			auto active = std::visit(
-			    [](const auto &entity) { return entity.active(); }, *i);
+			    [](const auto &entity) { return entity.active(); }, m_entities[i]);
 			if (!active) {
-				m_entities.erase(i);
+				std::swap(m_entities[i], m_entities[m_entities.size() - 1]);
+				m_entities.pop_back();
 			}
 		}
 	}
