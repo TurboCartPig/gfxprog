@@ -25,14 +25,6 @@ set(COMPILER_WARNINGS_AND_ERRORS
         $<$<CXX_COMPILER_ID:Clang,AppleClang>:-Wglobal-constructors>)
 
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-    # Set global preferences
-    set(CMAKE_CXX_STANDARD 17)
-    set(CMAKE_CXX_STANDARD_REQUIRED ON)
-    set(CMAKE_CXX_EXTENSIONS OFF)
-
-    # Enable LTO globally
-    set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
-
     # Setup compile_commands for clangd
     # TODO: This is a hack and I should find a better way to do this
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
