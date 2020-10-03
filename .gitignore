@@ -549,3 +549,9 @@ MigrationBackup/
 
 # Renderdoc config
 *.cap
+
+# Clangd index
+.clangd/
+
+# Visual Studio Code Cmake build dir
+build/
