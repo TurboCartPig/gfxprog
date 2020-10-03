@@ -1,29 +1,22 @@
 #pragma once
 
 struct Vertex2D {
-	float x, y;
-};
-
-struct Vertex3D {
-	float x, y, z;
+	glm::vec2 pos; ///< Position
 };
 
 struct Vertex2DRgb {
-	float x, y;
-	float r, g, b;
-};
-
-struct Vertex3DRgb {
-	float x, y, z;
-	float r, g, b;
+	glm::vec2 pos;   ///< Position
+	glm::vec3 color; ///< RGB Color
 };
 
 struct Vertex2DTex {
-	float x, y;
-	float u, v;
+	glm::vec2 pos; ///< Position
+	glm::vec2 uv;  ///< Normalized texture coordinates
 };
 
-struct Vertex3DTex {
-	float x, y, z;
-	float u, v;
+struct Vertex2DTexRgbav {
+	glm::vec2 pos;     ///< Position
+	glm::vec2 uv;      ///< Normalized texture coordinates
+	glm::vec4 rgba;    ///< rgba OR xyzw
+	int       variant; ///< Is rgba or xyzw
 };

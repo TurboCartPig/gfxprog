@@ -11,15 +11,16 @@
 int main() {
 	auto window = Window("Square", 640, 480);
 
-	std::vector<Vertex2DTex> vertices = {Vertex2DTex{-0.5f, -0.5f, 1.0f, 1.0f},
-	                                     Vertex2DTex{-0.5f, 0.5f, 1.0f, 0.0f},
-	                                     Vertex2DTex{0.5f, -0.5f, 0.0f, 1.0f},
-	                                     Vertex2DTex{0.5f, 0.5f, 0.0f, 0.0f}};
-	std::vector<GLuint>      indices  = {0, 1, 2, 1, 2, 3};
+	std::vector<Vertex2DTex> vertices = {
+	    Vertex2DTex{glm::vec2(-0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
+	    Vertex2DTex{glm::vec2(-0.5f, 0.5f), glm::vec2(1.0f, 0.0f)},
+	    Vertex2DTex{glm::vec2(0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
+	    Vertex2DTex{glm::vec2(0.5f, 0.5f), glm::vec2(0.0f, 0.0f)}};
+	std::vector<GLuint> indices = {0, 1, 2, 1, 2, 3};
 
 	auto program = ShaderProgram(
 	    {"resources/shaders/texture.vert", "resources/shaders/texture.frag"});
-	auto vbo = VertexBufferObject(vertices, indices);
+	auto vbo = VertexBuffer(vertices, indices);
 
 	// Enable blending for transparency
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

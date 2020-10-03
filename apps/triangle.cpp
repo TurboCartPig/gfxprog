@@ -69,9 +69,9 @@ int main() {
 
 	// 2. Vertex Buffer Object
 	std::array<Vertex2DRgb, 3> content = {
-	    Vertex2DRgb{-0.6f, -0.4f, 0.0f, 1.0f, 0.0f},
-	    Vertex2DRgb{0.6f, -0.4f, 0.0f, 0.0f, 1.0f},
-	    Vertex2DRgb{0.0f, 0.6f, 1.0f, 0.0f, 0.0f}};
+	    Vertex2DRgb{glm::vec2(-0.6f, -0.4f), glm::vec3(0.0f, 1.0f, 0.0f)},
+	    Vertex2DRgb{glm::vec2(0.6f, -0.4f), glm::vec3(0.0f, 0.0f, 1.0f)},
+	    Vertex2DRgb{glm::vec2(0.0f, 0.6f), glm::vec3(1.0f, 0.0f, 0.0f)}};
 
 	GLuint vbo;
 	glGenBuffers(1, &vbo);
@@ -80,9 +80,11 @@ int main() {
 	             content.data(), GL_STATIC_DRAW);
 
 	// 3. Attributes
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2DRgb), 0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex2DRgb),
-	                      (void *)(sizeof(float) * 2));
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2DRgb),
+	                      nullptr);
+	glVertexAttribPointer(
+	    1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex2DRgb),
+	    reinterpret_cast<const void *>(offsetof(Vertex2DRgb, color)));
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 

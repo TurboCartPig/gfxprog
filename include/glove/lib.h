@@ -20,7 +20,7 @@
 #include <glove/AnimatedSpriteSheet.h>
 #include <glove/ShaderProgram.h>
 #include <glove/Texture.h>
-#include <glove/VertexBufferObject.h>
+#include <glove/VertexBuffer.h>
 #include <glove/VertexFormats.h>
 #include <glove/Window.h>
 #include <glove/utility.h>

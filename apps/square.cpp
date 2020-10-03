@@ -1,5 +1,6 @@
 /**
- * Draw a pulsing square with OpenGL and the utility library I wrote called glove.
+ * Draw a pulsing square with OpenGL and the utility library I wrote called
+ * glove.
  *
  * @author Dennis Kristiansen, NTNU
  * @file square.cpp
@@ -16,13 +17,13 @@ int main() {
 	auto window = Window("Square", 640, 480);
 
 	std::vector<Vertex2D> vertices = {
-	    Vertex2D{-0.5f, -0.5f}, Vertex2D{-0.5f, 0.5f}, Vertex2D{0.5f, -0.5f},
-	    Vertex2D{0.5f, 0.5f}};
+	    Vertex2D{glm::vec2(-0.5f, -0.5f)}, Vertex2D{glm::vec2(-0.5f, 0.5f)},
+	    Vertex2D{glm::vec2(0.5f, -0.5f)}, Vertex2D{glm::vec2(0.5f, 0.5f)}};
 	std::vector<GLuint> indices = {0, 1, 2, 1, 2, 3};
 
 	auto program = ShaderProgram(
 	    {"resources/shaders/square.vert", "resources/shaders/square.frag"});
-	auto vbo = VertexBufferObject(vertices, indices);
+	auto vbo = VertexBuffer(vertices, indices);
 
 	const auto start = steady_clock::now();
 

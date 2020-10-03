@@ -8,11 +8,11 @@ int main() {
 	auto window = Window("MVP", 640, 480);
 
 	std::vector<Vertex2D> vertices = {
-	    Vertex2D{-0.5f, -0.5f}, Vertex2D{-0.5f, 0.5f}, Vertex2D{0.5f, -0.5f},
-	    Vertex2D{0.5f, 0.5f}};
+	    Vertex2D{glm::vec2(-0.5f, -0.5f)}, Vertex2D{glm::vec2(-0.5f, 0.5f)},
+	    Vertex2D{glm::vec2(0.5f, -0.5f)}, Vertex2D{glm::vec2(0.5f, 0.5f)}};
 	std::vector<GLuint> indices = {0, 1, 2, 1, 2, 3};
 
-	auto vbo = VertexBufferObject(vertices, indices);
+	auto vbo = VertexBuffer(vertices, indices);
 
 	auto program = ShaderProgram(
 	    {"resources/shaders/mvp.vert", "resources/shaders/mvp.frag"});
