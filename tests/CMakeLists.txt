@@ -2,9 +2,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-find_package(Catch2)
+find_package(Catch2 2.12 QUIET)
 
-if (NOT Catch2_FOUND)
+if (Catch2_FOUND)
     message(STATUS "Enabling tests")
 
     add_executable(tests test-lib.cpp)
