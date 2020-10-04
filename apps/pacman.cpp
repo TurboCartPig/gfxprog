@@ -163,7 +163,7 @@ class Level {
 		file >> m_height;
 
 		std::vector<EntityType> grid;
-		grid.resize(m_width * (m_height + 1));
+		grid.resize(m_width * (m_height + 1)); // FIXME: Why + 1?
 
 		// Load level file into grid
 		for (auto &cell : grid) {
@@ -183,11 +183,11 @@ class Level {
 			}
 		}
 
-		m_total_pellets = 0;
-
 		// Spawn in pacman, walls and pellets based on grid
 		for (size_t i = 0; i < grid.size(); ++i) {
-			auto pos = indexToCoord(i);
+			auto x   = i % m_width;
+			auto y   = m_height - i / m_width;
+			auto pos = glm::vec2(x, y);
 			switch (grid[i]) {
 				case EntityType::Wall:
 					m_entities.emplace_back(Wall(pos));
@@ -210,6 +210,7 @@ class Level {
 					              milliseconds(100), m_spritesheet),
 					          ghost_animations));
 					break;
+				default: continue;
 			}
 		}
 
@@ -227,7 +228,7 @@ class Level {
 		m_shader_program->setUniform("u_sprite_sheet", sprite_sheet_location);
 
 		m_vbo = std::make_unique<VertexBuffer<Vertex2DTexRgbav>>(
-		    m_entities.size(), true, GL_DYNAMIC_DRAW);
+		    m_entities.size(), true, GL_STREAM_DRAW);
 	}
 
 	/**
@@ -316,32 +317,6 @@ class Level {
 		}
 	}
 
-	glm::vec2 indexToCoord(int index) const {
-		auto x = index % m_width;
-		auto y = m_height - index / m_width;
-
-		return glm::vec2(x, y);
-	}
-
-	int coordToIndex(std::pair<int, int> coord) const {
-		auto [x, y] = coord;
-
-		int iy = y * m_width;
-		int ix = x;
-
-		return ix + iy;
-	}
-
-	/**
-	 * Pickup one pellet.
-	 */
-	void pickupPellet() {
-		if (++m_pellet_count >= m_total_pellets) {
-			std::cout << "Game won!" << std::endl;
-			m_gameWon = true;
-		}
-	}
-
 	/**
 	 * End the game.
 	 */
@@ -360,7 +335,6 @@ class Level {
 
 	/**
 	 * Set the dimensions and aspect ratio of the orthographic camera
-	 *
 	 * @param dim Window/Framebuffer dimensions
 	 */
 	void setDimensions(const std::pair<int, int> dim) {
@@ -381,8 +355,8 @@ class Level {
 	bool m_isGameOver    = false;
 	int  m_total_pellets = 0;
 
-	int m_width;
-	int m_height;
+	int m_width  = 0;
+	int m_height = 0;
 
 	InputQueue m_input_queue;
 
