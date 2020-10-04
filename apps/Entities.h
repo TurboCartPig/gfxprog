@@ -134,7 +134,7 @@ class Ghost : public SpriteEntity {
  */
 class Pellet : public SpriteEntity {
   public:
-	Pellet(glm::vec2 pos) : SpriteEntity(pos) {}
+	explicit Pellet(glm::vec2 pos) : SpriteEntity(pos) {}
 
 	Attributes getAttributes() const override {
 		return make_attributes(m_position, glm::vec4(1.0f), 0.25f);
@@ -146,7 +146,7 @@ class Pellet : public SpriteEntity {
  */
 class Wall : public SpriteEntity {
   public:
-	Wall(glm::vec2 pos) : SpriteEntity(pos) {}
+	explicit Wall(glm::vec2 pos) : SpriteEntity(pos) {}
 
 	Attributes getAttributes() const override {
 		return make_attributes(m_position, m_color);
