@@ -6,7 +6,7 @@ layout(location = 3) flat in uint fi_variant;
 
 out vec4 fo_color;
 
-uniform sampler2DRect u_sprite_sheet;
+layout(location = 0) uniform sampler2DRect u_sprite_sheet;
 
 void main() {
     if (fi_variant != 0) { // variant somehow gets fucked during vertex -> fragment transfer. Should be 1, is 1065353216
