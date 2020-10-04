@@ -288,23 +288,27 @@ class Level {
 			}
 		}
 
-		auto &entities = m_entities;
-
 		// Update all entities
 		for (auto &entity : m_entities) {
-			if (std::holds_alternative<Pacman>(entity)) {
+			if (std::holds_alternative<Pacman>(entity)) { // Update pacman
 				auto &pacman = std::get<Pacman>(entity);
-				pacman.update(dt, entities);
-			} else if (std::holds_alternative<Ghost>(entity)) {
+				pacman.update(dt, m_entities);
+				if (!pacman.active()) {
+					endGame();
+				} else if (pacman.getPelletsEaten() >= m_total_pellets) {
+					winGame();
+				}
+			} else if (std::holds_alternative<Ghost>(entity)) { // Update ghosts
 				auto &ghost = std::get<Ghost>(entity);
-				ghost.update(dt, entities);
+				ghost.update(dt, m_entities);
 			}
 		}
 
 		// TODO: Find a more robust way to delete entities
 		for (auto i = m_entities.size() - 1; i != 0; i--) {
-			auto active = std::visit(
-			    [](const auto &entity) { return entity.active(); }, m_entities[i]);
+			auto active =
+			    std::visit([](const auto &entity) { return entity.active(); },
+			               m_entities[i]);
 			if (!active) {
 				std::swap(m_entities[i], m_entities[m_entities.size() - 1]);
 				m_entities.pop_back();
@@ -343,7 +347,15 @@ class Level {
 	 */
 	void endGame() {
 		std::cout << "Game Over" << std::endl;
-		m_gameOver = true;
+		m_isGameOver = true;
+	}
+
+	/**
+	 * Win the game.
+	 */
+	void winGame() {
+		std::cout << "Game Won" << std::endl;
+		m_isGameOver = true;
 	}
 
 	/**
@@ -363,13 +375,11 @@ class Level {
 	 * Is the game over?
 	 * @return true if the game is over
 	 */
-	bool gameOver() const { return m_gameOver || m_gameWon; }
+	bool isGameOver() const { return m_isGameOver; }
 
   private:
-	bool m_gameOver     = false;
-	bool m_gameWon      = false;
-	int  m_pellet_count = 0;
-	int  m_total_pellets;
+	bool m_isGameOver    = false;
+	int  m_total_pellets = 0;
 
 	int m_width;
 	int m_height;
@@ -400,7 +410,7 @@ int main() {
 	// Main game loop
 	while (!window.pollEvents()) {
 		// Game over, but waiting to close
-		if (!level.gameOver()) {
+		if (!level.isGameOver()) {
 			const auto     now = steady_clock::now();
 			const Duration dt  = (now - prev);
 			prev               = now;

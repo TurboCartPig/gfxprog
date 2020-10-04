@@ -90,6 +90,8 @@ class Pacman : public SpriteEntity {
 		return make_attributes(m_position, m_spritesheet->getUniform());
 	}
 
+	int getPelletsEaten() const { return m_pellets_eaten; }
+
   private:
 	int                                  m_pellets_eaten = 0;
 	Direction                            m_direction;

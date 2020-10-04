@@ -21,7 +21,7 @@ static bool checkCollision(
 
 	for (size_t i = 0; i < entities.size(); i++) {
 		if (std::holds_alternative<T>(entities[i])) {
-			auto &t = std::get<T>(entities[i]);
+			const auto &t = std::get<T>(entities[i]);
 			if (glm::length(t.getPosition() - position) <= dist) {
 				collision = true;
 				if (index)
@@ -36,6 +36,7 @@ static bool checkCollision(
 void Pacman::onInput(
     InputCode                                                     key,
     const std::vector<std::variant<Wall, Pellet, Ghost, Pacman>> &entities) {
+	// Input -> Direction
 	Direction new_direction;
 	switch (key) {
 		case InputCode::W: new_direction = Direction::Up; break;
@@ -45,14 +46,18 @@ void Pacman::onInput(
 		default: return;
 	}
 
-	//	bool collision = checkCollision(m_position, entities);
-	//	if (collision)
-	//		return;
+	// Would pacman collide with a wall if he headed in the new direction?
+	auto delta     = direction_to_delta(new_direction);
+	bool collision = checkCollision<Wall>(m_position + delta, entities, 0.85f);
 
-	m_direction = new_direction;
+	// Only change direction if it is a new direction and pacman would not
+	// collide in the immediate future
+	if (!collision && new_direction != m_direction) {
+		m_direction = new_direction;
 
-	// Change pacman's animation
-	m_spritesheet->playAnimation(m_animations->at(m_direction));
+		// Change pacman's animation
+		m_spritesheet->playAnimation(m_animations->at(m_direction));
+	}
 }
 
 void Pacman::update(
@@ -62,26 +67,33 @@ void Pacman::update(
 	auto delta    = direction_to_delta(m_direction);
 	auto position = m_position + dt.count() * delta;
 
+	// Is pacman colliding with a wall?
 	bool collision = checkCollision<Wall>(position, entities);
 
-	size_t index;
+	// Should pacman eat a pellet? If so what is the index of that entity?
+	size_t index = 0;
 	bool   pellet_eaten =
 	    checkCollision<Pellet>(position, entities, 0.25f, &index);
-	if (pellet_eaten)
-		std::get<Pellet>(entities[index]).deactivate();
 
+	// Disable / delete the eaten pellet
+	if (pellet_eaten) {
+		std::get<Pellet>(entities[index]).deactivate();
+		m_pellets_eaten++;
+	}
+
+	// Is pacman colliding with a ghost?
 	bool hit_ghost = checkCollision<Ghost>(position, entities, 0.5f);
+	// If he is, deactivate / delete pacman
 	if (hit_ghost)
 		this->deactivate();
 
-	if (pellet_eaten)
-		m_pellets_eaten++;
-
 	if (!collision) {
+		// Remember to start playing animation again if newly out of collision
 		m_spritesheet->play();
 		m_position = position;
 	} else {
 		m_spritesheet->play(false);
+		// Snap pacman to grid to avoid odd collisions in the middle of tunnels
 		if (m_direction == Direction::Up || m_direction == Direction::Down)
 			m_position.x = std::round(m_position.x);
 		else
