@@ -2,7 +2,7 @@
 
 layout(location = 1) in vec2 fi_texcoord;// In normalized coordinates
 layout(location = 2) in vec4 fi_rgba;
-layout(location = 3) flat in int fi_variant;
+layout(location = 3) flat in uint fi_variant;
 
 out vec4 fo_color;
 

@@ -242,7 +242,7 @@ class Level {
 		for (const auto &entity : m_entities) {
 			auto      attrib = std::visit(draw, entity);
 			glm::vec4 rgba;
-			int       variant = attrib.rgba.index();
+			uint32_t  variant = attrib.rgba.index();
 			if (variant == 0) {
 				rgba = std::get<glm::vec4>(attrib.rgba);
 			} else {
