@@ -107,8 +107,8 @@ class Ghost : public SpriteEntity {
 	      std::shared_ptr<std::unordered_map<Direction, SpriteSheetAnimation>>
 	          animations)
 	    : SpriteEntity(pos), m_spritesheet(std::move(spritesheet)),
-	      m_animations(std::move(animations)) {
-		m_spritesheet->playAnimation(m_animations->at(Direction::Right));
+	      m_animations(std::move(animations)), m_direction(Direction::Right) {
+		m_spritesheet->playAnimation(m_animations->at(m_direction));
 	}
 
 	void
@@ -121,6 +121,7 @@ class Ghost : public SpriteEntity {
 	}
 
   private:
+	Direction                            m_direction;
 	std::unique_ptr<AnimatedSpriteSheet> m_spritesheet;
 	std::shared_ptr<std::unordered_map<Direction, SpriteSheetAnimation>>
 	    m_animations;
