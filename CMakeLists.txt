@@ -114,10 +114,6 @@ endif ()
 # Subdirectories defining actual targets
 ##############################################################################
 
-add_subdirectory(lib)
-add_subdirectory(apps)
-add_subdirectory(docs)
-
 # Things to do only if current project is top level project
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     # Setup compile_commands for clangd
@@ -129,8 +125,14 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
             ${CMAKE_BINARY_DIR}/compile_commands.json
             ${CMAKE_SOURCE_DIR}/compile_commands.json)
 
+    set(CMAKE_CXX_CPPCHECK cppcheck)
+
     # Enable testing
     if (BUILD_TESTING)
         add_subdirectory(tests)
     endif ()
 endif ()
+
+add_subdirectory(lib)
+add_subdirectory(apps)
+add_subdirectory(docs)
