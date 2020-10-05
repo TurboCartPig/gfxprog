@@ -12,3 +12,15 @@ target_compile_definitions(lib PUBLIC _USE_MATH_DEFINES)
 target_include_directories(lib PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(lib PUBLIC GLEW::GLEW glfw glm OpenGL::GL stb)
 target_precompile_headers(lib PRIVATE <iostream> <chrono> <string> <vector> <array> <GL/glew.h> <glm/glm.hpp> <glm/gtc/type_ptr.hpp> <glm/gtc/matrix_transform.hpp>)
+
+set_target_properties(
+        lib
+        PROPERTIES
+        CXX_STANDARD 17
+        CXX_STANDARD_REQUIRED ON
+        CXX_EXTENSIONS OFF)
+
+source_group(
+        TREE "${PROJECT_SOURCE_DIR}/include"
+        PREFIX "Header Files"
+        FILES ${GLOVE_HEADER_FILES})
