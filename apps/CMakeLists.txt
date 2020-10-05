@@ -42,4 +42,5 @@ set_target_properties(
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
-        PRECOMPILE_HEADERS_REUSE_FROM lib)
+        PRECOMPILE_HEADERS_REUSE_FROM lib
+        FOLDER "Apps")

@@ -18,9 +18,15 @@ set_target_properties(
         PROPERTIES
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
-        CXX_EXTENSIONS OFF)
+        CXX_EXTENSIONS OFF
+        FOLDER "Glove")
 
 source_group(
-        TREE "${PROJECT_SOURCE_DIR}/include"
+        TREE "${PROJECT_SOURCE_DIR}/include/glove"
         PREFIX "Header Files"
         FILES ${GLOVE_HEADER_FILES})
+
+source_group(
+        TREE "${PROJECT_SOURCE_DIR}/lib"
+        PREFIX "Source Files"
+        FILES ${GLOVE_SOURCE_FILES})

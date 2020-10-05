@@ -125,6 +125,8 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
             ${CMAKE_BINARY_DIR}/compile_commands.json
             ${CMAKE_SOURCE_DIR}/compile_commands.json)
 
+    set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
     # Enable testing
     if (BUILD_TESTING)
         add_subdirectory(tests)
