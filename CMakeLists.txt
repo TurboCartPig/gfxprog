@@ -24,29 +24,6 @@ set(COMPILER_WARNINGS_AND_ERRORS
         $<$<CXX_COMPILER_ID:Clang,AppleClang>:-Wexit-time-destructors>
         $<$<CXX_COMPILER_ID:Clang,AppleClang>:-Wglobal-constructors>)
 
-if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-    # Setup compile_commands for clangd
-    # TODO: This is a hack and I should find a better way to do this
-    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-    execute_process(
-            COMMAND
-            ${CMAKE_COMMAND} -E create_symlink
-            ${CMAKE_BINARY_DIR}/compile_commands.json
-            ${CMAKE_SOURCE_DIR}/compile_commands.json)
-
-    # Enable testing
-    if (BUILD_TESTING)
-        add_subdirectory(tests)
-    endif ()
-
-    # Enable docs
-    find_package(Doxygen)
-    if (Doxygen_FOUND)
-        message(STATUS "Enabling docs")
-        add_subdirectory(docs)
-    endif ()
-endif ()
-
 # Dependencies
 ##############################################################################
 # Find or download dependencies
@@ -139,3 +116,21 @@ endif ()
 
 add_subdirectory(lib)
 add_subdirectory(apps)
+add_subdirectory(docs)
+
+# Things to do only if current project is top level project
+if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+    # Setup compile_commands for clangd
+    # TODO: This is a hack and I should find a better way to do this
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+    execute_process(
+            COMMAND
+            ${CMAKE_COMMAND} -E create_symlink
+            ${CMAKE_BINARY_DIR}/compile_commands.json
+            ${CMAKE_SOURCE_DIR}/compile_commands.json)
+
+    # Enable testing
+    if (BUILD_TESTING)
+        add_subdirectory(tests)
+    endif ()
+endif ()
