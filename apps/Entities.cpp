@@ -112,6 +112,7 @@ void Ghost::update(Duration dt, const Entities &entities) {
 			case Direction::Down: m_direction = Direction::Left; break;
 			case Direction::Left: m_direction = Direction::Up; break;
 		}
+		m_spritesheet->playAnimation(m_animations->at(m_direction));
 	} else {
 		m_position = position;
 	}
