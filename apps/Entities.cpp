@@ -13,10 +13,8 @@ glm::vec2 direction_to_delta(Direction direction) {
 }
 
 template <typename T>
-static bool checkCollision(
-    glm::vec2                                                     position,
-    const std::vector<std::variant<Wall, Pellet, Ghost, Pacman>> &entities,
-    float dist = 0.95f, size_t *index = nullptr) {
+static bool checkCollision(glm::vec2 position, const Entities &entities,
+                           float dist = 0.95f, size_t *index = nullptr) {
 	bool collision = false;
 
 	for (size_t i = 0; i < entities.size(); i++) {
@@ -33,9 +31,7 @@ static bool checkCollision(
 	return collision;
 }
 
-void Pacman::onInput(
-    InputCode                                                     key,
-    const std::vector<std::variant<Wall, Pellet, Ghost, Pacman>> &entities) {
+void Pacman::onInput(InputCode key, const Entities &entities) {
 	// Input -> Direction
 	Direction new_direction;
 	switch (key) {
@@ -60,9 +56,7 @@ void Pacman::onInput(
 	}
 }
 
-void Pacman::update(
-    Duration                                                dt,
-    std::vector<std::variant<Wall, Pellet, Ghost, Pacman>> &entities) {
+void Pacman::update(Duration dt, Entities &entities) {
 	// Find new position if pacman moved
 	auto delta    = direction_to_delta(m_direction);
 	auto position = m_position + dt.count() * delta;
@@ -103,10 +97,7 @@ void Pacman::update(
 	m_spritesheet->update(dt);
 }
 
-void Ghost::update(
-    Duration                                       dt,
-    const std::vector<std::variant<class Wall, class Pellet, class Ghost,
-                                   class Pacman>> &entities) {
+void Ghost::update(Duration dt, const Entities &entities) {
 	// Pseudo ai
 	// Currently gets stuck a lot.
 

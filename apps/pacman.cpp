@@ -360,10 +360,10 @@ class Level {
 
 	InputQueue m_input_queue;
 
-	std::vector<std::variant<Wall, Pellet, Ghost, Pacman>> m_entities;
-	std::unique_ptr<ShaderProgram>                         m_shader_program;
-	std::shared_ptr<Texture>                               m_spritesheet;
-	std::unique_ptr<VertexBuffer<Vertex2DTexRgbav>>        m_vbo;
+	Entities                                        m_entities;
+	std::unique_ptr<ShaderProgram>                  m_shader_program;
+	std::shared_ptr<Texture>                        m_spritesheet;
+	std::unique_ptr<VertexBuffer<Vertex2DTexRgbav>> m_vbo;
 };
 
 int main() {

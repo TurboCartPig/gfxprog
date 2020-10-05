@@ -8,6 +8,8 @@
 #include <variant>
 
 using Duration = std::chrono::duration<float>;
+using Entities = std::vector<
+    std::variant<class Wall, class Pellet, class Ghost, class Pacman>>;
 
 /**
  * Direction of movement.
@@ -77,14 +79,9 @@ class Pacman : public SpriteEntity {
 		m_spritesheet->playAnimation(m_animations->at(Direction::Right));
 	}
 
-	void onInput(
-	    InputCode                                      key,
-	    const std::vector<std::variant<class Wall, class Pellet, class Ghost,
-	                                   class Pacman>> &entities);
+	void onInput(InputCode key, const Entities &entities);
 
-	void update(Duration                                 dt,
-	            std::vector<std::variant<class Wall, class Pellet, class Ghost,
-	                                     class Pacman>> &entities);
+	void update(Duration dt, Entities &entities);
 
 	Attributes getAttributes() const override {
 		return make_attributes(m_position, m_spritesheet->getUniform());
@@ -113,10 +110,7 @@ class Ghost : public SpriteEntity {
 		m_spritesheet->playAnimation(m_animations->at(m_direction));
 	}
 
-	void
-	update(Duration                                       dt,
-	       const std::vector<std::variant<class Wall, class Pellet, class Ghost,
-	                                      class Pacman>> &entities);
+	void update(Duration dt, const Entities &entities);
 
 	Attributes getAttributes() const override {
 		return make_attributes(m_position, m_spritesheet->getUniform());
