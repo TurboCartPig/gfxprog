@@ -2,13 +2,8 @@
 # We could alternatively symlink these files instead
 add_custom_target(copy-resources COMMAND
         ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/resources
-        ${CMAKE_CURRENT_BINARY_DIR}/resources
-        )
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+        ${PROJECT_SOURCE_DIR}/resources
+        ${CMAKE_CURRENT_BINARY_DIR}/resources)
 
 # Labs
 ###############################################################################
