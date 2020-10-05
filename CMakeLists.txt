@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.16...3.18)
 project(
-        Project
+        gfxprog
         VERSION 0.1.0
-        DESCRIPTION "A CMake template project"
+        DESCRIPTION "Labs and assignments completed in association with Graphics Programming / prog2002 at NTNU"
         LANGUAGES CXX)
 
 include(CTest)
