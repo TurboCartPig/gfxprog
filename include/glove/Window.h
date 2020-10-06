@@ -58,6 +58,14 @@ class Window {
 	 */
 	Window(const std::string &title, uint32_t width, uint32_t height);
 
+	Window(const Window &other) = delete;
+
+	Window(const Window &&other) = delete;
+
+	Window operator=(const Window &other) = delete;
+
+	Window operator=(const Window &&other) = delete;
+
 	~Window();
 
 	/**
