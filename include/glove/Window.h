@@ -61,7 +61,7 @@ class Window {
 	~Window();
 
 	/**
-	 * Poll for new events and indicate if the window should close.
+	 * Poll for new events and indicate if the window should closed.
 	 * @return Should the window be closed?
 	 */
 	bool pollEvents();
@@ -72,16 +72,15 @@ class Window {
 	void swapBuffers();
 
 	/**
-	 * Get the internal window pointer for usage width unwrapped glfw calls
-	 *
-	 * @return The internal window pointer
+	 * Get the internal window pointer for usage width unwrapped glfw calls.
+	 * @return The internal window pointer.
 	 */
 	GLFWwindow *ptr() const { return m_window; }
 
 	/**
-	 * Get the current window dimensions without accounting for DPI.
-	 *
-	 * @return Dimensions
+	 * Get the current window dimensions without accounting for DPI. i.e.
+	 * framebuffer size.
+	 * @return Dimensions.
 	 */
 	std::pair<int, int> dimensions() const {
 		auto dim = std::make_pair(0, 0);
@@ -89,13 +88,18 @@ class Window {
 		return dim;
 	}
 
+	/**
+	 * Set the dimensions of the window.
+	 * @param width New width of window.
+	 * @param height New height of window.
+	 */
 	void setDimensions(const int width, const int height) {
 		glfwSetWindowSize(m_window, width, height);
 	}
 
 	/**
-	 * Get a shared pointer to the input queue
-	 * @return A shared pointer to the input queue
+	 * Get a shared pointer to the input queue.
+	 * @return A shared pointer to the input queue.
 	 */
 	InputQueue getInputQueue() { return m_input_queue; }
 

@@ -101,9 +101,11 @@ void Ghost::update(Duration dt, const Entities &entities) {
 	// Pseudo ai
 	// Currently gets stuck a lot.
 
+	// Find new position
 	auto delta    = direction_to_delta(m_direction);
 	auto position = m_position + delta * dt.count();
 
+	// Would we collide with a wall if we move to new position?
 	bool collide_with_wall = checkCollision<Wall>(position, entities);
 	if (collide_with_wall) {
 		switch (m_direction) {

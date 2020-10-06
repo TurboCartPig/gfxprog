@@ -15,6 +15,7 @@ class VertexBuffer {
 	/**
 	 * Construct empty VBO.
 	 * @note Must be filled before reading.
+	 * @see "uploadWhole"
 	 * @param size Size of VBO in primitives.
 	 * @param indexed Should the VBO use an index buffer.
 	 * @param usage How is the VBO going to be used? Default is STATIC DRAW
@@ -24,15 +25,15 @@ class VertexBuffer {
 
 	/**
 	 * Construct a VBO containing a single vertex buffer of triangles.
-	 * @param vertices
+	 * @param vertices Vertices with VertexFormat.
 	 */
 	explicit VertexBuffer(const std::vector<VertexFormat> &vertices);
 
 	/**
 	 * Construct a VBO containing both a vertex buffer and an index buffer
 	 * representing triangles.
-	 * @param vertices
-	 * @param indices
+	 * @param vertices Vertices with VertexFormat.
+	 * @param indices Indices in GLuints.
 	 */
 	VertexBuffer(const std::vector<VertexFormat> &vertices,
 	             const std::vector<GLuint> &      indices);
@@ -57,7 +58,7 @@ class VertexBuffer {
 	void draw();
 
 	/**
-	 * Upload content to the whole buffer.
+	 * Upload new content to the whole buffer.
 	 * @param vertices Vertices to upload.
 	 * @param indices Indices to upload.
 	 */

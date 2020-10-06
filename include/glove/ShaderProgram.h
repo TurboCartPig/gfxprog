@@ -51,6 +51,9 @@ class ShaderProgram {
 
 	~ShaderProgram();
 
+	/**
+	 * Use / Bind the shader program.
+	 */
 	void use() const;
 
 	void setUniform(const std::string &name, const unsigned int x);

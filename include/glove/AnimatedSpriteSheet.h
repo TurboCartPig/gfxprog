@@ -26,7 +26,8 @@ class SpriteSheetAnimation {
 };
 
 /**
- * An abstraction for animating sprites from a sprite sheet using keyframes.
+ * An abstraction for animating sprites from a spritesheet / texture atlas using
+ * keyframes.
  */
 class AnimatedSpriteSheet {
   public:
@@ -42,9 +43,9 @@ class AnimatedSpriteSheet {
 	 *
 	 * @param frameTime How long should each frame be displayed?
 	 * @param animation Animation describing keyframes to sample from the
-	 * spritesheet
+	 * spritesheet.
 	 * @param spritesheet Texture of type "GL_TEXTURE_RECTANGLE" containing all
-	 * the sprites involved in the animation
+	 * the sprites involved in the animation.
 	 */
 	AnimatedSpriteSheet(milliseconds             frameTime,
 	                    std::shared_ptr<Texture> spritesheet);
@@ -99,7 +100,7 @@ class AnimatedSpriteSheet {
 	std::chrono::duration<double> m_from_last_key_frame = milliseconds(0);
 	SpriteSheetAnimation          m_animation;
 
-	// Not used per sey, but useful for keeping track of
+	// Not used per say, but useful for keeping track of
 	// lifetime of the texture
 	std::shared_ptr<Texture> m_sprite_sheet;
 };

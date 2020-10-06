@@ -1,8 +1,9 @@
 /**
  * Main include of library glove.
  *
- * Glove is a bad opengl library meant to make me write more modular code. It
- * should not be used by anyone else due to the fact that it's terrible.
+ * Glove is a bad opengl wrapper library (wrapper, glove, get it? Wow I suck at
+ * naming things) meant to make me write more modular code. It should not be
+ * used by anyone else due to the fact that it's terrible.
  *
  * @author Dennis Kristiansen, NTNU
  * @file lib.h

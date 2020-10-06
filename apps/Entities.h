@@ -49,12 +49,29 @@ class SpriteEntity {
 
 	virtual ~SpriteEntity() = default;
 
+	/**
+	 * Get info used to generate vertex attributes.
+	 * @return Intermediate vertex attribute information
+	 */
 	virtual Attributes getAttributes() const = 0;
 
+	/**
+	 * Get the position of the entity in world space coordinates.
+	 * @return Position in world space coordinates.
+	 */
 	glm::vec2 getPosition() const { return m_position; }
 
+	/**
+	 * Is the entity active?
+	 * If an entity is no longer active, it will be deleted.
+	 * @return Is active?
+	 */
 	bool active() const { return m_active; }
 
+	/**
+	 * Deactivate the entity.
+	 * Entity will be deleted.
+	 */
 	void deactivate() {
 		m_active = false;
 		std::cout << "Deactivated\n";
