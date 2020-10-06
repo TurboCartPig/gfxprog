@@ -2,7 +2,7 @@
 
 # Graphics Programming
 
-A series of labs completed in association with the course PROG2002 at NTNU.
+Labs and assignments completed in association with Graphics Programming / PROG2002 at NTNU.
 
 ## How to build
 
@@ -25,8 +25,6 @@ Docs:
 ```bash
 cmake --build build/ --target docs
 ```
-
-To build the user must have the following libraries available for cmake to discover: GLFW3, GLEW, GLM, Catch2, ImGui, stb and native OpenGL headers.
 
 ## Dependencies
 
