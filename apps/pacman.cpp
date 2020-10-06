@@ -39,81 +39,77 @@ enum class EntityType {
 std::unique_ptr<std::unordered_map<Direction, SpriteSheetAnimation>>
 create_pacman_animations() {
 	// Define animations
-	SpriteSheetAnimation pacman_up_anim;
-	pacman_up_anim.pushKeyFrame(glm::ivec4(0, 72, 72, 144));
-	pacman_up_anim.pushKeyFrame(glm::ivec4(72, 72, 144, 144));
-	pacman_up_anim.pushKeyFrame(glm::ivec4(144, 72, 216, 144));
-	pacman_up_anim.pushKeyFrame(glm::ivec4(216, 72, 288, 144));
-	pacman_up_anim.pushKeyFrame(glm::ivec4(144, 72, 216, 144));
-	pacman_up_anim.pushKeyFrame(glm::ivec4(72, 72, 144, 144));
+	SpriteSheetAnimation up_anim;
+	up_anim.pushKeyFrame(glm::ivec4(0, 72, 72, 144));
+	up_anim.pushKeyFrame(glm::ivec4(72, 72, 144, 144));
+	up_anim.pushKeyFrame(glm::ivec4(144, 72, 216, 144));
+	up_anim.pushKeyFrame(glm::ivec4(216, 72, 288, 144));
+	up_anim.pushKeyFrame(glm::ivec4(144, 72, 216, 144));
+	up_anim.pushKeyFrame(glm::ivec4(72, 72, 144, 144));
 
-	SpriteSheetAnimation pacman_down_anim;
-	pacman_down_anim.pushKeyFrame(glm::ivec4(0, 0, 72, 72));
-	pacman_down_anim.pushKeyFrame(glm::ivec4(72, 0, 144, 72));
-	pacman_down_anim.pushKeyFrame(glm::ivec4(144, 0, 216, 72));
-	pacman_down_anim.pushKeyFrame(glm::ivec4(216, 0, 288, 72));
-	pacman_down_anim.pushKeyFrame(glm::ivec4(144, 0, 216, 72));
-	pacman_down_anim.pushKeyFrame(glm::ivec4(72, 0, 144, 72));
+	SpriteSheetAnimation down_anim;
+	down_anim.pushKeyFrame(glm::ivec4(0, 0, 72, 72));
+	down_anim.pushKeyFrame(glm::ivec4(72, 0, 144, 72));
+	down_anim.pushKeyFrame(glm::ivec4(144, 0, 216, 72));
+	down_anim.pushKeyFrame(glm::ivec4(216, 0, 288, 72));
+	down_anim.pushKeyFrame(glm::ivec4(144, 0, 216, 72));
+	down_anim.pushKeyFrame(glm::ivec4(72, 0, 144, 72));
 
-	SpriteSheetAnimation pacman_left_anim;
-	pacman_left_anim.pushKeyFrame(glm::ivec4(0, 216, 72, 288));
-	pacman_left_anim.pushKeyFrame(glm::ivec4(72, 216, 144, 288));
-	pacman_left_anim.pushKeyFrame(glm::ivec4(144, 216, 216, 288));
-	pacman_left_anim.pushKeyFrame(glm::ivec4(216, 216, 288, 288));
-	pacman_left_anim.pushKeyFrame(glm::ivec4(144, 216, 216, 288));
-	pacman_left_anim.pushKeyFrame(glm::ivec4(72, 216, 144, 288));
+	SpriteSheetAnimation left_anim;
+	left_anim.pushKeyFrame(glm::ivec4(0, 216, 72, 288));
+	left_anim.pushKeyFrame(glm::ivec4(72, 216, 144, 288));
+	left_anim.pushKeyFrame(glm::ivec4(144, 216, 216, 288));
+	left_anim.pushKeyFrame(glm::ivec4(216, 216, 288, 288));
+	left_anim.pushKeyFrame(glm::ivec4(144, 216, 216, 288));
+	left_anim.pushKeyFrame(glm::ivec4(72, 216, 144, 288));
 
-	SpriteSheetAnimation pacman_right_anim;
-	pacman_right_anim.pushKeyFrame(glm::ivec4(0, 144, 72, 216));
-	pacman_right_anim.pushKeyFrame(glm::ivec4(72, 144, 144, 216));
-	pacman_right_anim.pushKeyFrame(glm::ivec4(144, 144, 216, 216));
-	pacman_right_anim.pushKeyFrame(glm::ivec4(216, 144, 288, 216));
-	pacman_right_anim.pushKeyFrame(glm::ivec4(144, 144, 216, 216));
-	pacman_right_anim.pushKeyFrame(glm::ivec4(72, 144, 144, 216));
+	SpriteSheetAnimation right_anim;
+	right_anim.pushKeyFrame(glm::ivec4(0, 144, 72, 216));
+	right_anim.pushKeyFrame(glm::ivec4(72, 144, 144, 216));
+	right_anim.pushKeyFrame(glm::ivec4(144, 144, 216, 216));
+	right_anim.pushKeyFrame(glm::ivec4(216, 144, 288, 216));
+	right_anim.pushKeyFrame(glm::ivec4(144, 144, 216, 216));
+	right_anim.pushKeyFrame(glm::ivec4(72, 144, 144, 216));
 
 	// Put animations in a map with pacman's movement directions as the keys
-	auto pacman_animations =
+	auto animations =
 	    std::make_unique<std::unordered_map<Direction, SpriteSheetAnimation>>();
-	pacman_animations->insert(std::make_pair(Direction::Up, pacman_up_anim));
-	pacman_animations->insert(
-	    std::make_pair(Direction::Down, pacman_down_anim));
-	pacman_animations->insert(
-	    std::make_pair(Direction::Right, pacman_right_anim));
-	pacman_animations->insert(
-	    std::make_pair(Direction::Left, pacman_left_anim));
+	animations->insert(std::make_pair(Direction::Up, up_anim));
+	animations->insert(std::make_pair(Direction::Down, down_anim));
+	animations->insert(std::make_pair(Direction::Right, right_anim));
+	animations->insert(std::make_pair(Direction::Left, left_anim));
 
-	return pacman_animations;
+	return animations;
 }
 
 std::shared_ptr<std::unordered_map<Direction, SpriteSheetAnimation>>
 create_ghost_animations() {
 	// Define animations
-	SpriteSheetAnimation ghost_up_anim;
-	ghost_up_anim.pushKeyFrame(glm::ivec4(288, 72, 360, 144));
-	ghost_up_anim.pushKeyFrame(glm::ivec4(360, 72, 432, 144));
+	SpriteSheetAnimation up_anim;
+	up_anim.pushKeyFrame(glm::ivec4(288, 72, 360, 144));
+	up_anim.pushKeyFrame(glm::ivec4(360, 72, 432, 144));
 
-	SpriteSheetAnimation ghost_down_anim;
-	ghost_down_anim.pushKeyFrame(glm::ivec4(288, 0, 360, 72));
-	ghost_down_anim.pushKeyFrame(glm::ivec4(360, 0, 432, 72));
+	SpriteSheetAnimation down_anim;
+	down_anim.pushKeyFrame(glm::ivec4(288, 0, 360, 72));
+	down_anim.pushKeyFrame(glm::ivec4(360, 0, 432, 72));
 
-	SpriteSheetAnimation ghost_right_anim;
-	ghost_right_anim.pushKeyFrame(glm::ivec4(288, 216, 360, 288));
-	ghost_right_anim.pushKeyFrame(glm::ivec4(360, 216, 432, 288));
+	SpriteSheetAnimation right_anim;
+	right_anim.pushKeyFrame(glm::ivec4(288, 144, 360, 216));
+	right_anim.pushKeyFrame(glm::ivec4(360, 144, 432, 216));
 
-	SpriteSheetAnimation ghost_left_anim;
-	ghost_left_anim.pushKeyFrame(glm::ivec4(288, 144, 360, 216));
-	ghost_left_anim.pushKeyFrame(glm::ivec4(360, 144, 432, 216));
+	SpriteSheetAnimation left_anim;
+	left_anim.pushKeyFrame(glm::ivec4(288, 216, 360, 288));
+	left_anim.pushKeyFrame(glm::ivec4(360, 216, 432, 288));
 
 	// Store animations in a map
-	auto ghost_animations =
+	auto animations =
 	    std::make_shared<std::unordered_map<Direction, SpriteSheetAnimation>>();
-	ghost_animations->insert(std::make_pair(Direction::Up, ghost_up_anim));
-	ghost_animations->insert(std::make_pair(Direction::Down, ghost_down_anim));
-	ghost_animations->insert(
-	    std::make_pair(Direction::Right, ghost_right_anim));
-	ghost_animations->insert(std::make_pair(Direction::Left, ghost_left_anim));
+	animations->insert(std::make_pair(Direction::Up, up_anim));
+	animations->insert(std::make_pair(Direction::Down, down_anim));
+	animations->insert(std::make_pair(Direction::Right, right_anim));
+	animations->insert(std::make_pair(Direction::Left, left_anim));
 
-	return ghost_animations;
+	return animations;
 }
 
 /**
