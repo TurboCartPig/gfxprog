@@ -83,14 +83,14 @@ class Window {
 	 * Get the internal window pointer for usage width unwrapped glfw calls.
 	 * @return The internal window pointer.
 	 */
-	GLFWwindow *ptr() const { return m_window; }
+	[[nodiscard]] GLFWwindow *ptr() const { return m_window; }
 
 	/**
 	 * Get the current window dimensions without accounting for DPI. i.e.
 	 * framebuffer size.
 	 * @return Dimensions.
 	 */
-	std::pair<int, int> dimensions() const {
+	[[nodiscard]] std::pair<int, int> dimensions() const {
 		auto dim = std::make_pair(0, 0);
 		glfwGetFramebufferSize(m_window, &dim.first, &dim.second);
 		return dim;

@@ -349,7 +349,7 @@ class Level {
 	 * Is the game over?
 	 * @return true if the game is over
 	 */
-	bool isGameOver() const { return m_isGameOver; }
+	[[nodiscard]] bool isGameOver() const { return m_isGameOver; }
 
   private:
 	bool m_isGameOver    = false;

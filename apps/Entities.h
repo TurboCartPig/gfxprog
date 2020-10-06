@@ -53,20 +53,20 @@ class SpriteEntity {
 	 * Get info used to generate vertex attributes.
 	 * @return Intermediate vertex attribute information
 	 */
-	virtual Attributes getAttributes() const = 0;
+	[[nodiscard]] virtual Attributes getAttributes() const = 0;
 
 	/**
 	 * Get the position of the entity in world space coordinates.
 	 * @return Position in world space coordinates.
 	 */
-	glm::vec2 getPosition() const { return m_position; }
+	[[nodiscard]] glm::vec2 getPosition() const { return m_position; }
 
 	/**
 	 * Is the entity active?
 	 * If an entity is no longer active, it will be deleted.
 	 * @return Is active?
 	 */
-	bool active() const { return m_active; }
+	[[nodiscard]] bool active() const { return m_active; }
 
 	/**
 	 * Deactivate the entity.
@@ -100,11 +100,11 @@ class Pacman : public SpriteEntity {
 
 	void update(Duration dt, Entities &entities);
 
-	Attributes getAttributes() const override {
+	[[nodiscard]] Attributes getAttributes() const override {
 		return make_attributes(m_position, m_spritesheet->getUniform());
 	}
 
-	int getPelletsEaten() const { return m_pellets_eaten; }
+	[[nodiscard]] int getPelletsEaten() const { return m_pellets_eaten; }
 
   private:
 	int                                  m_pellets_eaten = 0;
@@ -129,7 +129,7 @@ class Ghost : public SpriteEntity {
 
 	void update(Duration dt, const Entities &entities);
 
-	Attributes getAttributes() const override {
+	[[nodiscard]] Attributes getAttributes() const override {
 		return make_attributes(m_position, m_spritesheet->getUniform());
 	}
 
@@ -147,7 +147,7 @@ class Pellet : public SpriteEntity {
   public:
 	explicit Pellet(glm::vec2 pos) : SpriteEntity(pos) {}
 
-	Attributes getAttributes() const override {
+	[[nodiscard]] Attributes getAttributes() const override {
 		return make_attributes(m_position, glm::vec4(1.0f), 0.25f);
 	}
 };
@@ -159,7 +159,7 @@ class Wall : public SpriteEntity {
   public:
 	explicit Wall(glm::vec2 pos) : SpriteEntity(pos) {}
 
-	Attributes getAttributes() const override {
+	[[nodiscard]] Attributes getAttributes() const override {
 		return make_attributes(m_position, m_color);
 	}
 

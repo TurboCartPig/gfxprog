@@ -78,7 +78,7 @@ class AnimatedSpriteSheet {
 	 * Get the uniform data to send to the shaders.
 	 * @return Uniform data to be sent.
 	 */
-	glm::ivec4 getUniform() const {
+	[[nodiscard]] glm::ivec4 getUniform() const {
 		assert(!m_animation.m_key_frames.empty());
 		return m_animation.m_key_frames[m_current_key_frame];
 	}
@@ -88,7 +88,7 @@ class AnimatedSpriteSheet {
 	 * sheet.
 	 * @return Sprite sheet texture.
 	 */
-	const std::shared_ptr<Texture> &getTexture() const {
+	[[nodiscard]] const std::shared_ptr<Texture> &getTexture() const {
 		return m_sprite_sheet;
 	}
 
