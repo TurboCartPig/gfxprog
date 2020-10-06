@@ -8,6 +8,8 @@ project(
 include(CTest)
 include(FetchContent)
 
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+
 # List warnings and errors to be used by internal targets
 set(COMPILER_WARNINGS_AND_ERRORS
         $<$<CXX_COMPILER_ID:MSVC>:/W4>
@@ -33,37 +35,22 @@ find_package(GLEW 2.1 QUIET)
 find_package(glfw3 3.3 QUIET)
 find_package(glm QUIET)
 find_package(imgui QUIET)
+find_package(Stb QUIET)
 
-# Try to find stb installation locally first, and download it from github as a fallback.
-# Stb is a header only library, so all we need to do is find the directory in which it resides
-find_path(
-        STB_INCLUDE_DIRS
-        NAMES "stb.h" "stb_image.h"
-        HINTS "/usr/include/")
-
-# Download stb from github, if not found locally
-if (STB_INCLUDE_DIRS MATCHES STB_INCLUDE_DIRS-NOTFOUND)
-    message(STATUS "Stb not found, downloading...")
-
+if (NOT Stb_FOUND)
+    message(STATUS "Stb not found locally, downloading...")
     FetchContent_Declare(
-            stb
+            Stb
             GIT_REPOSITORY https://github.com/nothings/stb
             GIT_TAG master)
 
-    FetchContent_GetProperties(stb)
-    if (NOT stb_POPULATED)
-        FetchContent_Populate(stb)
+    FetchContent_GetProperties(Stb)
+    if (NOT Stb_POPULATED)
+        FetchContent_Populate(Stb)
 
-        # Define stb "linkable" target
-        add_library(stb INTERFACE)
-        target_include_directories(stb INTERFACE ${stb_SOURCE_DIR})
+        add_library(Stb::Stb INTERFACE IMPORTED)
+        target_include_directories(Stb::Stb INTERFACE "${Stb_SOURCE_DIR}")
     endif ()
-else ()
-    message(STATUS "Stb found, using: ${STB_INCLUDE_DIRS}")
-
-    # Define stb "linkable" target
-    add_library(stb INTERFACE)
-    target_include_directories(stb INTERFACE ${STB_INCLUDE_DIRS})
 endif ()
 
 if (NOT imgui_FOUND)
