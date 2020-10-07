@@ -118,11 +118,13 @@ create_ghost_animations() {
 class Level {
   public:
 	/**
-	 * Load a single level and initialize the game
-	 * @param path Path to the level file
-	 * @param input_queue Input queue from window
+	 * Load a single level and initialize the game.
+	 * @param path Path to the level file.
+	 * @param input_queue Input queue from window.
+	 * @param dimensions Dimensions of the window.
 	 */
-	Level(const std::string &path, InputQueue input_queue)
+	Level(const std::string &path, InputQueue input_queue,
+	      std::pair<int, int> dimensions)
 	    : m_input_queue(std::move(input_queue)) {
 
 		// Enable blending for transparency
@@ -218,14 +220,14 @@ class Level {
 		auto view = glm::lookAt(glm::vec3(0.0f, 0.0f, 1.0f),
 		                        glm::vec3(0.0f, 0.0f, 0.0f),
 		                        glm::vec3(0.0f, 1.0f, 0.0));
-		auto projection =
-		    glm::ortho(0.0f, (float)m_width, 0.0f, (float)m_height);
+
 		auto sprite_sheet_location = 0u;
 
 		m_spritesheet->bindToSlot(sprite_sheet_location);
 		m_shader_program->setUniform("u_view", view);
-		m_shader_program->setUniform("u_projection", projection);
 		m_shader_program->setUniform("u_sprite_sheet", sprite_sheet_location);
+
+		setDimensions(dimensions);
 
 		m_vbo = std::make_unique<VertexBuffer<Vertex2DTexRgbav>>(
 		    m_entities.size(), true, GL_STREAM_DRAW);
@@ -373,10 +375,14 @@ class Level {
 	 * @param dim Window/Framebuffer dimensions
 	 */
 	void setDimensions(const std::pair<int, int> dim) {
-		auto [w, h]  = dim;
-		float aspect = (float)w / (float)h;
-		auto  projection =
-		    glm::ortho(0.0f, aspect * m_width, 0.0f, (float)m_height);
+		auto [w, h] = dim;
+
+		// I don't know how or why this works, but it does, and that's what
+		// counts ;-)
+		glViewport(0, 0, h, h);
+		auto projection =
+		    glm::ortho(0.0f, (float)m_height, 0.0f, (float)m_height);
+
 		m_shader_program->setUniform("u_projection", projection);
 	}
 
@@ -409,9 +415,10 @@ int main() {
 	rnd = std::bind(distribution, generator);
 
 	// Init window
-	auto window = Window("Pacman", 900, 900);
+	auto window = Window("Pacman", 28 * 20, 36 * 20);
 
-	auto level = Level("resources/levels/level0.txt", window.getInputQueue());
+	auto level = Level("resources/levels/level0.txt", window.getInputQueue(),
+	                   window.dimensions());
 
 	// Setup clock for time measurements
 	auto prev = steady_clock::now();
@@ -428,8 +435,8 @@ int main() {
 		}
 
 		level.draw();
-		level.setDimensions(window.dimensions());
 		window.swapBuffers();
+		level.setDimensions(window.dimensions());
 	}
 
 	return EXIT_SUCCESS;
