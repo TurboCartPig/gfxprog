@@ -32,20 +32,18 @@ static glm::vec2 direction_to_delta(Direction direction) {
 template <typename T>
 static bool checkCollision(glm::vec2 position, const Entities &entities,
                            float dist = 0.95f, size_t *index = nullptr) {
-	bool collision = false;
-
 	for (size_t i = 0; i < entities.size(); i++) {
 		if (std::holds_alternative<T>(entities[i])) {
 			const auto &t = std::get<T>(entities[i]);
 			if (glm::length(t.getPosition() - position) <= dist) {
-				collision = true;
 				if (index)
 					*index = i;
+				return true;
 			}
 		}
 	}
 
-	return collision;
+	return false;
 }
 
 void Pacman::onInput(InputCode key, const Entities &entities) {
