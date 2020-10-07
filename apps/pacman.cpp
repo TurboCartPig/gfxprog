@@ -159,7 +159,7 @@ class Level {
 		file >> m_height;
 
 		std::vector<EntityType> grid;
-		grid.resize(m_width * (m_height + 1)); // FIXME: Why + 1?
+		grid.resize(m_width * m_height);
 
 		// Load level file into grid
 		for (auto &cell : grid) {
@@ -182,7 +182,7 @@ class Level {
 		// Spawn in pacman, walls and pellets based on grid
 		for (size_t i = 0; i < grid.size(); ++i) {
 			auto x   = i % m_width;
-			auto y   = m_height - i / m_width;
+			auto y   = m_height - i / m_width - 1;
 			auto pos = glm::vec2(x, y);
 			switch (grid[i]) {
 				case EntityType::Wall:
@@ -199,7 +199,11 @@ class Level {
 					               milliseconds(50), m_spritesheet),
 					           std::move(pacman_animations)));
 					break;
-				case EntityType::Ghost:
+				case EntityType::Ghost: // This is a bit hacky
+				                        // Add in pellet first
+					m_total_pellets++;
+					m_entities.emplace_back(Pellet(pos));
+					// Then add ghost in same position
 					m_entities.emplace_back(
 					    Ghost(pos,
 					          std::make_unique<AnimatedSpriteSheet>(
@@ -234,36 +238,70 @@ class Level {
 		std::vector<Vertex2DTexRgbav> ver;
 		std::vector<uint32_t>         ind;
 
+		// Sort entities to be backmost first
+		// FIXME: Change on change instead of eagerly
+		std::sort(m_entities.begin(), m_entities.end(),
+		          [](const auto &a, const auto &b) {
+			          auto get = [](const auto &e) { return e.getZPosition(); };
+			          auto az  = std::visit(get, a);
+			          auto bz  = std::visit(get, b);
+			          return az < bz;
+		          });
+
 		// Generate vertex contents
 		auto draw = [](const auto &entity) { return entity.getAttributes(); };
 		for (const auto &entity : m_entities) {
-			auto      attrib = std::visit(draw, entity);
-			glm::vec4 rgba;
+			auto      attrib  = std::visit(draw, entity);
 			uint32_t  variant = attrib.rgba.index();
+			glm::vec4 rgba;
+
 			if (variant == 0) {
 				rgba = std::get<glm::vec4>(attrib.rgba);
 			} else {
 				rgba = std::get<glm::ivec4>(attrib.rgba);
 			}
+
 			auto offset = ver.size();
-			ver.push_back(
-			    {attrib.scale * glm::vec2(0.0f, 0.0f) + attrib.position,
-			     glm::vec2(1.0f, 1.0f), rgba, variant});
-			ver.push_back(
-			    {attrib.scale * glm::vec2(0.0f, 1.0f) + attrib.position,
-			     glm::vec2(1.0f, 0.0f), rgba, variant});
-			ver.push_back(
-			    {attrib.scale * glm::vec2(1.0f, 0.0f) + attrib.position,
-			     glm::vec2(0.0f, 1.0f), rgba, variant});
-			ver.push_back(
-			    {attrib.scale * glm::vec2(1.0f, 1.0f) + attrib.position,
-			     glm::vec2(0.0f, 0.0f), rgba, variant});
-			ind.push_back(offset + 0);
-			ind.push_back(offset + 1);
-			ind.push_back(offset + 2);
-			ind.push_back(offset + 1);
-			ind.push_back(offset + 2);
-			ind.push_back(offset + 3);
+			if (attrib.quad) { // Add quad
+				ver.push_back(
+				    {attrib.scale * glm::vec2(0.0f, 0.0f) + attrib.position,
+				     glm::vec2(1.0f, 1.0f), rgba, variant});
+				ver.push_back(
+				    {attrib.scale * glm::vec2(0.0f, 1.0f) + attrib.position,
+				     glm::vec2(1.0f, 0.0f), rgba, variant});
+				ver.push_back(
+				    {attrib.scale * glm::vec2(1.0f, 0.0f) + attrib.position,
+				     glm::vec2(0.0f, 1.0f), rgba, variant});
+				ver.push_back(
+				    {attrib.scale * glm::vec2(1.0f, 1.0f) + attrib.position,
+				     glm::vec2(0.0f, 0.0f), rgba, variant});
+				ind.push_back(offset + 0);
+				ind.push_back(offset + 1);
+				ind.push_back(offset + 2);
+				ind.push_back(offset + 1);
+				ind.push_back(offset + 2);
+				ind.push_back(offset + 3);
+			} else { // Add diamond
+				// FIXME: Add circles instead of diamonds
+				ver.push_back(
+				    {attrib.scale * glm::vec2(0.25f, 0.5f) + attrib.position,
+				     glm::vec2(1.0f, 1.0f), rgba, variant});
+				ver.push_back(
+				    {attrib.scale * glm::vec2(0.5f, 0.75f) + attrib.position,
+				     glm::vec2(0.0f, 1.0f), rgba, variant});
+				ver.push_back(
+				    {attrib.scale * glm::vec2(0.5f, 0.25f) + attrib.position,
+				     glm::vec2(0.0f, 0.0f), rgba, variant});
+				ver.push_back(
+				    {attrib.scale * glm::vec2(0.75f, 0.5f) + attrib.position,
+				     glm::vec2(1.0f, 0.0f), rgba, variant});
+				ind.push_back(offset + 0);
+				ind.push_back(offset + 1);
+				ind.push_back(offset + 2);
+				ind.push_back(offset + 1);
+				ind.push_back(offset + 2);
+				ind.push_back(offset + 3);
+			}
 		}
 
 		m_vbo->uploadWhole(ver, ind);
@@ -274,24 +312,23 @@ class Level {
 	 * Drive the simulation forward
 	 */
 	void update(Duration dt) {
-		// Pass inputs to entities that care
-		if (!m_input_queue->empty()) {
-			for (auto &entity : m_entities) {
-				if (std::holds_alternative<Pacman>(entity)) {
-					auto &pacman = std::get<Pacman>(entity);
-					auto  key    = m_input_queue->back();
-					pacman.onInput(key, m_entities);
-				}
-			}
-		}
-
 		// Update all entities
 		for (auto &entity : m_entities) {
 			if (std::holds_alternative<Pacman>(entity)) { // Update pacman
 				auto &pacman = std::get<Pacman>(entity);
+
+				// Pass input if there is any
+				if (!m_input_queue->empty()) {
+					auto key = m_input_queue->back();
+					pacman.onInput(key, m_entities);
+				}
+
+				// Update
 				pacman.update(dt, m_entities);
+
+				// Check if the game should end
 				if (!pacman.active()) {
-					endGame();
+					endGame(pacman.getPelletsEaten());
 				} else if (pacman.getPelletsEaten() >= m_total_pellets) {
 					winGame();
 				}
@@ -301,7 +338,7 @@ class Level {
 			}
 		}
 
-		// TODO: Find a more robust way to delete entities
+		// Delete disabled entities
 		for (auto i = m_entities.size() - 1; i != 0; i--) {
 			auto active =
 			    std::visit([](const auto &entity) { return entity.active(); },
@@ -316,8 +353,10 @@ class Level {
 	/**
 	 * End the game.
 	 */
-	void endGame() {
+	void endGame(int pellets_eaten) {
 		std::cout << "Game Over" << std::endl;
+		std::cout << pellets_eaten << " pellets eaten out of "
+		          << m_total_pellets << std::endl;
 		m_isGameOver = true;
 	}
 
@@ -325,7 +364,7 @@ class Level {
 	 * Win the game.
 	 */
 	void winGame() {
-		std::cout << "Game Won" << std::endl;
+		std::cout << "All pellets eaten, Game Won!" << std::endl;
 		m_isGameOver = true;
 	}
 

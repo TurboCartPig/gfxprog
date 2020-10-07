@@ -22,22 +22,21 @@ enum class Direction {
 };
 
 struct Attributes {
-	// World space position
-	glm::vec2 position;
-	// If color is variant ivec4 it is a keyframe not a color.
-	std::variant<glm::vec4, glm::ivec4> rgba;
-	// Uniform scale
-	float scale;
+	glm::vec2 position; ///< World space position
+	std::variant<glm::vec4, glm::ivec4>
+	      rgba;  ///< If color is variant ivec4 it is a keyframe not a color.
+	float scale; ///< Uniform scale
+	bool  quad;  ///< Is textured quad. If no we assume it's a circle
 };
 
 static Attributes make_attributes(glm::vec2 position, glm::vec4 rgba,
-                                  float scale = 1.0f) {
-	return Attributes{position, rgba, scale};
+                                  float scale = 1.0f, bool quad = true) {
+	return Attributes{position, rgba, scale, quad};
 }
 
 static Attributes make_attributes(glm::vec2 position, glm::ivec4 keyframe,
-                                  float scale = 1.0f) {
-	return Attributes{position, keyframe, scale};
+                                  float scale = 1.0f, bool quad = true) {
+	return Attributes{position, keyframe, scale, quad};
 }
 
 /**
@@ -54,6 +53,12 @@ class SpriteEntity {
 	 * @return Intermediate vertex attribute information
 	 */
 	[[nodiscard]] virtual Attributes getAttributes() const = 0;
+
+	/**
+	 * Get the z position of the entity in "3D" space. Used for render order.
+	 * @return
+	 */
+	[[nodiscard]] virtual float getZPosition() const = 0;
 
 	/**
 	 * Get the position of the entity in world space coordinates.
@@ -104,6 +109,8 @@ class Pacman : public SpriteEntity {
 		return make_attributes(m_position, m_spritesheet->getUniform());
 	}
 
+	[[nodiscard]] float getZPosition() const override { return 2.0f; }
+
 	[[nodiscard]] int getPelletsEaten() const { return m_pellets_eaten; }
 
   private:
@@ -133,6 +140,8 @@ class Ghost : public SpriteEntity {
 		return make_attributes(m_position, m_spritesheet->getUniform());
 	}
 
+	[[nodiscard]] float getZPosition() const override { return 3.0f; }
+
   private:
 	Direction                            m_direction;
 	std::unique_ptr<AnimatedSpriteSheet> m_spritesheet;
@@ -148,8 +157,10 @@ class Pellet : public SpriteEntity {
 	explicit Pellet(glm::vec2 pos) : SpriteEntity(pos) {}
 
 	[[nodiscard]] Attributes getAttributes() const override {
-		return make_attributes(m_position, glm::vec4(1.0f), 0.25f);
+		return make_attributes(m_position, glm::vec4(1.0f), 1.0f, false);
 	}
+
+	[[nodiscard]] float getZPosition() const override { return 1.0f; }
 };
 
 /**
@@ -162,6 +173,8 @@ class Wall : public SpriteEntity {
 	[[nodiscard]] Attributes getAttributes() const override {
 		return make_attributes(m_position, m_color);
 	}
+
+	[[nodiscard]] float getZPosition() const override { return 0.0f; }
 
   private:
 	glm::vec4 m_color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
