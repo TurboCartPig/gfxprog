@@ -109,10 +109,5 @@ bool Window::pollEvents() {
 void Window::swapBuffers() {
 	glfwSwapBuffers(m_window);
 
-	// Set viewport in case it changed
-	int height, width;
-	glfwGetFramebufferSize(m_window, &width, &height);
-	glViewport(0, 0, width, height);
-
 	glClear(GL_COLOR_BUFFER_BIT);
 }
