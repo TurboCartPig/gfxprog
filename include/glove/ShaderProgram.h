@@ -74,8 +74,6 @@ class ShaderProgram {
 
 	void setUniform(const std::string &name, const glm::mat4 v);
 
-	GLuint getProgram() const { return m_program; }
-
   private:
 	GLuint                                       m_program;
 	std::unordered_map<std::string, UniformSpec> m_uniforms;

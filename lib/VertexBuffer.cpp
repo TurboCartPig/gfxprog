@@ -1,5 +1,4 @@
 #pragma clang diagnostic push
-#pragma ide diagnostic   ignored "cppcoreguidelines-pro-type-cstyle-cast"
 #pragma ide diagnostic   ignored "cppcoreguidelines-pro-type-reinterpret-cast"
 
 #include <glove/VertexBuffer.h>
