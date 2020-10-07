@@ -8,7 +8,22 @@ target_compile_options(lib PRIVATE ${COMPILER_WARNINGS_AND_ERRORS})
 target_compile_definitions(lib PUBLIC _USE_MATH_DEFINES)
 target_include_directories(lib PUBLIC "${PROJECT_SOURCE_DIR}/include")
 target_link_libraries(lib PUBLIC GLEW::GLEW glfw glm OpenGL::GL Stb::Stb)
-target_precompile_headers(lib PRIVATE <iostream> <chrono> <string> <vector> <array> <GL/glew.h> <glm/glm.hpp> <glm/gtc/type_ptr.hpp> <glm/gtc/matrix_transform.hpp>)
+target_precompile_headers(
+        lib
+        PRIVATE
+        <string>
+        <vector>
+        <array>
+        <unordered_map>
+        <iostream>
+        <chrono>
+        <memory>
+        <utility>
+        <functional>
+        <GL/glew.h>
+        <glm/glm.hpp>
+        <glm/gtc/type_ptr.hpp>
+        <glm/gtc/matrix_transform.hpp>)
 
 set_target_properties(
         lib
