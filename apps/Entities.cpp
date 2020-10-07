@@ -59,7 +59,7 @@ void Pacman::onInput(InputCode key, const Entities &entities) {
 
 	// Would pacman collide with a wall if he headed in the new direction?
 	auto delta     = direction_to_delta(new_direction);
-	bool collision = checkCollision<Wall>(m_position + delta, entities, 0.85f);
+	bool collision = checkCollision<Wall>(m_position + delta, entities, 0.80f);
 
 	// Only change direction if it is a new direction and pacman would not
 	// collide in the immediate future
@@ -82,7 +82,7 @@ void Pacman::update(Duration dt, Entities &entities) {
 	// Should pacman eat a pellet? If so what is the index of that entity?
 	size_t index = 0;
 	bool   pellet_eaten =
-	    checkCollision<Pellet>(position, entities, 0.25f, &index);
+	    checkCollision<Pellet>(position, entities, 0.20f, &index);
 
 	// Disable / delete the eaten pellet
 	if (pellet_eaten) {
@@ -91,7 +91,7 @@ void Pacman::update(Duration dt, Entities &entities) {
 	}
 
 	// Is pacman colliding with a ghost?
-	bool hit_ghost = checkCollision<Ghost>(position, entities, 0.5f);
+	bool hit_ghost = checkCollision<Ghost>(position, entities, 0.35f);
 	// If he is, deactivate / delete pacman
 	if (hit_ghost)
 		this->deactivate();
