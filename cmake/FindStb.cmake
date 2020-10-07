@@ -33,9 +33,11 @@ The following cache variables may also be set:
   The directory containing ``stb.h``.
 
 #]=======================================================================]
+
 include(FindPackageHandleStandardArgs)
 
 # Stb is a header only library, so all we need to do is find the directory in which it resides
+# FIXME: Currently only looks for the headers I actually use in the project, should look for all the headers
 find_path(Stb_INCLUDE_DIR
         NAMES "stb.h" "stb_image.h"
         HINTS "/usr/include")

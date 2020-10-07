@@ -128,6 +128,7 @@ class Level {
 	    : m_input_queue(std::move(input_queue)) {
 
 		// Enable blending for transparency
+		// FIXME: This should be done somewhere else
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_BLEND);
 
