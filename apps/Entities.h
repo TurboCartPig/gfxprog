@@ -78,10 +78,7 @@ class SpriteEntity {
 	 * Deactivate the entity.
 	 * Entity will be deleted.
 	 */
-	void deactivate() {
-		m_active = false;
-		std::cout << "Deactivated\n";
-	}
+	void deactivate() { m_active = false; }
 
   protected:
 	bool      m_active = true;
