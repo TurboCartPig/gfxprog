@@ -34,12 +34,16 @@ class AnimatedSpriteSheet {
 	/**
 	 * Construct a new animated spritesheet.
 	 *
-	 * "spritesheet"
-	 * Uses "GL_TEXTURE_RECTANGLE" as opposed to "GL_TEXTURE_2D" in order to
-	 * sample the texture using NON-normalized coordinates. The alternative
-	 * would be to use "GL_TEXTURE_2D", and query the size of the texture from
-	 * the shader using "textureSize". It is not obvious what the benefit of
-	 * this approach would be.
+	 * # Sprite sheet
+	 * "spritesheet" uses "GL_TEXTURE_RECTANGLE" as opposed to "GL_TEXTURE_2D"
+	 * in order to sample the texture using NON-normalized coordinates. The
+	 * alternative would be to use "GL_TEXTURE_2D", and query the size of the
+	 * texture from the shader using "textureSize". It is not obvious what the
+	 * benefit of this approach would be.
+	 *
+	 * # Animation
+	 * You must call "playAnimation" before first call to "getUniform" or
+	 * "update".
 	 *
 	 * @param frameTime How long should each frame be displayed?
 	 * @param animation Animation describing keyframes to sample from the

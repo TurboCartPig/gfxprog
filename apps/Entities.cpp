@@ -1,6 +1,11 @@
 #include "Entities.h"
 
-glm::vec2 direction_to_delta(Direction direction) {
+/**
+ * Convert movement direction to delta position.
+ * @param direction Direction of movement.
+ * @return Delta position.
+ */
+static glm::vec2 direction_to_delta(Direction direction) {
 	glm::vec2 delta;
 	switch (direction) {
 		case Direction::Up: delta = glm::vec2(0.0f, 1.0f); break;
@@ -12,6 +17,18 @@ glm::vec2 direction_to_delta(Direction direction) {
 	return delta;
 }
 
+/**
+ * Check if "position" collides with position of "T". I.e. is closer than
+ * "dist". The index, into "entities" of the colliding entity is returned via
+ * "index".
+ * @tparam T Type of entity to check collision with.
+ * @param position Position of the entity to check against all the "T"s in
+ * "entities".
+ * @param entities All the entities to check against.
+ * @param dist Distance that if less than, gives a collision.
+ * @param index Index of the entity collided with. Not changed if no collision.
+ * @return Does the entities overlap?
+ */
 template <typename T>
 static bool checkCollision(glm::vec2 position, const Entities &entities,
                            float dist = 0.95f, size_t *index = nullptr) {
