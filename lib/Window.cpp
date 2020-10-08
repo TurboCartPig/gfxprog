@@ -26,6 +26,7 @@ Window::Window(const std::string &title, const uint32_t width,
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+	glfwWindowHint(GLFW_SAMPLES, 4);
 	m_window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 	if (!m_window) {
 		throw std::runtime_error("GLFW3 Failed to create window.");
