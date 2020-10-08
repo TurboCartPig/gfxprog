@@ -200,7 +200,7 @@ class Level {
 					    Pacman(pos,
 					           std::make_unique<AnimatedSpriteSheet>(
 					               milliseconds(50), m_spritesheet),
-					           std::move(pacman_animations)));
+					           std::move(pacman_animations), getBounds()));
 					break;
 				case EntityType::Ghost: // This is a bit hacky
 				                        // Add in pellet first
@@ -211,7 +211,7 @@ class Level {
 					    Ghost(pos,
 					          std::make_unique<AnimatedSpriteSheet>(
 					              milliseconds(100), m_spritesheet),
-					          ghost_animations));
+					          ghost_animations, getBounds()));
 					break;
 				default: continue;
 			}
@@ -369,6 +369,15 @@ class Level {
 	void winGame() {
 		std::cout << "All pellets eaten, Game Won!" << std::endl;
 		m_isGameOver = true;
+	}
+
+	/**
+	 * Get the bounds of the level.
+	 * @return min and max coordinates of the level. I.e. it's bounds.
+	 */
+	[[nodiscard]] std::pair<glm::vec2, glm::vec2> getBounds() const {
+		return std::make_pair(glm::vec2(0.0f, 0.0f),
+		                      glm::vec2(m_width - 1, m_height - 1));
 	}
 
 	/**

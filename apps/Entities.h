@@ -92,10 +92,11 @@ class Pacman : public SpriteEntity {
   public:
 	Pacman(glm::vec2 pos, std::unique_ptr<AnimatedSpriteSheet> spritesheet,
 	       std::unique_ptr<std::unordered_map<Direction, SpriteSheetAnimation>>
-	           animations)
+	                                       animations,
+	       std::pair<glm::vec2, glm::vec2> bounds)
 	    : SpriteEntity(pos), m_direction(Direction::Right),
 	      m_spritesheet(std::move(spritesheet)),
-	      m_animations(std::move(animations)) {
+	      m_animations(std::move(animations)), m_bounds(std::move(bounds)) {
 		m_spritesheet->playAnimation(m_animations->at(Direction::Right));
 	}
 
@@ -114,6 +115,7 @@ class Pacman : public SpriteEntity {
   private:
 	int                                  m_pellets_eaten = 0;
 	Direction                            m_direction;
+	std::pair<glm::vec2, glm::vec2>      m_bounds;
 	std::unique_ptr<AnimatedSpriteSheet> m_spritesheet;
 	std::unique_ptr<std::unordered_map<Direction, SpriteSheetAnimation>>
 	    m_animations;
@@ -126,9 +128,11 @@ class Ghost : public SpriteEntity {
   public:
 	Ghost(glm::vec2 pos, std::unique_ptr<AnimatedSpriteSheet> spritesheet,
 	      std::shared_ptr<std::unordered_map<Direction, SpriteSheetAnimation>>
-	          animations)
+	                                      animations,
+	      std::pair<glm::vec2, glm::vec2> bounds)
 	    : SpriteEntity(pos), m_spritesheet(std::move(spritesheet)),
-	      m_animations(std::move(animations)), m_direction(Direction::Right) {
+	      m_animations(std::move(animations)), m_direction(Direction::Right),
+	      m_bounds(std::move(bounds)) {
 		m_spritesheet->playAnimation(m_animations->at(m_direction));
 	}
 
@@ -142,6 +146,7 @@ class Ghost : public SpriteEntity {
 
   private:
 	Direction                            m_direction;
+	std::pair<glm::vec2, glm::vec2>      m_bounds;
 	std::unique_ptr<AnimatedSpriteSheet> m_spritesheet;
 	std::shared_ptr<std::unordered_map<Direction, SpriteSheetAnimation>>
 	    m_animations;

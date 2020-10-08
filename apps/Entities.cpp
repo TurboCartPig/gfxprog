@@ -18,6 +18,19 @@ static glm::vec2 direction_to_delta(Direction direction) {
 }
 
 /**
+ * Check if the "position" is within the level bounds.
+ * @param position Position to check
+ * @param bounds Level bounds.
+ * @return Is "position" within the level bounds.
+ */
+static bool checkBounds(glm::vec2                       position,
+                        std::pair<glm::vec2, glm::vec2> bounds) {
+	auto [min, max] = bounds;
+	return position.x >= min.x && position.y >= min.y && position.x <= max.x &&
+	       position.y <= max.y;
+}
+
+/**
  * Check if "position" collides with position of "T". I.e. is closer than
  * "dist". The index, into "entities" of the colliding entity is returned via
  * "index".
@@ -76,6 +89,8 @@ void Pacman::update(Duration dt, Entities &entities) {
 	auto delta    = direction_to_delta(m_direction);
 	auto position = m_position + dt.count() * delta;
 
+	// Is pacman within bounds?
+	bool in_bounds = checkBounds(position, m_bounds);
 	// Is pacman colliding with a wall?
 	bool collision = checkCollision<Wall>(position, entities);
 
@@ -96,7 +111,7 @@ void Pacman::update(Duration dt, Entities &entities) {
 	if (hit_ghost)
 		this->deactivate();
 
-	if (!collision) {
+	if (!collision && in_bounds) {
 		// Remember to start playing animation again if newly out of collision
 		m_spritesheet->play();
 		m_position = position;
@@ -120,9 +135,11 @@ void Ghost::update(Duration dt, const Entities &entities) {
 	auto delta    = direction_to_delta(m_direction);
 	auto position = m_position + delta * dt.count();
 
+	// Is the ghost within bounds?
+	bool in_bounds = checkBounds(position, m_bounds);
 	// Would we collide with a wall if we move to new position?
 	bool collide_with_wall = checkCollision<Wall>(position, entities);
-	if (collide_with_wall) {
+	if (collide_with_wall || !in_bounds) {
 		switch (m_direction) {
 			case Direction::Up: m_direction = Direction::Right; break;
 			case Direction::Right: m_direction = Direction::Down; break;
