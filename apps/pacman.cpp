@@ -146,11 +146,6 @@ class Level {
 		auto pacman_animations = create_pacman_animations();
 		auto ghost_animations  = create_ghost_animations();
 
-		SpriteSheetAnimation default_pacman_animation(
-		    pacman_animations->at(Direction::Right));
-		SpriteSheetAnimation default_ghost_animation(
-		    ghost_animations->at(Direction::Right));
-
 		// Load level file from path
 		std::ifstream file(path);
 		assert(file.good());
