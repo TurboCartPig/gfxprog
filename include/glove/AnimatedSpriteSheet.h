@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <chrono>
 #include <glove/Texture.h>
+#include <initializer_list>
 #include <memory>
 #include <vector>
 
@@ -15,6 +16,18 @@ class SpriteSheetAnimation {
 	friend class AnimatedSpriteSheet;
 
   public:
+	/**
+	 * Create an empty animation.
+	 * @note Must add keyframes via "pushKeyFrame".
+	 */
+	SpriteSheetAnimation() = default;
+
+	/**
+	 * Create new spritesheet animation from a list of keyframes.
+	 * @param keyframes List of keyframes that define the animation.
+	 */
+	SpriteSheetAnimation(std::initializer_list<glm::ivec4> keyframes);
+
 	/**
 	 * Add another key frame to the animation.
 	 * @param keyFrame

@@ -1,5 +1,9 @@
 #include <glove/AnimatedSpriteSheet.h>
 
+SpriteSheetAnimation::SpriteSheetAnimation(
+    std::initializer_list<glm::ivec4> keyframes)
+    : m_key_frames(keyframes) {}
+
 AnimatedSpriteSheet::AnimatedSpriteSheet(milliseconds             frameTime,
                                          std::shared_ptr<Texture> spritesheet)
     : m_frame_time(frameTime), m_sprite_sheet(std::move(spritesheet)) {}
