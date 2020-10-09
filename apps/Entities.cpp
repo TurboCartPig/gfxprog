@@ -87,7 +87,7 @@ void Pacman::onInput(InputCode key, const Entities &entities) {
 void Pacman::update(Duration dt, Entities &entities) {
 	// Find new position if pacman moved
 	auto delta    = direction_to_delta(m_direction);
-	auto position = m_position + dt.count() * delta;
+	auto position = m_position + dt.count() * delta * 2.0f;
 
 	// Is pacman within bounds?
 	bool in_bounds = checkBounds(position, m_bounds);
@@ -133,7 +133,7 @@ void Ghost::update(Duration dt, const Entities &entities) {
 
 	// Find new position
 	auto delta    = direction_to_delta(m_direction);
-	auto position = m_position + delta * dt.count();
+	auto position = m_position + delta * dt.count() * 1.5f;
 
 	// Is the ghost within bounds?
 	bool in_bounds = checkBounds(position, m_bounds);
