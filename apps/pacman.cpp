@@ -249,57 +249,37 @@ class Level {
 		// Generate vertex contents
 		auto draw = [](const auto &entity) { return entity.getAttributes(); };
 		for (const auto &entity : m_entities) {
-			auto      attrib  = std::visit(draw, entity);
-			uint32_t  variant = attrib.rgba.index();
+			auto  attrib = std::visit(draw, entity);
+			float variant =
+			    attrib.quad ? attrib.rgba.index()
+			                : 2; // Hack, because shaders struggle with uints
 			glm::vec4 rgba;
 
-			if (variant == 0) {
+			if (std::holds_alternative<glm::vec4>(attrib.rgba)) {
 				rgba = std::get<glm::vec4>(attrib.rgba);
 			} else {
 				rgba = std::get<glm::ivec4>(attrib.rgba);
 			}
 
 			auto offset = ver.size();
-			if (attrib.quad) { // Add quad
-				ver.push_back(
-				    {attrib.scale * glm::vec2(0.0f, 0.0f) + attrib.position,
-				     glm::vec2(1.0f, 1.0f), rgba, variant});
-				ver.push_back(
-				    {attrib.scale * glm::vec2(0.0f, 1.0f) + attrib.position,
-				     glm::vec2(1.0f, 0.0f), rgba, variant});
-				ver.push_back(
-				    {attrib.scale * glm::vec2(1.0f, 0.0f) + attrib.position,
-				     glm::vec2(0.0f, 1.0f), rgba, variant});
-				ver.push_back(
-				    {attrib.scale * glm::vec2(1.0f, 1.0f) + attrib.position,
-				     glm::vec2(0.0f, 0.0f), rgba, variant});
-				ind.push_back(offset + 0);
-				ind.push_back(offset + 1);
-				ind.push_back(offset + 2);
-				ind.push_back(offset + 1);
-				ind.push_back(offset + 2);
-				ind.push_back(offset + 3);
-			} else { // Add diamond
-				// FIXME: Add circles instead of diamonds
-				ver.push_back(
-				    {attrib.scale * glm::vec2(0.25f, 0.5f) + attrib.position,
-				     glm::vec2(1.0f, 1.0f), rgba, variant});
-				ver.push_back(
-				    {attrib.scale * glm::vec2(0.5f, 0.75f) + attrib.position,
-				     glm::vec2(0.0f, 1.0f), rgba, variant});
-				ver.push_back(
-				    {attrib.scale * glm::vec2(0.5f, 0.25f) + attrib.position,
-				     glm::vec2(0.0f, 0.0f), rgba, variant});
-				ver.push_back(
-				    {attrib.scale * glm::vec2(0.75f, 0.5f) + attrib.position,
-				     glm::vec2(1.0f, 0.0f), rgba, variant});
-				ind.push_back(offset + 0);
-				ind.push_back(offset + 1);
-				ind.push_back(offset + 2);
-				ind.push_back(offset + 1);
-				ind.push_back(offset + 2);
-				ind.push_back(offset + 3);
-			}
+			ver.push_back(
+			    {attrib.scale * glm::vec2(0.0f, 0.0f) + attrib.position,
+			     glm::vec2(1.0f, 1.0f), rgba, variant});
+			ver.push_back(
+			    {attrib.scale * glm::vec2(0.0f, 1.0f) + attrib.position,
+			     glm::vec2(1.0f, 0.0f), rgba, variant});
+			ver.push_back(
+			    {attrib.scale * glm::vec2(1.0f, 0.0f) + attrib.position,
+			     glm::vec2(0.0f, 1.0f), rgba, variant});
+			ver.push_back(
+			    {attrib.scale * glm::vec2(1.0f, 1.0f) + attrib.position,
+			     glm::vec2(0.0f, 0.0f), rgba, variant});
+			ind.push_back(offset + 0);
+			ind.push_back(offset + 1);
+			ind.push_back(offset + 2);
+			ind.push_back(offset + 1);
+			ind.push_back(offset + 2);
+			ind.push_back(offset + 3);
 		}
 
 		m_vbo->uploadWhole(ver, ind);

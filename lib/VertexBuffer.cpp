@@ -52,7 +52,7 @@ void setVertexAttribs<Vertex2DTexRgbav>() {
 	    2, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex2DTexRgbav),
 	    reinterpret_cast<const void *>(offsetof(Vertex2DTexRgbav, rgba)));
 	glVertexAttribPointer(
-	    3, 1, GL_UNSIGNED_INT, GL_FALSE, sizeof(Vertex2DTexRgbav),
+	    3, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex2DTexRgbav),
 	    reinterpret_cast<const void *>(offsetof(Vertex2DTexRgbav, variant)));
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);

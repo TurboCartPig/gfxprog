@@ -18,5 +18,5 @@ struct Vertex2DTexRgbav {
 	glm::vec2 pos;     ///< Position
 	glm::vec2 uv;      ///< Normalized texture coordinates
 	glm::vec4 rgba;    ///< rgba OR xyzw
-	uint32_t  variant; ///< Is rgba or xyzw
+	float     variant; ///< Is rgba or xyzw
 };
