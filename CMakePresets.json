@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 19,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "displayName": "Base configuration",
+      "description": "Base configuration preset, meant to be inherited from. Override the specified cache variables.",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_C_COMPILER_LAUNCHER": "sccache",
+        "CMAKE_CXX_COMPILER_LAUNCHER": "sccache",
+        "CMAKE_TOOLCHAIN_FILE": "/path/to/vcpkg.cmake"
+      },
+      "warnings": {
+        "dev": false,
+        "deprecated": true,
+        "uninitialized": true,
+        "systemVars": true
+      },
+      "errors": {
+        "dev": false,
+        "deprecated": true
+      }
+    }
+  ]
+}
