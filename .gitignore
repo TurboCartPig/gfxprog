@@ -555,3 +555,6 @@ MigrationBackup/
 
 # Visual Studio Code Cmake build dir
 build/
+
+# Unignore obj models in resources directory
+!resources/models/*.obj
