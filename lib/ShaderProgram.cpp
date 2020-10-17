@@ -163,3 +163,10 @@ void ShaderProgram::setUniform(const std::string &name, const glm::mat4 v) {
 	glUniformMatrix4fv(m_uniforms.at(name).location, 1, GL_FALSE,
 	                   glm::value_ptr(v));
 }
+
+void ShaderProgram::setUniform(const std::string &     name,
+                               const DirectionalLight &v) {
+	setUniform(name + ".color", v.color);
+	setUniform(name + ".direction", v.direction);
+	setUniform(name + ".specularity", v.specularity);
+}

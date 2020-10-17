@@ -20,3 +20,9 @@ struct Vertex2DTexRgbav {
 	glm::vec4 rgba;    ///< rgba OR xyzw
 	float     variant; ///< Is rgba or xyzw
 };
+
+struct Vertex3DNormTex {
+	glm::vec3 pos;    ///< Position
+	glm::vec3 normal; ///< Normal
+	glm::vec2 uv;     ///< Normalized texture coordinates
+};

@@ -60,6 +60,21 @@ void setVertexAttribs<Vertex2DTexRgbav>() {
 	glEnableVertexAttribArray(3);
 }
 
+template <>
+void setVertexAttribs<Vertex3DNormTex>() {
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3DNormTex),
+	                      nullptr);
+	glVertexAttribPointer(
+	    1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3DNormTex),
+	    reinterpret_cast<const void *>(offsetof(Vertex3DNormTex, normal)));
+	glVertexAttribPointer(
+	    2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex3DNormTex),
+	    reinterpret_cast<const void *>(offsetof(Vertex3DNormTex, uv)));
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
+}
+
 template <typename VertexFormat>
 VertexBuffer<VertexFormat>::VertexBuffer(size_t size, bool indexed,
                                          GLenum usage) {
@@ -89,7 +104,7 @@ template <typename VertexFormat>
 VertexBuffer<VertexFormat>::VertexBuffer(
     const std::vector<VertexFormat> &vertices) {
 	m_indexed         = false;
-	m_primitive_count = vertices.size() / 3;
+	m_primitive_count = vertices.size(); // TODO: Is this correct?
 
 	// Generate a vao
 	glGenVertexArrays(1, &m_vao);
@@ -178,5 +193,6 @@ template class VertexBuffer<Vertex2D>;
 template class VertexBuffer<Vertex2DRgb>;
 template class VertexBuffer<Vertex2DTex>;
 template class VertexBuffer<Vertex2DTexRgbav>;
+template class VertexBuffer<Vertex3DNormTex>;
 
 #pragma clang diagnostic pop

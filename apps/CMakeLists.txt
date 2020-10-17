@@ -28,6 +28,11 @@ add_dependencies(texture copy-resources)
 target_compile_options(texture PRIVATE ${COMPILER_WARNINGS_AND_ERROR})
 target_link_libraries(texture PRIVATE lib)
 
+add_executable(model model.cpp)
+add_dependencies(model copy-resources)
+target_compile_options(model PRIVATE ${COMPILER_WARNINGS_AND_ERROR})
+target_link_libraries(model PRIVATE lib)
+
 # Assignments
 ###############################################################################
 
@@ -37,7 +42,7 @@ target_compile_options(pacman PRIVATE ${COMPILER_WARNINGS_AND_ERROR})
 target_link_libraries(pacman PRIVATE lib)
 
 set_target_properties(
-        triangle square mvp texture pacman
+        triangle square mvp texture model pacman
         PROPERTIES
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON

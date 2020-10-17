@@ -10,6 +10,12 @@
 #include <unordered_map>
 #include <vector>
 
+struct DirectionalLight {
+	glm::vec3 color;
+	glm::vec3 direction;
+	float     specularity;
+};
+
 struct UniformSpec {
 	GLuint index;    ///< Index of the uniform
 	GLenum type;     ///< Type of the uniform
@@ -73,6 +79,8 @@ class ShaderProgram {
 	void setUniform(const std::string &name, const glm::ivec4 v);
 
 	void setUniform(const std::string &name, const glm::mat4 v);
+
+	void setUniform(const std::string &name, const DirectionalLight &v);
 
   private:
 	GLuint                                       m_program;
