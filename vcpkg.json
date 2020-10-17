@@ -16,6 +16,10 @@
         "glfw-binding",
         "opengl3-glew-binding"
       ]
+    },
+    {
+      "name": "assimp",
+      "platform": "windows"
     }
   ]
 }

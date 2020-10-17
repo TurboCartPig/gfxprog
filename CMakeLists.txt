@@ -31,11 +31,22 @@ set(COMPILER_WARNINGS_AND_ERRORS
 # Find or download dependencies
 
 find_package(OpenGL REQUIRED)
-find_package(GLEW 2.1 QUIET)
-find_package(glfw3 3.3 QUIET)
-find_package(glm QUIET)
-find_package(imgui QUIET)
-find_package(Stb QUIET)
+
+find_package(glfw3 3.3 CONFIG QUIET)
+find_package(glm 0.9.9 CONFIG QUIET)
+find_package(Assimp CONFIG QUIET)
+find_package(imgui CONFIG QUIET)
+find_package(GLEW 2.1 MODULE QUIET)
+find_package(Stb MODULE QUIET)
+
+if (NOT Assimp_FOUND)
+    message(STATUS "Assimp not found locally, downloading...")
+    FetchContent_Declare(
+            Assimp
+            GIT_REPOSITORY https://github.com/assimp/assimp
+            GIT_TAG v5.0.1)
+    FetchContent_MakeAvailable(Assimp)
+endif ()
 
 if (NOT Stb_FOUND)
     message(STATUS "Stb not found locally, downloading...")
