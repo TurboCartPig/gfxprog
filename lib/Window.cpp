@@ -110,5 +110,9 @@ bool Window::pollEvents() {
 void Window::swapBuffers() {
 	glfwSwapBuffers(m_window);
 
-	glClear(GL_COLOR_BUFFER_BIT);
+	auto now     = std::chrono::steady_clock::now();
+	m_delta_time = (now - m_prev_frame).count() / 1000000000.0f;
+	m_prev_frame = now;
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GLFW/glfw3.h>
+#include <chrono>
 #include <deque>
 #include <memory>
 #include <string>
@@ -106,12 +107,20 @@ class Window {
 	}
 
 	/**
+	 * Get the previous delta time.
+	 * @return Delta time in seconds.
+	 */
+	[[nodiscard]] float getDeltaTime() const { return m_delta_time; }
+
+	/**
 	 * Get a shared pointer to the input queue.
 	 * @return A shared pointer to the input queue.
 	 */
 	InputQueue getInputQueue() { return m_input_queue; }
 
   private:
-	GLFWwindow *m_window;
-	InputQueue  m_input_queue;
+	std::chrono::steady_clock::time_point m_prev_frame;
+	float                                 m_delta_time = 0.016f;
+	GLFWwindow *                          m_window;
+	InputQueue                            m_input_queue;
 };
