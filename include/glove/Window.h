@@ -41,6 +41,7 @@ enum class InputCode {
 	RShift,
 	RAlt,
 	Tab,
+	Escape,
 	// TODO: Add the rest of a normal keyboard
 };
 
@@ -105,6 +106,13 @@ class Window {
 	void setDimensions(const int width, const int height) {
 		glfwSetWindowSize(m_window, width, height);
 	}
+
+	/**
+	 * Should the window be fullscreened? If yes, make it so. Otherwise make if
+	 * a window.
+	 * @param should_be_fullscreen Should the window be fullscreened?
+	 */
+	void fullscreen(bool should_be_fullscreen);
 
 	/**
 	 * Get the previous delta time.
