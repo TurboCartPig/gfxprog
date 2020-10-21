@@ -41,8 +41,13 @@ add_dependencies(pacman copy-resources)
 target_compile_options(pacman PRIVATE ${COMPILER_WARNINGS_AND_ERROR})
 target_link_libraries(pacman PRIVATE lib)
 
+add_executable(pacman3d pacman3d.cpp)
+add_dependencies(pacman3d copy-resources)
+target_compile_options(pacman3d PRIVATE ${COMPILER_WARNINGS_AND_ERROR})
+target_link_libraries(pacman3d PRIVATE lib)
+
 set_target_properties(
-        triangle square mvp texture model pacman
+        triangle square mvp texture model pacman pacman3d
         PROPERTIES
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
