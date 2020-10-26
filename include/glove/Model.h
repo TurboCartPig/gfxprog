@@ -1,14 +1,14 @@
 #pragma once
 
-#include <filesystem>
 #include <glove/Texture.h>
 #include <glove/VertexBuffer.h>
 #include <glove/VertexFormats.h>
 #include <memory>
+#include <string>
 
 class Model {
   public:
-	explicit Model(const std::filesystem::path &model_path);
+	explicit Model(const std::string &model_path);
 
 	void draw();
 

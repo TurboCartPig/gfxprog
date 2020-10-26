@@ -2,7 +2,6 @@
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 #include <glove/Model.h>
-#include <glove/utility.h>
 
 void process_node(const aiScene *scene, const aiNode *node,
                   std::vector<Vertex3DNormTex> &vertices,
@@ -39,8 +38,7 @@ void process_node(const aiScene *scene, const aiNode *node,
 	}
 }
 
-Model::Model(const std::filesystem::path &model_path) {
-	const auto       parent_directory = model_path.parent_path();
+Model::Model(const std::string &model_path) {
 	Assimp::Importer importer;
 
 	const auto *scene =
