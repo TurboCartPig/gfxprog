@@ -33,18 +33,27 @@ set(COMPILER_WARNINGS_AND_ERRORS
 find_package(OpenGL REQUIRED)
 
 find_package(glfw3 3.3 CONFIG QUIET)
-find_package(glm 0.9.9 CONFIG QUIET)
+find_package(glm CONFIG QUIET)
 find_package(Assimp CONFIG QUIET)
 find_package(imgui CONFIG QUIET)
 find_package(GLEW 2.1 MODULE QUIET)
 find_package(Stb MODULE QUIET)
 
+# FIXME: This does not build
 if (NOT Assimp_FOUND)
     message(STATUS "Assimp not found locally, downloading...")
     FetchContent_Declare(
             Assimp
             GIT_REPOSITORY https://github.com/assimp/assimp
             GIT_TAG v5.0.1)
+
+    # Disable a bunch of stuff we don't need
+    # Build assimp dependencies with assimp
+    set(ASSIMP_BUILD_ZLIB ON)
+    set(ASSIMP_BUILD_ASSIMP_TOOLS OFF)
+    set(ASSIMP_BUILD_SAMPLES OFF)
+    set(ASSIMP_BUILD_TESTS OFF)
+    set(SYSTEM_IRRXML OFF)
     FetchContent_MakeAvailable(Assimp)
 endif ()
 
