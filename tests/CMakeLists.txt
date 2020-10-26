@@ -18,5 +18,6 @@ if (Catch2_FOUND)
             CXX_STANDARD 17
             CXX_STANDARD_REQUIRED ON
             CXX_EXTENSIONS OFF
+            MSVC_RUNTIME_LIBRARY "MultiThreadedDebug"
             FOLDER "Tests")
 endif ()

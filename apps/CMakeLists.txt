@@ -53,4 +53,5 @@ set_target_properties(
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
         PRECOMPILE_HEADERS_REUSE_FROM lib
+        MSVC_RUNTIME_LIBRARY "MultiThreadedDebug"
         FOLDER "Apps")

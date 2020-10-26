@@ -7,7 +7,7 @@ add_library(lib ${GLOVE_SOURCE_FILES} ${GLOVE_HEADER_FILES})
 target_compile_options(lib PRIVATE ${COMPILER_WARNINGS_AND_ERRORS})
 target_compile_definitions(lib PUBLIC _USE_MATH_DEFINES)
 target_include_directories(lib PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(lib PUBLIC glm GLEW::GLEW glfw PRIVATE OpenGL::GL Stb::Stb assimp)
+target_link_libraries(lib PUBLIC glm GLEW::GLEW glfw PRIVATE OpenGL::GL Stb::Stb assimp::assimp)
 target_precompile_headers(
         lib
         PRIVATE
@@ -31,6 +31,7 @@ set_target_properties(
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
+        MSVC_RUNTIME_LIBRARY "MultiThreadedDebug"
         FOLDER "Glove")
 
 source_group(
