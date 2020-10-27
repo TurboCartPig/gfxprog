@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include <chrono>
+#include <glm/glm.hpp>
 #include <glove/Texture.h>
 #include <initializer_list>
 #include <memory>
