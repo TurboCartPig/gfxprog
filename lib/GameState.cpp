@@ -9,6 +9,11 @@ void Core::run() {
 	m_window   = std::make_unique<Window>("Change Me", 1280, 720);
 	auto input = m_window->getInputQueue();
 
+	// Initialize all the game states
+	for (auto &state : m_gamestates) {
+		state->initialize();
+	}
+
 	auto prev_time_point = std::chrono::steady_clock::now();
 
 	// Main game loop

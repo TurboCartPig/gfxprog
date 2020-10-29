@@ -45,6 +45,8 @@ class IGameState {
   public:
 	virtual ~IGameState() = default;
 
+	virtual void initialize() = 0;
+
 	/**
 	 * Pass player input to the game state.
 	 * @param code Key code

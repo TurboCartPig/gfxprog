@@ -335,7 +335,7 @@ class Level {
 		std::cout << "Game Over" << std::endl;
 		std::cout << pellets_eaten << " pellets eaten out of "
 		          << m_total_pellets << std::endl;
-		m_isGameOver = true;
+		m_is_game_over = true;
 	}
 
 	/**
@@ -343,7 +343,7 @@ class Level {
 	 */
 	void winGame() {
 		std::cout << "All pellets eaten, Game Won!" << std::endl;
-		m_isGameOver = true;
+		m_is_game_over = true;
 	}
 
 	/**
@@ -375,10 +375,10 @@ class Level {
 	 * Is the game over?
 	 * @return true if the game is over
 	 */
-	[[nodiscard]] bool isGameOver() const { return m_isGameOver; }
+	[[nodiscard]] bool isGameOver() const { return m_is_game_over; }
 
   private:
-	bool m_isGameOver    = false;
+	bool m_is_game_over  = false;
 	int  m_total_pellets = 0;
 
 	int m_width  = 0;

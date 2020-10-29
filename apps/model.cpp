@@ -5,6 +5,7 @@
  * @file texture.cpp
  */
 
+#include <glove/Components.h>
 #include <glove/lib.h>
 #include <iostream>
 
@@ -25,12 +26,18 @@ int main() {
 	auto transform = glm::mat4(1.0f);
 
 	auto view =
-	    glm::lookAt(glm::vec3(0.0f, 1.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f),
+	    glm::lookAt(glm::vec3(0.0f, 1.0f, -2.0f), glm::vec3(0.0f, 0.0f, 0.0f),
 	                glm::vec3(0.0f, 1.0f, 0.0f));
 
 	auto [w, h]     = window.dimensions();
 	auto aspect     = (float)w / (float)h;
-	auto projection = glm::perspective(96.0f, aspect, 0.01f, 100.0f);
+	auto projection = glm::perspective(glm::radians(96.0f), aspect, 0.01f, 100.0f);
+
+	glm::quat q = glm::quatLookAt(glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	TransformComponent transform_component = {glm::vec3(0.0f, 1.0f, -2.0f), q, glm::vec3(1.0f)};
+    CameraComponent camera(aspect, 96.0f);
+	auto view_projection = camera.asViewProjection(transform_component);
+//	auto view_projection = projection * view;
 
 	auto model_color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 
@@ -38,8 +45,9 @@ int main() {
 	    glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, -1.0f, 5.0f), 10.0f};
 
 	shader_program.setUniform("u_transform", transform);
-	shader_program.setUniform("u_view", view);
-	shader_program.setUniform("u_projection", projection);
+//	shader_program.setUniform("u_view", view);
+//	shader_program.setUniform("u_projection", projection);
+	shader_program.setUniform("u_view_projection", view_projection);
 	shader_program.setUniform("u_model_color", model_color);
 	shader_program.setUniform("u_directional_light", directional_light);
 	shader_program.setUniform("u_diffuse_map", 0u);

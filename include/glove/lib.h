@@ -19,8 +19,10 @@
 
 // Reexport internal headers
 #include <glove/AnimatedSpriteSheet.h>
+#include <glove/Components.h>
 #include <glove/GameState.h>
 #include <glove/Model.h>
+#include <glove/ResourceStore.h>
 #include <glove/ShaderProgram.h>
 #include <glove/Texture.h>
 #include <glove/VertexBuffer.h>

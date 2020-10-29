@@ -39,6 +39,13 @@ find_package(imgui CONFIG QUIET)
 find_package(GLEW 2.1 MODULE QUIET)
 find_package(Stb MODULE QUIET)
 
+if (NOT TARGET assimp::assimp)
+    if (Assimp_FOUND)
+        add_library(assimp::assimp INTERFACE IMPORTED)
+        target_link_libraries(assimp::assimp INTERFACE assimp)
+    endif ()
+endif ()
+
 # FIXME: This does not build
 if (NOT Assimp_FOUND)
     message(STATUS "Assimp not found locally, downloading...")
