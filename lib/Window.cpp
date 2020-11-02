@@ -80,16 +80,25 @@ Window::Window(const std::string &title, const uint32_t width,
 	glfwSwapInterval(1);
 
 	// Setup input queue
-	m_input_queue = std::make_shared<std::deque<InputCode>>();
+	m_input_queue = std::make_shared<std::deque<Input>>();
 
 	// Setup key callback
 	auto input = m_input_queue; // Get a copy of the input queue pointer for
 	                            // capture by lambda
 	auto callback = [input](GLFWwindow *window, int key, int scancode,
 	                        int action, int modes) mutable -> void {
-		if (action == GLFW_PRESS) {
-			input->push_back(glfw_to_inputcode(key));
+		InputCode  code = glfw_to_inputcode(key);
+		InputState state;
+
+		switch (action) {
+			case GLFW_PRESS: state = InputState::Pressed; break;
+			case GLFW_RELEASE: state = InputState::Released; break;
+			case GLFW_REPEAT: state = InputState::Held; break;
+			default: throw std::runtime_error("Unknown GLFW action!");
 		}
+
+		auto i = Input{code, state};
+		input->push_back(i);
 	};
 
 	// Hack to make the key callback to work with lambda's that capture the

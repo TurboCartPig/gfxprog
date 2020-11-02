@@ -45,7 +45,18 @@ enum class InputCode {
 	// TODO: Add the rest of a normal keyboard
 };
 
-using InputQueue = std::shared_ptr<std::deque<InputCode>>;
+enum class InputState {
+	Pressed,
+	Released,
+	Held,
+};
+
+struct Input {
+	InputCode  code;
+	InputState state;
+};
+
+using InputQueue = std::shared_ptr<std::deque<Input>>;
 
 /**
  * Window object that maintains a window and opengl context.

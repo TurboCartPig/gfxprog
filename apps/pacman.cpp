@@ -298,7 +298,7 @@ class Level {
 				// Pass input if there is any
 				if (!m_input_queue->empty()) {
 					auto key = m_input_queue->back();
-					pacman.onInput(key, m_entities);
+					pacman.onInput(key.code, m_entities);
 				}
 
 				// Update

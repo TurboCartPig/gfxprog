@@ -53,7 +53,7 @@ class IGameState {
 	 * @return Should the game transition states as a result of the input? If so
 	 * how?
 	 */
-	[[nodiscard]] virtual StateTransition input(InputCode code) = 0;
+	[[nodiscard]] virtual StateTransition input(Input input) = 0;
 
 	/**
 	 * Drive the game state forward.
