@@ -1,7 +1,9 @@
 #pragma once
 
+#include <glove/Texture.h>
 #include <iostream>
 #include <memory>
+#include <unordered_map>
 
 /**
  * FIXME: How should the store deal with being "full"? or larger then necessary?
