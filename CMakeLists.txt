@@ -16,6 +16,7 @@ set(COMPILER_WARNINGS_AND_ERRORS
         $<$<CXX_COMPILER_ID:MSVC>:/w44061>
         $<$<CXX_COMPILER_ID:MSVC>:/w44062>
         $<$<CXX_COMPILER_ID:MSVC>:/w44265>
+        $<$<CXX_COMPILER_ID:MSVC>:/w44267>
         $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wall>
         $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wextra>
         $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wpedantic>
