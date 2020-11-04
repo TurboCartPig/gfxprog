@@ -1,15 +1,20 @@
 #pragma once
 
-#include "Level3d.h"
-
 #include <glove/lib.h>
 
-void genLevelMesh(const Level &level, std::vector<Vertex3DNormTex> &vertices,
-                  std::vector<uint32_t> &indices);
+void genLevelMesh(const class Level &           level,
+                  std::vector<Vertex3DNormTex> &vertices,
+                  std::vector<uint32_t> &       indices);
+
+glm::vec3 findPacman(const class Level &level);
+
+std::vector<class Ghost> genGhosts(const class Level &level);
+
+std::vector<class Pellet> genPellets(const class Level &level);
 
 class Maze {
   public:
-	Maze(const Level &level) {
+	Maze(const class Level &level) {
 		std::vector<Vertex3DNormTex> vertices;
 		std::vector<uint32_t>        indices;
 		genLevelMesh(level, vertices, indices);
@@ -25,26 +30,32 @@ class Maze {
 
 class Pacman {
   public:
-	Pacman();
+	Pacman(glm::vec3 position);
 	void input(Input input);
-	void update();
+	void      update(float dt);
+	glm::mat4 viewProjection() const;
 
   private:
+	glm::vec3          m_forward;
+	TransformComponent m_transform;
+	CameraComponent    m_camera;
 };
 
 class Ghost {
   public:
-	Ghost();
-	void update();
+	Ghost(glm::vec3 position);
+	void update(float dt);
 	void draw() const;
 
   private:
+	glm::vec3          m_forward;
+	TransformComponent m_transform;
 };
 
 class Pellet {
   public:
-	Pellet();
-	void draw() const;
+	Pellet(glm::vec3 position);
 
   private:
+	glm::vec3 m_position;
 };

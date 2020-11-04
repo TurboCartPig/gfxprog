@@ -1,4 +1,5 @@
 #include "Entities3d.h"
+#include "Level3d.h"
 
 #include <fstream>
 #include <glove/lib.h>
@@ -27,6 +28,9 @@ class GameState : public IGameState {
 		auto level = Level("resources/levels/level0.txt");
 
 		m_maze = std::make_unique<Maze>(level);
+		m_pacman  = std::make_unique<Pacman>(findPacman(level));
+		m_ghosts  = genGhosts(level);
+		m_pellets = genPellets(level);
 
 		// Setup rendering
 		const auto shaders = {"resources/shaders/model.vert"s,
@@ -36,19 +40,12 @@ class GameState : public IGameState {
 
 		auto transform = glm::mat4(1.0f);
 
-		glm::quat q = glm::quatLookAt(glm::vec3(0.0f, 0.0f, -1.0f),
-		                              glm::vec3(0.0f, 1.0f, 0.0f));
-		m_transform = {glm::vec3(0.0f, 0.5f, -2.0f), q, glm::vec3(1.0f)};
-		m_camera    = CameraComponent(16.0f / 9.0f, 96.0f);
-		auto view_projection = m_camera.asViewProjection(m_transform);
-
 		auto model_color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 
 		auto directional_light = DirectionalLight{
 		    glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.25f, 1.0f, 0.5f), 10.0f};
 
 		m_shader_program->setUniform("u_transform", transform);
-		m_shader_program->setUniform("u_view_projection", view_projection);
 		m_shader_program->setUniform("u_model_color", model_color);
 		m_shader_program->setUniform("u_directional_light", directional_light);
 		m_shader_program->setUniform("u_diffuse_map", 0u);
@@ -60,42 +57,26 @@ class GameState : public IGameState {
 		if (input.state == InputState::Pressed) {
 			if (input.code == InputCode::Escape)
 				return Pop{};
-			else if (input.code == InputCode::W) {
-				m_forward.z = 1.0f;
-			} else if (input.code == InputCode::S) {
-				m_forward.z = -1.0f;
-			} else if (input.code == InputCode::A) {
-				m_forward.x = 1.0f;
-			} else if (input.code == InputCode::D) {
-				m_forward.x = -1.0f;
-			}
-		} else if (input.state == InputState::Released) {
-			if (input.code == InputCode::W || input.code == InputCode::S)
-				m_forward.z = 0.0f;
-			else if (input.code == InputCode::A || input.code == InputCode::D)
-				m_forward.x = 0.0f;
 		}
+
+		m_pacman->input(input);
 
 		return None{};
 	}
 
 	[[nodiscard]] StateTransition update(float dt) override {
-		m_transform.translation += m_forward * dt;
-
+		m_pacman->update(dt);
 		return None{};
 	}
 
 	void render() override {
-		auto view_projection = m_camera.asViewProjection(m_transform);
+		auto view_projection = m_pacman->viewProjection();
 
 		m_shader_program->use();
 		m_shader_program->setUniform("u_view_projection", view_projection);
 		m_maze->draw();
 
-		// m_pacman->update();
-
 		// for (auto &ghost : m_ghosts) {
-		// 	ghost.update();
 		// 	ghost.draw();
 		// }
 
@@ -109,11 +90,6 @@ class GameState : public IGameState {
 	std::unique_ptr<Pacman> m_pacman;
 	std::vector<Ghost>      m_ghosts;
 	std::vector<Pellet>     m_pellets;
-
-	// Camera stuff
-	glm::vec3          m_forward;
-	TransformComponent m_transform;
-	CameraComponent    m_camera;
 
 	std::unique_ptr<ShaderProgram> m_shader_program;
 };
