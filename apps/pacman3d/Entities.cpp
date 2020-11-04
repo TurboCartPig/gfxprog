@@ -197,6 +197,8 @@ glm::vec3 findPacman(const Level &level) {
 			}
 		}
 	}
+
+	throw std::runtime_error("Pacman not found in level!");
 }
 
 std::vector<Ghost> genGhosts(const Level &level) {
@@ -207,12 +209,11 @@ std::vector<Ghost> genGhosts(const Level &level) {
 	std::random_device                    rd;
 	std::default_random_engine            generator(rd());
 	std::uniform_real_distribution<float> distribution(0.0, 1.0);
-	auto rnd = std::bind(distribution, generator);
 
 	for (int k = 0; k < 4; k++) {
 		while (true) {
-			int i = rnd() * w;
-			int j = rnd() * h;
+			int i = distribution(generator) * w;
+			int j = distribution(generator) * h;
 			if (level.get(i, j) == EntityType::Tunnel) {
 				const auto offset =
 				    glm::vec3((float)i + 0.5f, 0.0f, (float)j + 0.5f);
