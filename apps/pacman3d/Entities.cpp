@@ -1,7 +1,8 @@
-#include "Entities3d.h"
-#include <random>
+#include "Entities.h"
 
-#include "Level3d.h"
+#include "Level.h"
+
+#include <random>
 
 void genLevelMesh(const Level &level, std::vector<Vertex3DNormTex> &vertices,
                   std::vector<uint32_t> &indices) {
@@ -41,26 +42,27 @@ void genLevelMesh(const Level &level, std::vector<Vertex3DNormTex> &vertices,
 				// Add 36 indices
 
 				// Add bottom face
-//				vertices.push_back(Vertex3DNormTex{
-//				    offset + glm::vec3(0.0f, 0.0f, 0.0f),
-//				    glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(0.0f, 0.0f)});
-//				vertices.push_back(Vertex3DNormTex{
-//				    offset + glm::vec3(0.0f, 0.0f, 1.0f),
-//				    glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(0.0f, 0.0f)});
-//				vertices.push_back(Vertex3DNormTex{
-//				    offset + glm::vec3(1.0f, 0.0f, 0.0f),
-//				    glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(0.0f, 0.0f)});
-//				vertices.push_back(Vertex3DNormTex{
-//				    offset + glm::vec3(1.0f, 0.0f, 1.0f),
-//				    glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(0.0f, 0.0f)});
-//
-//				indices.push_back(index_offset + 0);
-//				indices.push_back(index_offset + 1);
-//				indices.push_back(index_offset + 2);
-//				indices.push_back(index_offset + 1);
-//				indices.push_back(index_offset + 2);
-//				indices.push_back(index_offset + 3);
-//				index_offset += 4;
+				//				vertices.push_back(Vertex3DNormTex{
+				//				    offset + glm::vec3(0.0f, 0.0f, 0.0f),
+				//				    glm::vec3(0.0f, -1.0f, 0.0f),
+				//glm::vec2(0.0f, 0.0f)});
+				// vertices.push_back(Vertex3DNormTex{ 				    offset +
+				// glm::vec3(0.0f, 0.0f, 1.0f), 				    glm::vec3(0.0f, -1.0f,
+				// 0.0f), glm::vec2(0.0f, 0.0f)});
+				// vertices.push_back(Vertex3DNormTex{ 				    offset + glm::vec3(1.0f,
+				//0.0f, 0.0f), 				    glm::vec3(0.0f, -1.0f, 0.0f), glm::vec2(0.0f,
+				// 0.0f)}); 				vertices.push_back(Vertex3DNormTex{
+				// offset +
+				// glm::vec3(1.0f, 0.0f, 1.0f), 				    glm::vec3(0.0f, -1.0f,
+				// 0.0f), glm::vec2(0.0f, 0.0f)});
+				//
+				//				indices.push_back(index_offset + 0);
+				//				indices.push_back(index_offset + 1);
+				//				indices.push_back(index_offset + 2);
+				//				indices.push_back(index_offset + 1);
+				//				indices.push_back(index_offset + 2);
+				//				indices.push_back(index_offset + 3);
+				//				index_offset += 4;
 
 				// Add top face
 				vertices.push_back(Vertex3DNormTex{
@@ -274,10 +276,6 @@ glm::mat4 Pacman::viewProjection() const {
 	return m_camera.asViewProjection(m_transform);
 }
 
-Ghost::Ghost(glm::vec3 position) {
-	
-}
+Ghost::Ghost(glm::vec3 position) {}
 
-Pellet::Pellet(glm::vec3 postition) {
-	m_position = postition;
-}
+Pellet::Pellet(glm::vec3 postition) { m_position = postition; }

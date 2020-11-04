@@ -36,13 +36,19 @@ target_link_libraries(model PRIVATE lib)
 # Assignments
 ###############################################################################
 
-add_executable(pacman pacman.cpp Entities.cpp)
+file(GLOB PACMAN_SOURCE_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/pacman/*.cpp")
+
+add_executable(pacman "${PACMAN_SOURCE_FILES}")
 add_dependencies(pacman copy-resources)
+target_include_directories(pacman PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/pacman")
 target_compile_options(pacman PRIVATE ${COMPILER_WARNINGS_AND_ERROR})
 target_link_libraries(pacman PRIVATE lib)
 
-add_executable(pacman3d pacman3d.cpp Entities3d.cpp Level3d.cpp)
+file(GLOB PACMAN3D_SOURCE_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/pacman3d/*.cpp")
+
+add_executable(pacman3d "${PACMAN3D_SOURCE_FILES}")
 add_dependencies(pacman3d copy-resources)
+target_include_directories(pacman3d PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/pacman3d")
 target_compile_options(pacman3d PRIVATE ${COMPILER_WARNINGS_AND_ERROR})
 target_link_libraries(pacman3d PRIVATE lib)
 

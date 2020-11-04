@@ -1,5 +1,5 @@
-#include "Entities3d.h"
-#include "Level3d.h"
+#include "Entities.h"
+#include "Level.h"
 
 #include <fstream>
 #include <glove/lib.h>
@@ -27,7 +27,7 @@ class GameState : public IGameState {
 		// Load level
 		auto level = Level("resources/levels/level0.txt");
 
-		m_maze = std::make_unique<Maze>(level);
+		m_maze    = std::make_unique<Maze>(level);
 		m_pacman  = std::make_unique<Pacman>(findPacman(level));
 		m_ghosts  = genGhosts(level);
 		m_pellets = genPellets(level);
