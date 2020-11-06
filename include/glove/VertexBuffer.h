@@ -6,8 +6,6 @@
 /**
  * VertexBuffer is a class for representing a vertex buffer and freeing
  * the resources on deconstruction.
- *
- * @tparam VertexFormat
  */
 template <typename VertexFormat>
 class VertexBuffer {
@@ -20,8 +18,7 @@ class VertexBuffer {
 	 * @param indexed Should the VBO use an index buffer.
 	 * @param usage How is the VBO going to be used? Default is STATIC DRAW
 	 */
-	VertexBuffer(size_t size, bool indexed,
-	                      GLenum usage = GL_STATIC_DRAW);
+	VertexBuffer(size_t size, bool indexed, GLenum usage = GL_STATIC_DRAW);
 
 	/**
 	 * Construct a VBO containing a single vertex buffer of triangles.
@@ -55,7 +52,7 @@ class VertexBuffer {
 	/**
 	 * Draw the entire VBO.
 	 */
-	void draw();
+	void draw() const;
 
 	/**
 	 * Upload new content to the whole buffer.
@@ -65,10 +62,19 @@ class VertexBuffer {
 	void uploadWhole(const std::vector<VertexFormat> &vertices,
 	                 const std::vector<GLuint> &      indices);
 
+	/**
+	 * Creates and associates a instance array with the vertex buffer to enable
+	 * instanced rendering.
+	 */
+	template <typename InstanceFormat>
+	void setInstanceArray(const std::vector<InstanceFormat> &instance_data);
+
   private:
 	bool   m_indexed;
+	bool   m_instanced;
 	GLenum m_usage;
 	GLuint m_primitive_count;
+	GLuint m_instance_count;
 	GLuint m_vbo;
 	GLuint m_ebo;
 	GLuint m_vao;

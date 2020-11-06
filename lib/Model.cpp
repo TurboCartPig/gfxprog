@@ -44,6 +44,10 @@ Model::Model(const std::string &model_path) {
 	const auto *scene =
 	    importer.ReadFile(model_path, aiProcessPreset_TargetRealtime_Quality);
 
+	if (scene == nullptr) {
+		std::cout << "Assimp Error: " << importer.GetErrorString() << std::endl;
+	}
+
 	assert(scene != nullptr);
 	assert(scene->mRootNode != nullptr);
 	assert(!(scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE));
@@ -57,3 +61,11 @@ Model::Model(const std::string &model_path) {
 }
 
 void Model::draw() { m_vbo->draw(); }
+
+template <typename InstanceFormat>
+void Model::setInstanceArray(const std::vector<InstanceFormat> &instances) {
+	m_vbo->setInstanceArray(instances);
+}
+
+template void
+Model::setInstanceArray<glm::mat4>(const std::vector<glm::mat4> &);

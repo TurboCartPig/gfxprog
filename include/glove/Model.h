@@ -12,6 +12,9 @@ class Model {
 
 	void draw();
 
+	template <typename InstanceFormat>
+	void setInstanceArray(const std::vector<InstanceFormat> &instances);
+
   private:
 	std::unique_ptr<VertexBuffer<Vertex3DNormTex>> m_vbo;
 	std::unique_ptr<Texture>                       m_texture;
