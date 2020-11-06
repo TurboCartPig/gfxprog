@@ -25,12 +25,13 @@ class GameState : public IGameState {
 		glEnable(GL_BLEND);
 
 		// Load level
-		auto level = Level("resources/levels/level0.txt");
+		std::string path = "resources/levels/level0.txt";
+		m_level          = std::make_unique<Level>(path);
 
-		m_maze    = std::make_unique<Maze>(level);
-		m_pacman  = std::make_unique<Pacman>(findPacman(level));
-		m_ghosts  = genGhosts(level);
-		m_pellets = genPellets(level);
+		m_maze    = std::make_unique<Maze>(*m_level);
+		m_pacman  = std::make_unique<Pacman>(findPacman(*m_level));
+		m_pellets = genPellets(*m_level);
+		m_ghosts  = genGhosts(*m_level);
 
 		// Setup rendering
 		const auto shaders = {"resources/shaders/model.vert"s,
@@ -65,7 +66,7 @@ class GameState : public IGameState {
 	}
 
 	[[nodiscard]] StateTransition update(float dt) override {
-		m_pacman->update(dt);
+		m_pacman->update(dt, *m_level);
 		return None{};
 	}
 
@@ -86,10 +87,7 @@ class GameState : public IGameState {
 	}
 
   private:
-	std::unique_ptr<Maze>   m_maze;
-	std::unique_ptr<Pacman> m_pacman;
-	std::vector<Ghost>      m_ghosts;
-	std::vector<Pellet>     m_pellets;
+	std::unique_ptr<Level>   m_level;
 
 	std::unique_ptr<ShaderProgram> m_shader_program;
 };

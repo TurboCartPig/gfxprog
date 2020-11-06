@@ -31,8 +31,8 @@ class Maze {
 class Pacman {
   public:
 	Pacman(glm::vec3 position);
-	void input(Input input);
-	void      update(float dt);
+	void      input(Input input);
+	void      update(float dt, const class Level &level);
 	glm::mat4 viewProjection() const;
 
   private:

@@ -271,7 +271,16 @@ void Pacman::input(Input input) {
 	}
 }
 
-void Pacman::update(float dt) { m_transform.translation += m_forward * dt; }
+void Pacman::update(float dt, const Level &level) {
+	auto translation = m_transform.translation + m_forward * dt;
+
+	auto collision =
+	    level.get(std::round(translation.x - 0.5f),
+	              std::round(translation.z - 0.5f)) == EntityType::Wall;
+	if (!collision) {
+		m_transform.translation = translation;
+	}
+}
 
 glm::mat4 Pacman::viewProjection() const {
 	return m_camera.asViewProjection(m_transform);
