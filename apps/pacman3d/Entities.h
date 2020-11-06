@@ -10,7 +10,7 @@ glm::vec3 findPacman(const class Level &level);
 
 std::vector<class Ghost> genGhosts(const class Level &level);
 
-std::vector<class Pellet> genPellets(const class Level &level);
+std::unique_ptr<class Pellets> genPellets(const class Level &level);
 
 class Maze {
   public:
@@ -28,12 +28,25 @@ class Maze {
 	std::unique_ptr<VertexBuffer<Vertex3DNormTex>> m_vbo;
 };
 
+class Pellets {
+  public:
+	Pellets(std::vector<glm::vec3> centroids);
+	void update();
+	void draw(const glm::mat4 &view, const glm::mat4 &projection) const;
+
+  private:
+	std::unique_ptr<Model>         m_sphere;
+	std::unique_ptr<ShaderProgram> m_shader_program;
+	std::vector<glm::vec3>         m_centroids;
+};
+
 class Pacman {
   public:
 	Pacman(glm::vec3 position);
 	void      input(Input input);
 	void      update(float dt, const class Level &level);
-	glm::mat4 viewProjection() const;
+	glm::mat4 view() { return m_camera.view(m_transform); }
+	glm::mat4 projection() { return m_camera.projection(); }
 
   private:
 	glm::vec3          m_forward;
@@ -50,12 +63,4 @@ class Ghost {
   private:
 	glm::vec3          m_forward;
 	TransformComponent m_transform;
-};
-
-class Pellet {
-  public:
-	Pellet(glm::vec3 position);
-
-  private:
-	glm::vec3 m_position;
 };

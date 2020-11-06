@@ -21,12 +21,12 @@ uniform struct DirectionalLight {
  */
 vec3 compute_directional_light() {
     // Ambient lighting
-    float ambient_strength = 0.05;
-    vec3 ambient = u_directional_light.color * ambient_strength;
+    float ambient_strength = 0.10;
+    vec3 ambient = ambient_strength * u_directional_light.color;
 
     // Diffuse lighting
-    vec3 light_dir = normalize(-u_directional_light.direction);
-    vec3 diffuse = u_directional_light.color * max(dot(v_normal, light_dir), 0.0);
+    vec3 light_dir = normalize(u_directional_light.direction);
+    vec3 diffuse = max(dot(v_normal, light_dir), 0.0) * u_directional_light.color;
 
     // Specular lighting
     vec3 view_dir = normalize(v_frag_pos - v_view_pos);

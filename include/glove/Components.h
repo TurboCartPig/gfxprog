@@ -19,12 +19,9 @@ struct CameraComponent {
 	CameraComponent() = default; // FIXME: This is invalid
 	CameraComponent(float aspect, float vfov);
 
-	/**
-	 * Create a View Perspective Matrix from this camera to pass to shaders.
-	 * @param transform Transform of the camera or entity that owns the camera.
-	 * @return View Perspective Matrix.
-	 */
-	glm::mat4 asViewProjection(const TransformComponent &transform) const;
+	glm::mat4 view(const TransformComponent &transform) const;
+
+	glm::mat4 projection() const;
 
   public:
 	float aspect; ///< Aspect ratio.

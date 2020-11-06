@@ -44,7 +44,7 @@ class GameState : public IGameState {
 		auto model_color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 
 		auto directional_light = DirectionalLight{
-		    glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.25f, 1.0f, 0.5f), 10.0f};
+		    glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.25f, 1.0f, 0.5f), 2.0f};
 
 		m_shader_program->setUniform("u_transform", transform);
 		m_shader_program->setUniform("u_model_color", model_color);
@@ -67,27 +67,33 @@ class GameState : public IGameState {
 
 	[[nodiscard]] StateTransition update(float dt) override {
 		m_pacman->update(dt, *m_level);
+		m_pellets->update();
+
 		return None{};
 	}
 
 	void render() override {
-		auto view_projection = m_pacman->viewProjection();
+		auto view       = m_pacman->view();
+		auto projection = m_pacman->projection();
 
 		m_shader_program->use();
-		m_shader_program->setUniform("u_view_projection", view_projection);
+		m_shader_program->setUniform("u_view", view);
+		m_shader_program->setUniform("u_projection", projection);
 		m_maze->draw();
+
+		m_pellets->draw(view, projection);
 
 		// for (auto &ghost : m_ghosts) {
 		// 	ghost.draw();
-		// }
-
-		// for (const auto &pellet : m_pellets) {
-		// 	pellet.draw();
 		// }
 	}
 
   private:
 	std::unique_ptr<Level>   m_level;
+	std::unique_ptr<Maze>    m_maze;
+	std::unique_ptr<Pacman>  m_pacman;
+	std::unique_ptr<Pellets> m_pellets;
+	std::vector<Ghost>       m_ghosts;
 
 	std::unique_ptr<ShaderProgram> m_shader_program;
 };
