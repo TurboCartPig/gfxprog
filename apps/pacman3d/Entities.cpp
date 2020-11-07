@@ -274,8 +274,13 @@ Pellets::Pellets(std::vector<glm::vec3> centroids)
 	m_sphere->setInstanceArray(transforms);
 }
 
-void Pellets::update() {
+void Pellets::update(Pacman &pacman) {
 	// Check for collision with pacman, and delete colliding pellets.
+	for (const auto &centroid : m_centroids) {
+		if (glm::length(centroid - pacman.getPosition()) <= 0.30f) {
+			std::cout << "Collision detected!" << std::endl;
+		}
+	}
 
 	// TODO: Update transforms if they changed
 }

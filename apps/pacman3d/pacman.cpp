@@ -5,8 +5,6 @@
 #include <glove/lib.h>
 #include <unordered_map>
 
-using namespace std::string_literals;
-
 /**
  * Main game state of pacman 3d.
  */
@@ -15,6 +13,8 @@ class GameState : public IGameState {
 	GameState() = default;
 
 	void initialize() override {
+		using namespace std::string_literals;
+
 		// Setup opengl state
 		// FIXME: Do this more intelligently
 
@@ -67,7 +67,7 @@ class GameState : public IGameState {
 
 	[[nodiscard]] StateTransition update(float dt) override {
 		m_pacman->update(dt, *m_level);
-		m_pellets->update();
+		m_pellets->update(*m_pacman);
 
 		return None{};
 	}

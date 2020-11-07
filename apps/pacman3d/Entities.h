@@ -64,7 +64,7 @@ class Maze {
 class Pellets {
   public:
 	Pellets(std::vector<glm::vec3> centroids);
-	void update();
+	void update(class Pacman &pacman);
 	void draw(const glm::mat4 &view, const glm::mat4 &projection) const;
 
   private:
@@ -82,8 +82,9 @@ class Pacman {
 	Pacman(glm::vec3 position);
 	void      input(Input input);
 	void      update(float dt, const class Level &level);
-	glm::mat4 view() { return m_camera.view(m_transform); }
-	glm::mat4 projection() { return m_camera.projection(); }
+	glm::vec3 getPosition() const { return m_transform.translation; }
+	glm::mat4 view() const { return m_camera.view(m_transform); }
+	glm::mat4 projection() const { return m_camera.projection(); }
 
   private:
 	glm::vec3          m_forward;
