@@ -178,6 +178,9 @@ VertexBuffer<VertexFormat>::~VertexBuffer() {
 	if (m_indexed)
 		glDeleteBuffers(1, &m_ebo);
 
+	if (m_instanced)
+		glDeleteBuffers(1, &m_instance_vbo);
+
 	glDeleteVertexArrays(1, &m_vao);
 }
 
