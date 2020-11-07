@@ -75,6 +75,10 @@ void setVertexAttribs<Vertex3DNormTex>() {
 	glEnableVertexAttribArray(2);
 }
 
+/*
+ * This one is a little different. This sets up per instance data for instanced
+ * rendering.
+ */
 template <>
 void setVertexAttribs<glm::mat4>() {
 	glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), nullptr);
@@ -92,6 +96,7 @@ void setVertexAttribs<glm::mat4>() {
 	glEnableVertexAttribArray(6);
 	glEnableVertexAttribArray(7);
 
+	// Sets attribute feed rate to once per instance.
 	glVertexAttribDivisor(4, 1);
 	glVertexAttribDivisor(5, 1);
 	glVertexAttribDivisor(6, 1);
@@ -129,7 +134,7 @@ VertexBuffer<VertexFormat>::VertexBuffer(
     const std::vector<VertexFormat> &vertices) {
 	m_instanced       = false;
 	m_indexed         = false;
-	m_primitive_count = vertices.size(); // TODO: Is this correct?
+	m_primitive_count = vertices.size(); // FIXME: Is this correct?
 
 	// Generate a vao
 	glGenVertexArrays(1, &m_vao);
@@ -187,6 +192,8 @@ VertexBuffer<VertexFormat>::~VertexBuffer() {
 template <typename VertexFormat>
 void VertexBuffer<VertexFormat>::draw() const {
 	glBindVertexArray(m_vao);
+
+	// Draw the VBO using the appropriate gl command
 	if (m_instanced) {
 		if (m_indexed) {
 			glDrawElementsInstanced(GL_TRIANGLES, m_primitive_count,
@@ -196,10 +203,10 @@ void VertexBuffer<VertexFormat>::draw() const {
 			                      m_instance_count);
 		}
 	} else {
-		if (m_indexed) { // Draw indexed
+		if (m_indexed) {
 			glDrawElements(GL_TRIANGLES, m_primitive_count, GL_UNSIGNED_INT,
 			               nullptr);
-		} else { // Draw non indexed
+		} else {
 			glDrawArrays(GL_TRIANGLES, 0, m_primitive_count);
 		}
 	}
@@ -220,6 +227,7 @@ void VertexBuffer<VertexFormat>::uploadWhole(
 	glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(VertexFormat),
 	                vertices.data());
 
+	// Same as above, but for indices
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint),
 	             nullptr, m_usage);
 	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, indices.size() * sizeof(GLuint),
@@ -230,24 +238,31 @@ template <typename VertexFormat>
 template <typename InstanceFormat>
 void VertexBuffer<VertexFormat>::setInstanceArray(
     const std::vector<InstanceFormat> &instance_data) {
-	// 1. Create new VBO
-	// 2. Upload instance data to VBO
-	// 3. Setup vertex attributes to use this VBO for additional vertex
-	// attributes in addition to the normal ones
+	/*
+	 * 1. Create new VBO
+	 * 2. Upload instance data to VBO
+	 * 3. Setup vertex attributes to use this VBO for additional vertex
+	 * attributes in addition to the normal ones
+	 */
 
 	m_instanced      = true;
 	m_instance_count = instance_data.size();
 
-	GLuint instance_vbo;
-	glGenBuffers(1, &instance_vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, instance_vbo);
+	// Create a new VBO for per-instance data
+	glGenBuffers(1, &m_instance_vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, m_instance_vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(InstanceFormat) * instance_data.size(),
 	             instance_data.data(), GL_STATIC_DRAW);
 
+	// Associate the new VBO with the preexisting VAO
 	glBindVertexArray(m_vao);
-	glBindBuffer(GL_ARRAY_BUFFER, instance_vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, m_instance_vbo); // FIXME: Do I need this?
 	setVertexAttribs<InstanceFormat>();
 }
+
+// Explicit template specialization
+// FIXME: Is there a better way to do this? Other than putting everything in the
+// header?
 
 template class VertexBuffer<Vertex2D>;
 template class VertexBuffer<Vertex2DRgb>;

@@ -252,7 +252,6 @@ Pellets::Pellets(std::vector<glm::vec3> centroids)
 	m_shader_program   = std::make_unique<ShaderProgram>(shaders);
 	m_sphere           = std::make_unique<Model>("resources/models/sphere.obj");
 
-	// TODO: Set additional shader uniforms to support phong shading
 	auto model_color = glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
 
 	auto directional_light = DirectionalLight{

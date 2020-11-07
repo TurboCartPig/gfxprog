@@ -47,6 +47,10 @@ class VertexBuffer {
 
 	VertexBuffer operator=(const VertexBuffer &&other) = delete;
 
+	/**
+	 * @brief Destroy the Vertex Buffer object and deletes all associated opengl
+	 * objects.
+	 */
 	~VertexBuffer();
 
 	/**
@@ -64,18 +68,28 @@ class VertexBuffer {
 
 	/**
 	 * Creates and associates a instance array with the vertex buffer to enable
-	 * instanced rendering.
+	 * instanced rendering. Also enables instanced rendering autmatically from
+	 * now on.
+	 *
+	 * @tparam InstanceFormat Format of the per instance data.
+	 * @param instance_data Per instance data.
 	 */
 	template <typename InstanceFormat>
 	void setInstanceArray(const std::vector<InstanceFormat> &instance_data);
 
   private:
-	bool   m_indexed;
-	bool   m_instanced;
-	GLenum m_usage;
-	GLuint m_primitive_count;
-	GLuint m_instance_count;
-	GLuint m_vbo;
-	GLuint m_ebo;
-	GLuint m_vao;
+	bool m_indexed;   ///< Indicates whether the VBO has an associated index
+	                  ///< buffer and whether the VBO should be drawn using
+	                  ///< indexed rendering.
+	bool m_instanced; ///< Indicates whether the VBO has a associated per
+	                  ///< instance data used in instanced rendering.
+
+	GLenum m_usage;           ///< How is this VBO used?
+	GLuint m_primitive_count; ///< How many primitives are in the VBO.
+	GLuint m_instance_count;  ///< How many instances are in the VBO.
+
+	GLuint m_vao;          ///< Vertex Array Object.
+	GLuint m_vbo;          ///< Internal Vertex Buffer Object.
+	GLuint m_ebo;          ///< Element Buffer Object.
+	GLuint m_instance_vbo; ///< VBO with per instance data.
 };
