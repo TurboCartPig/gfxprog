@@ -19,24 +19,24 @@ set(COMPILER_WARNINGS_AND_ERRORS
     $<$<CXX_COMPILER_ID:MSVC>:/w44265>
     $<$<CXX_COMPILER_ID:MSVC>:/w44267>
     $<$<CXX_COMPILER_ID:MSVC>:/permissive->
+    $<$<CXX_COMPILER_ID:GNU>:-Wmisleading-indentation>
+    $<$<CXX_COMPILER_ID:GNU>:-Wduplicated-cond>
+    $<$<CXX_COMPILER_ID:GNU>:-Wduplicated-branches>
+    $<$<CXX_COMPILER_ID:GNU>:-Wlogical-op>
+    $<$<CXX_COMPILER_ID:GNU>:-Wnull-dereference>
+    $<$<CXX_COMPILER_ID:GNU>:-Wuseless-cast>
+    $<$<CXX_COMPILER_ID:Clang,AppleClang>:-Wdocumentation>
+    $<$<CXX_COMPILER_ID:Clang,AppleClang>:-Wweak-vtables>
+    $<$<CXX_COMPILER_ID:Clang,AppleClang>:-Wexit-time-destructors>
+    $<$<CXX_COMPILER_ID:Clang,AppleClang>:-Wglobal-constructors>
     $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wall>
     $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wextra>
     $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wpedantic>
     $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wshadow>
     $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wnon-virtual-dtor>
     $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Woverloaded-virtual>
-    $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wmisleading-indentation>
-    $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wduplicated-cond>
-    $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wduplicated-branches>
-    $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wlogical-op>
-    $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wnull-dereference>
-    $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wuseless-cast>
     $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wunreachable-code>
-    $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wmissing-noreturn>
-    $<$<CXX_COMPILER_ID:Clang,AppleClang>:-Wdocumentation>
-    $<$<CXX_COMPILER_ID:Clang,AppleClang>:-Wweak-vtables>
-    $<$<CXX_COMPILER_ID:Clang,AppleClang>:-Wexit-time-destructors>
-    $<$<CXX_COMPILER_ID:Clang,AppleClang>:-Wglobal-constructors>)
+    $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-Wmissing-noreturn>)
 
 set(COMPILER_SANITIZERS
     # FIXME: Need to link to some llvm libraries that are installed alongside
