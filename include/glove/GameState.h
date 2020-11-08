@@ -43,6 +43,16 @@ using StateTransition = std::variant<None, Push, Pop, Transition>;
  */
 class IGameState {
   public:
+	IGameState() = default;
+
+	IGameState(const IGameState &other) = delete;
+
+	IGameState(const IGameState &&other) = delete;
+
+	const IGameState &operator=(const IGameState &other) = delete;
+
+	const IGameState &&operator=(const IGameState &&other) = delete;
+
 	virtual ~IGameState() = default;
 
 	virtual void initialize() = 0;

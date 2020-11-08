@@ -10,8 +10,6 @@
  */
 class GameState : public IGameState {
   public:
-	GameState() = default;
-
 	void initialize() override {
 		using namespace std::string_literals;
 
