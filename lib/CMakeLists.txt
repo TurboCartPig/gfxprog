@@ -18,6 +18,7 @@ target_link_libraries(
 target_precompile_headers(
     lib
     PRIVATE
+    <algorithm>
     <string>
     <vector>
     <array>
