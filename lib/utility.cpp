@@ -1,6 +1,3 @@
-#pragma clang diagnostic push
-#pragma ide diagnostic   ignored "cppcoreguidelines-pro-type-union-access"
-
 #include <glove/utility.h>
 #include <iostream>
 #include <ostream>
@@ -155,4 +152,3 @@ std::ostream &operator<<(std::ostream &os, const glm::mat4 &matrix) {
 
 	return os;
 }
-#pragma clang diagnostic pop

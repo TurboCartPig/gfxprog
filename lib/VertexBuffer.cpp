@@ -1,6 +1,3 @@
-#pragma clang diagnostic push
-#pragma ide diagnostic   ignored "cppcoreguidelines-pro-type-reinterpret-cast"
-
 #include <glove/VertexBuffer.h>
 #include <glove/VertexFormats.h>
 
@@ -284,5 +281,3 @@ template class VertexBuffer<Vertex3DNormTex>;
 template void VertexBuffer<Vertex3DNormTex>::enableInstancing<glm::mat4>();
 template void VertexBuffer<Vertex3DNormTex>::uploadInstanceData<glm::mat4>(
     const std::vector<glm::mat4> &);
-
-#pragma clang diagnostic pop
