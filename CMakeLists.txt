@@ -37,6 +37,14 @@ set(COMPILER_WARNINGS_AND_ERRORS
         $<$<CXX_COMPILER_ID:Clang,AppleClang>:-Wexit-time-destructors>
         $<$<CXX_COMPILER_ID:Clang,AppleClang>:-Wglobal-constructors>)
 
+set(COMPILER_SANITIZERS
+    # FIXME: Need to link to some llvm libraries that are installed alongside
+    # visual studio
+    # $<$<CXX_COMPILER_ID:MSVC>:/fsanitize=address>
+    # FIXME: DIfferent linking erros
+    # $<$<CXX_COMPILER_ID:Clang,AppleClang,GNU>:-fsanitize=address,undefined>)
+)
+
 # Dependencies
 ##############################################################################
 # Find or download dependencies
