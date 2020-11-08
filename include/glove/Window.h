@@ -96,14 +96,14 @@ class Window {
 	 * Get the internal window pointer for usage width unwrapped glfw calls.
 	 * @return The internal window pointer.
 	 */
-	[[nodiscard]] GLFWwindow *ptr() const { return m_window; }
+	[[nodiscard]] auto *ptr() const { return m_window; }
 
 	/**
 	 * Get the current window dimensions without accounting for DPI. i.e.
 	 * framebuffer size.
 	 * @return Dimensions.
 	 */
-	[[nodiscard]] std::pair<int, int> dimensions() const {
+	[[nodiscard]] auto dimensions() const {
 		auto dim = std::make_pair(0, 0);
 		glfwGetFramebufferSize(m_window, &dim.first, &dim.second);
 		return dim;
@@ -135,7 +135,7 @@ class Window {
 	 * Get a shared pointer to the input queue.
 	 * @return A shared pointer to the input queue.
 	 */
-	InputQueue getInputQueue() { return m_input_queue; }
+	[[nodiscard]] auto getInputQueue() { return m_input_queue; }
 
   private:
 	std::chrono::steady_clock::time_point m_prev_frame;

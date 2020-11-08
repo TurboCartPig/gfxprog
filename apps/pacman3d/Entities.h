@@ -9,9 +9,8 @@
  * @param[out] vertices Unique vertices in the mesh.
  * @param[out] indices Indices representing the mesh.
  */
-void genLevelMesh(const class Level &           level,
-                  std::vector<Vertex3DNormTex> &vertices,
-                  std::vector<uint32_t> &       indices);
+auto genLevelMesh(const class Level &level)
+    -> std::pair<std::vector<Vertex3DNormTex>, std::vector<uint32_t>>;
 
 /**
  * @brief Find pacman in the level.
@@ -19,7 +18,7 @@ void genLevelMesh(const class Level &           level,
  * @param level Level.
  * @return glm::vec3 Position of pacman in the level.
  */
-glm::vec3 findPacman(const class Level &level);
+auto findPacman(const class Level &level) -> glm::vec3;
 
 /**
  * @brief Generate ghosts based on their position in the level.
@@ -27,7 +26,7 @@ glm::vec3 findPacman(const class Level &level);
  * @param level Level.
  * @return std::vector<class Ghost> Ghosts from the level.
  */
-std::vector<class Ghost> genGhosts(const class Level &level);
+auto genGhosts(const class Level &level) -> std::vector<class Ghost>;
 
 /**
  * @brief Generate pellets based on the level.
@@ -35,21 +34,14 @@ std::vector<class Ghost> genGhosts(const class Level &level);
  * @param level Level.
  * @return std::unique_ptr<class Pellets> Pellets in the level.
  */
-std::unique_ptr<class Pellets> genPellets(const class Level &level);
+auto genPellets(const class Level &level) -> std::unique_ptr<class Pellets>;
 
 /**
  * @brief The level Maze.
  */
 class Maze {
   public:
-	Maze(const class Level &level) {
-		std::vector<Vertex3DNormTex> vertices;
-		std::vector<uint32_t>        indices;
-		genLevelMesh(level, vertices, indices);
-		m_vbo =
-		    std::make_unique<VertexBuffer<Vertex3DNormTex>>(vertices, indices);
-	}
-
+	Maze(const class Level &level);
 	void draw() const { m_vbo->draw(); }
 
   private:
@@ -80,11 +72,11 @@ class Pellets {
 class Pacman {
   public:
 	Pacman(glm::vec3 position);
-	void      input(Input input);
-	void      update(float dt, const class Level &level);
-	glm::vec3 getPosition() const { return m_transform.translation; }
-	glm::mat4 view() const { return m_camera.view(m_transform); }
-	glm::mat4 projection() const { return m_camera.projection(); }
+	void               input(Input input);
+	void               update(float dt, const class Level &level);
+	[[nodiscard]] auto getPosition() const { return m_transform.translation; }
+	[[nodiscard]] auto view() const { return m_camera.view(m_transform); }
+	[[nodiscard]] auto projection() const { return m_camera.projection(); }
 
   private:
 	glm::vec3          m_forward;

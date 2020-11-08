@@ -4,8 +4,11 @@
 
 #include <random>
 
-void genLevelMesh(const Level &level, std::vector<Vertex3DNormTex> &vertices,
-                  std::vector<uint32_t> &indices) {
+auto genLevelMesh(const Level &level)
+    -> std::pair<std::vector<Vertex3DNormTex>, std::vector<uint32_t>> {
+	std::vector<uint32_t>        indices;
+	std::vector<Vertex3DNormTex> vertices;
+
 	const auto [w, h] = level.getSize();
 
 	// Add floor
@@ -183,9 +186,11 @@ void genLevelMesh(const Level &level, std::vector<Vertex3DNormTex> &vertices,
 			}
 		}
 	}
+
+	return std::make_pair(vertices, indices);
 }
 
-glm::vec3 findPacman(const Level &level) {
+auto findPacman(const Level &level) -> glm::vec3 {
 	const auto [w, h] = level.getSize();
 
 	for (int j = 0; j < h; ++j) {
@@ -200,7 +205,7 @@ glm::vec3 findPacman(const Level &level) {
 	throw std::runtime_error("Pacman not found in level!");
 }
 
-std::vector<Ghost> genGhosts(const Level &level) {
+auto genGhosts(const Level &level) -> std::vector<Ghost> {
 	const auto [w, h] = level.getSize();
 	std::vector<Ghost> ghosts;
 	ghosts.reserve(4);
@@ -226,7 +231,7 @@ std::vector<Ghost> genGhosts(const Level &level) {
 	return ghosts;
 }
 
-std::unique_ptr<Pellets> genPellets(const Level &level) {
+auto genPellets(const Level &level) -> std::unique_ptr<Pellets> {
 	const auto [w, h] = level.getSize();
 	std::vector<glm::vec3> pellets;
 
@@ -242,6 +247,11 @@ std::unique_ptr<Pellets> genPellets(const Level &level) {
 	}
 
 	return std::make_unique<Pellets>(pellets);
+}
+
+Maze::Maze(const Level &level) {
+	auto [vertices, indices] = genLevelMesh(level);
+	m_vbo = std::make_unique<VertexBuffer<Vertex3DNormTex>>(vertices, indices);
 }
 
 Pellets::Pellets(std::vector<glm::vec3> centroids)

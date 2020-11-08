@@ -52,7 +52,7 @@ class GameState : public IGameState {
 		m_shader_program->setUniform("u_diffuse_map", 0u);
 	}
 
-	[[nodiscard]] StateTransition input(Input input) override {
+	auto input(Input input) -> StateTransition override {
 		if (input.state == InputState::Pressed) {
 			if (input.code == InputCode::Escape)
 				return Pop{};
@@ -63,7 +63,7 @@ class GameState : public IGameState {
 		return None{};
 	}
 
-	[[nodiscard]] StateTransition update(float dt) override {
+	auto update(float dt) -> StateTransition override {
 		m_pacman->update(dt, *m_level);
 		m_pellets->update(*m_pacman);
 

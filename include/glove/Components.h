@@ -19,9 +19,10 @@ struct CameraComponent {
 	CameraComponent() = default; // FIXME: This is invalid
 	CameraComponent(float aspect, float vfov);
 
-	glm::mat4 view(const TransformComponent &transform) const;
+	[[nodiscard]] auto view(const TransformComponent &transform) const
+	    -> glm::mat4;
 
-	glm::mat4 projection() const;
+	[[nodiscard]] auto projection() const -> glm::mat4;
 
   public:
 	float aspect; ///< Aspect ratio.

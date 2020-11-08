@@ -16,7 +16,7 @@ static std::function<void(GLFWwindow *, int, int, int, int)>
  * @param key GLFW key code.
  * @return Glove key code.
  */
-static InputCode glfw_to_inputcode(int key) {
+static auto glfw_to_inputcode(int key) {
 	InputCode ret;
 
 	switch (key) {
@@ -85,8 +85,9 @@ Window::Window(const std::string &title, const uint32_t width,
 	// Setup key callback
 	auto input = m_input_queue; // Get a copy of the input queue pointer for
 	                            // capture by lambda
-	auto callback = [input](GLFWwindow *window, int key, int scancode,
-	                        int action, int modes) mutable -> void {
+	auto callback = [input]([[maybe_unused]] GLFWwindow *window, int key,
+	                        [[maybe_unused]] int scancode, int action,
+	                        [[maybe_unused]] int modes) mutable -> void {
 		InputCode  code = glfw_to_inputcode(key);
 		InputState state;
 

@@ -8,20 +8,20 @@
 /**
  * @brief No state transition should occur.
  */
-struct None {};
+struct [[nodiscard]] None {};
 
 /**
  * @brief Pop the current state off the stack.
  * If there are other states on the stack, the top one will be the next active
  * state. If there are no other states on the stack, the application will close.
  */
-struct Pop {};
+struct [[nodiscard]] Pop {};
 
 /**
  * @brief Push a new state to the top of the stack.
  * This new state will be the next active state.
  */
-struct Push {
+struct [[nodiscard]] Push {
 	std::unique_ptr<class IGameState> state;
 };
 
@@ -29,7 +29,7 @@ struct Push {
  * @brief Transition laterally to a new state. Think of it as a pop and push in
  * one operation.
  */
-struct Transition {
+struct [[nodiscard]] Transition {
 	std::unique_ptr<class IGameState> state;
 };
 
@@ -63,7 +63,7 @@ class IGameState {
 	 * @return Should the game transition states as a result of the input? If so
 	 * how?
 	 */
-	[[nodiscard]] virtual StateTransition input(Input input) = 0;
+	virtual auto input(Input input) -> StateTransition = 0;
 
 	/**
 	 * @brief Drive the game state forward.
@@ -71,7 +71,7 @@ class IGameState {
 	 * @return Should the game transition states as a result of the input? If so
 	 * how?
 	 */
-	[[nodiscard]] virtual StateTransition update(float dt) = 0;
+	virtual auto update(float dt) -> StateTransition = 0;
 
 	/**
 	 * @brief Render the game as of this game state.
