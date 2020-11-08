@@ -218,8 +218,7 @@ void VertexBuffer<VertexFormat>::uploadWhole(
     const std::vector<GLuint> &      indices) {
 	m_primitive_count = indices.size();
 
-	glBindVertexArray(m_vao);
-
+	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	// Orphan the buffer
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(VertexFormat),
 	             nullptr, m_usage);
@@ -227,6 +226,7 @@ void VertexBuffer<VertexFormat>::uploadWhole(
 	glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(VertexFormat),
 	                vertices.data());
 
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
 	// Same as above, but for indices
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint),
 	             nullptr, m_usage);
@@ -236,8 +236,7 @@ void VertexBuffer<VertexFormat>::uploadWhole(
 
 template <typename VertexFormat>
 template <typename InstanceFormat>
-void VertexBuffer<VertexFormat>::setInstanceArray(
-    const std::vector<InstanceFormat> &instance_data) {
+void VertexBuffer<VertexFormat>::enableInstancing() {
 	/*
 	 * 1. Create new VBO
 	 * 2. Upload instance data to VBO
@@ -245,19 +244,31 @@ void VertexBuffer<VertexFormat>::setInstanceArray(
 	 * attributes in addition to the normal ones
 	 */
 
-	m_instanced      = true;
-	m_instance_count = instance_data.size();
+	m_instanced = true;
 
 	// Create a new VBO for per-instance data
 	glGenBuffers(1, &m_instance_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, m_instance_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(InstanceFormat) * instance_data.size(),
-	             instance_data.data(), GL_STATIC_DRAW);
 
 	// Associate the new VBO with the preexisting VAO
 	glBindVertexArray(m_vao);
-	glBindBuffer(GL_ARRAY_BUFFER, m_instance_vbo); // FIXME: Do I need this?
 	setVertexAttribs<InstanceFormat>();
+}
+
+template <typename VertexFormat>
+template <typename InstanceFormat>
+void VertexBuffer<VertexFormat>::uploadInstanceData(
+    const std::vector<InstanceFormat> &instance_data) {
+	assert(m_instanced);
+
+	m_instance_count = instance_data.size();
+
+	glBindBuffer(GL_ARRAY_BUFFER, m_instance_vbo);
+	glBufferData(GL_ARRAY_BUFFER, instance_data.size() * sizeof(InstanceFormat),
+	             nullptr, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0,
+	                sizeof(InstanceFormat) * instance_data.size(),
+	                instance_data.data());
 }
 
 // Explicit template specialization
@@ -270,7 +281,8 @@ template class VertexBuffer<Vertex2DTex>;
 template class VertexBuffer<Vertex2DTexRgbav>;
 template class VertexBuffer<Vertex3DNormTex>;
 
-template void VertexBuffer<Vertex3DNormTex>::setInstanceArray<glm::mat4>(
+template void VertexBuffer<Vertex3DNormTex>::enableInstancing<glm::mat4>();
+template void VertexBuffer<Vertex3DNormTex>::uploadInstanceData<glm::mat4>(
     const std::vector<glm::mat4> &);
 
 #pragma clang diagnostic pop

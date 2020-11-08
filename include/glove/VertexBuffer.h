@@ -75,7 +75,10 @@ class VertexBuffer {
 	 * @param instance_data Per instance data.
 	 */
 	template <typename InstanceFormat>
-	void setInstanceArray(const std::vector<InstanceFormat> &instance_data);
+	void enableInstancing();
+
+	template <typename InstanceFormat>
+	void uploadInstanceData(const std::vector<InstanceFormat> &instance_data);
 
   private:
 	bool m_indexed;   ///< Indicates whether the VBO has an associated index

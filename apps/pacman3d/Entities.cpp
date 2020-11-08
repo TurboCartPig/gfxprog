@@ -2,6 +2,7 @@
 
 #include "Level.h"
 
+#include <algorithm>
 #include <random>
 
 auto genLevelMesh(const Level &level)
@@ -273,6 +274,37 @@ Pellets::Pellets(std::vector<glm::vec3> centroids)
 	m_shader_program->setUniform("u_directional_light", directional_light);
 	m_shader_program->setUniform("u_diffuse_map", 0u);
 
+	upload();
+}
+
+void Pellets::update(Pacman &pacman) {
+	auto before = m_centroids.size();
+
+	// Check for collision with pacman, and delete colliding pellets.
+	// TODO: Can we instead only check and remove the closets pellet, only one
+	// can be picked up at a time anyway?
+	auto remove = std::remove_if(
+	    begin(m_centroids), end(m_centroids), [&](const auto &c) {
+		    return glm::length(c - pacman.getPosition()) <= 0.30f;
+	    });
+	m_centroids.erase(remove, end(m_centroids));
+
+	auto after = m_centroids.size();
+
+	// Update transforms if they changed
+	if (before != after)
+		upload();
+}
+
+void Pellets::draw(const glm::mat4 &view, const glm::mat4 &projection) const {
+	m_shader_program->use();
+	m_shader_program->setUniform("u_view", view);
+	m_shader_program->setUniform("u_projection", projection);
+
+	m_sphere->draw();
+}
+
+void Pellets::upload() const {
 	// Build uniform buffer with data from centroids
 	std::vector<glm::mat4> transforms;
 	transforms.reserve(m_centroids.size());
@@ -282,26 +314,9 @@ Pellets::Pellets(std::vector<glm::vec3> centroids)
 		transforms.push_back(transform);
 	}
 
-	m_sphere->setInstanceArray(transforms);
-}
-
-void Pellets::update(Pacman &pacman) {
-	// Check for collision with pacman, and delete colliding pellets.
-	for (const auto &centroid : m_centroids) {
-		if (glm::length(centroid - pacman.getPosition()) <= 0.30f) {
-			std::cout << "Collision detected!" << std::endl;
-		}
-	}
-
-	// TODO: Update transforms if they changed
-}
-
-void Pellets::draw(const glm::mat4 &view, const glm::mat4 &projection) const {
-	m_shader_program->use();
-	m_shader_program->setUniform("u_view", view);
-	m_shader_program->setUniform("u_projection", projection);
-
-	m_sphere->draw();
+	// Upload the instance data
+	m_sphere->enableInstancing<glm::mat4>();
+	m_sphere->uploadInstanceData(transforms);
 }
 
 Pacman::Pacman(glm::vec3 position) {

@@ -60,6 +60,12 @@ class Pellets {
 	void draw(const glm::mat4 &view, const glm::mat4 &projection) const;
 
   private:
+	/**
+	 * @brief Build and upload the instance data for all the pellets.
+	 */
+	void upload() const;
+
+  private:
 	std::unique_ptr<Model>         m_sphere;
 	std::unique_ptr<ShaderProgram> m_shader_program;
 	std::vector<glm::vec3>         m_centroids;

@@ -33,8 +33,14 @@ class Model {
 	 * @tparam InstanceFormat Format of the per-instance data.
 	 * @param instances Per instance data.
 	 */
+	// template <typename InstanceFormat>
+	// void setInstanceArray(const std::vector<InstanceFormat> &instances);
+
 	template <typename InstanceFormat>
-	void setInstanceArray(const std::vector<InstanceFormat> &instances);
+	void enableInstancing();
+
+	template <typename InstanceFormat>
+	void uploadInstanceData(const std::vector<InstanceFormat> &instance_data);
 
   private:
 	std::unique_ptr<VertexBuffer<Vertex3DNormTex>>

@@ -63,10 +63,25 @@ Model::Model(const std::string &model_path) {
 
 void Model::draw() { m_vbo->draw(); }
 
+// template <typename InstanceFormat>
+// void Model::setInstanceArray(const std::vector<InstanceFormat> &instances) {
+// 	m_vbo->setInstanceArray(instances);
+// }
+
+// template void
+// Model::setInstanceArray<glm::mat4>(const std::vector<glm::mat4> &);
+
 template <typename InstanceFormat>
-void Model::setInstanceArray(const std::vector<InstanceFormat> &instances) {
-	m_vbo->setInstanceArray(instances);
+void Model::enableInstancing() {
+	m_vbo->enableInstancing<InstanceFormat>();
 }
 
+template <typename InstanceFormat>
+void Model::uploadInstanceData(
+    const std::vector<InstanceFormat> &instance_data) {
+	m_vbo->uploadInstanceData(instance_data);
+}
+
+template void Model::enableInstancing<glm::mat4>();
 template void
-Model::setInstanceArray<glm::mat4>(const std::vector<glm::mat4> &);
+Model::uploadInstanceData<glm::mat4>(const std::vector<glm::mat4> &);
