@@ -1,7 +1,7 @@
 #include "Level.h"
 
+#include <cassert>
 #include <fstream>
-
 
 Level::Level(const std::string &path) {
 	// Load level file from path

@@ -2,6 +2,7 @@
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 #include <glove/Model.h>
+#include <iostream>
 
 void process_node(const aiScene *scene, const aiNode *node,
                   std::vector<Vertex3DNormTex> &vertices,

@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include <vector>
+
 /**
  * The type/variant of entity in the level grid.
  */
