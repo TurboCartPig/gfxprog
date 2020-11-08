@@ -86,16 +86,17 @@ endif ()
 if (NOT Stb_FOUND)
     message(STATUS "Stb not found locally, downloading...")
     FetchContent_Declare(
-            Stb
+        stb
             GIT_REPOSITORY https://github.com/nothings/stb
             GIT_TAG master)
 
-    FetchContent_GetProperties(Stb)
-    if (NOT Stb_POPULATED)
-        FetchContent_Populate(Stb)
+    # NOTE: The use of lower case target names
+    FetchContent_GetProperties(stb)
+    if (NOT stb_POPULATED)
+        FetchContent_Populate(stb)
 
         add_library(Stb::Stb INTERFACE IMPORTED)
-        target_include_directories(Stb::Stb INTERFACE "${Stb_SOURCE_DIR}")
+        target_include_directories(Stb::Stb INTERFACE "${stb_SOURCE_DIR}")
     endif ()
 endif ()
 
