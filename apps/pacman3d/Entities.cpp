@@ -35,8 +35,8 @@ void genLevelMesh(const Level &level, std::vector<Vertex3DNormTex> &vertices,
 		for (int i = 0; i < w; ++i) {
 			const auto entity = level.get(i, j);
 			if (entity == EntityType::Wall) {
-				const auto offset       = glm::vec3(i, 0.0f, j);
-				auto       index_offset = vertices.size();
+				const auto offset = glm::vec3(i, 0.0f, j);
+				auto index_offset = static_cast<uint32_t>(vertices.size());
 
 				// Add 4 * 6 = 24 vertices
 				// Add 36 indices
@@ -211,9 +211,10 @@ std::vector<Ghost> genGhosts(const Level &level) {
 
 	for (int k = 0; k < 4; k++) {
 		while (true) {
-			int i = distribution(generator) * w;
-			int j = distribution(generator) * h;
-			if (level.get(i, j) == EntityType::Tunnel) {
+			const auto i = distribution(generator) * w;
+			const auto j = distribution(generator) * h;
+			if (level.get(static_cast<int>(i), static_cast<int>(j)) ==
+			    EntityType::Tunnel) {
 				const auto offset =
 				    glm::vec3((float)i + 0.5f, 0.0f, (float)j + 0.5f);
 				ghosts.emplace_back(Ghost(offset));
@@ -287,7 +288,6 @@ void Pellets::update(Pacman &pacman) {
 
 void Pellets::draw(const glm::mat4 &view, const glm::mat4 &projection) const {
 	m_shader_program->use();
-	// m_shader_program->setUniform("u_view_projection", view_projection);
 	m_shader_program->setUniform("u_view", view);
 	m_shader_program->setUniform("u_projection", projection);
 
@@ -325,8 +325,9 @@ void Pacman::update(float dt, const Level &level) {
 	auto translation = m_transform.translation + m_forward * dt;
 
 	auto collision =
-	    level.get(std::round(translation.x - 0.5f),
-	              std::round(translation.z - 0.5f)) == EntityType::Wall;
+	    level.get(static_cast<int>(std::round(translation.x - 0.5f)),
+	              static_cast<int>(std::round(translation.z - 0.5f))) ==
+	    EntityType::Wall;
 	if (!collision) {
 		m_transform.translation = translation;
 	}
