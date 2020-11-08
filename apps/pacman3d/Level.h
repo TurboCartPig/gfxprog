@@ -4,7 +4,7 @@
 #include <vector>
 
 /**
- * The type/variant of entity in the level grid.
+ * @brief The type/variant of entity in the level grid.
  */
 enum class EntityType : uint32_t {
 	Tunnel = 0,
@@ -15,14 +15,14 @@ enum class EntityType : uint32_t {
 };
 
 /**
- * Abstract level representation.
+ * @brief Abstract level representation.
  */
 class Level {
   public:
 	Level(const std::string &path);
 
 	/**
-	 * Get the type of entity at the given x,y coordinate.
+	 * @brief Get the type of entity at the given x,y coordinate.
 	 * @param x X coordinate / width index.
 	 * @param y T coordinate / height index.
 	 * @return Type of entity in the level at give coordinates.
@@ -30,7 +30,7 @@ class Level {
 	EntityType get(int x, int y) const { return m_grid[y * m_width + x]; }
 
 	/**
-	 * Get the size of the level with entities as units.
+	 * @brief Get the size of the level with entities as units.
 	 * @return Width / Height of the level.
 	 */
 	std::pair<int, int> getSize() const {

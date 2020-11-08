@@ -6,7 +6,7 @@
 #include <unordered_map>
 
 /**
- * Main game state of pacman 3d.
+ * @brief Main game state of pacman 3d.
  */
 class GameState : public IGameState {
   public:

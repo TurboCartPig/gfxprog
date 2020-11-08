@@ -6,19 +6,19 @@
 #include <vector>
 
 /**
- * No state transition should occur.
+ * @brief No state transition should occur.
  */
 struct None {};
 
 /**
- * Pop the current state off the stack.
+ * @brief Pop the current state off the stack.
  * If there are other states on the stack, the top one will be the next active
  * state. If there are no other states on the stack, the application will close.
  */
 struct Pop {};
 
 /**
- * Push a new state to the top of the stack.
+ * @brief Push a new state to the top of the stack.
  * This new state will be the next active state.
  */
 struct Push {
@@ -26,20 +26,20 @@ struct Push {
 };
 
 /**
- * Transition laterally to a new state. Think of it as a pop and push in one
- * operation.
+ * @brief Transition laterally to a new state. Think of it as a pop and push in
+ * one operation.
  */
 struct Transition {
 	std::unique_ptr<class IGameState> state;
 };
 
 /**
- * Should the current state transition into a new state? If so how?
+ * @brief Should the current state transition into a new state? If so how?
  */
 using StateTransition = std::variant<None, Push, Pop, Transition>;
 
 /**
- * Interface for a game state object.
+ * @brief Interface for a game state object.
  */
 class IGameState {
   public:
@@ -58,7 +58,7 @@ class IGameState {
 	virtual void initialize() = 0;
 
 	/**
-	 * Pass player input to the game state.
+	 * @brief Pass player input to the game state.
 	 * @param code Key code
 	 * @return Should the game transition states as a result of the input? If so
 	 * how?
@@ -66,7 +66,7 @@ class IGameState {
 	[[nodiscard]] virtual StateTransition input(Input input) = 0;
 
 	/**
-	 * Drive the game state forward.
+	 * @brief Drive the game state forward.
 	 * @param dt Delta time.
 	 * @return Should the game transition states as a result of the input? If so
 	 * how?
@@ -74,13 +74,13 @@ class IGameState {
 	[[nodiscard]] virtual StateTransition update(float dt) = 0;
 
 	/**
-	 * Render the game as of this game state.
+	 * @brief Render the game as of this game state.
 	 */
 	virtual void render() = 0;
 };
 
 /**
- * Interface for an overlay on top of the game state stack.
+ * @brief Interface for an overlay on top of the game state stack.
  *
  * TODO: Implement overlays
  * - For example an imgui overlay for debugging and development.
@@ -95,18 +95,18 @@ class IOverlay {
 };
 
 /**
- * Core engine driver.
+ * @brief Core engine driver.
  */
 class Core {
   public:
 	/**
-	 * Create a new core with an initial_state.
+	 * @brief Create a new core with an initial state.
 	 * @param initial_state The initial state of the game.
 	 */
 	Core(std::unique_ptr<IGameState> initial_state);
 
 	/**
-	 * Run the game.
+	 * @brief Run the game.
 	 * Update states and pass them input. Push and pop states based on state
 	 * transitions.
 	 */
