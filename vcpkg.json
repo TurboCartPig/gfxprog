@@ -11,15 +11,8 @@
     "glfw3",
     "catch2",
     {
-      "name": "imgui",
-      "features": [
-        "glfw-binding",
-        "opengl3-glew-binding"
-      ]
-    },
-    {
-      "name": "assimp",
-      "platform": "windows"
-    }
+			"name": "assimp",
+			"platform": "windows"
+		}
   ]
 }

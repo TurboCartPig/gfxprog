@@ -4,6 +4,14 @@
 
 Labs and assignments completed in association with Graphics Programming / PROG2002 at NTNU.
 
+## How to obtain
+
+Cloning:
+```bash
+git clone https://github.com/TurboCartPig/gfxprog.git --recursive
+```
+> Note the use of recursive to automatically clone submodules.
+
 ## How to build
 
 Configure:
@@ -28,28 +36,31 @@ cmake --build build/ --target docs
 
 ## Dependencies
 
-The only hard requirement when it comes to libraries is OpenGL. The rest will be downloaded automatically, if not found.
+The only hard requirement when it comes to libraries is OpenGL. The rest will be downloaded automatically through vcpkg, if not found locally.
+
+> Currently assimp is broken in vcpkg on linux and you will have to install it using the native package manger.
 
 ### Install dependencies using native package manager
 
 Fedora:
 ```bash
-sudo dnf in glfw-devel glew-devel glm-devel catch-devel mesa-{libGL,libEGL}-devel
+sudo dnf in {assimp,glfw,glew,glm,catch,mesa-libGL}-devel
 ```
-> ImGui is not currently available in mirrors on fedora and stbi-devel doesn't work, so they will be downloaded automatically
+> stbi-devel in fedora repos doesn't work, so it will be downloaded automatically.
 
 Ubuntu:
 ```bash
-sudo apt install libgl-dev libglfw3-dev libglew-dev libglm-dev catch2
+sudo apt install lib{assimp,gl,glfw3,glew,glm}-dev
 ```
 > Ubuntu instructions are yet to be tested
+> catch2 is not available in ubuntu it seems, the projects will build without it.
 
 Windows:
 - Be sure to have the C++ core features package in visual studio installed
+- Use vcpkg for dependencies
 > Windows instructions are yet to be tested
 
-
-### Using vcpkg
+### Install using vcpkg manually
 
 [Vcpkg](https://github.com/Microsoft/vcpkg) is a ports like package manager for libraries that is the closest to a sane way of obtaining dependencies on Windows.
 

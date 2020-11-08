@@ -1,4 +1,7 @@
 cmake_minimum_required(VERSION 3.16...3.18)
+
+set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
+
 project(
     gfxprog
     VERSION 0.1.0
@@ -52,102 +55,16 @@ set(COMPILER_SANITIZERS
 
 find_package(OpenGL REQUIRED)
 
-find_package(glfw3 3.3 CONFIG QUIET)
-find_package(glm CONFIG QUIET)
-find_package(Assimp CONFIG QUIET)
-find_package(imgui CONFIG QUIET)
-find_package(GLEW 2.1 MODULE QUIET)
-find_package(Stb MODULE QUIET)
+find_package(glfw3 3.3 CONFIG REQUIRED)
+find_package(glm CONFIG REQUIRED)
+find_package(Assimp CONFIG REQUIRED)
+find_package(GLEW 2.1 MODULE REQUIRED)
+find_package(Stb MODULE REQUIRED)
 
+# Fixes inconsistency in how vcpkg and native package managers exports assimp
 if(NOT TARGET assimp::assimp)
-    if(Assimp_FOUND)
-        add_library(assimp::assimp INTERFACE IMPORTED)
-        target_link_libraries(assimp::assimp INTERFACE assimp)
-    endif()
-endif()
-
-# FIXME: This does not build
-if(NOT Assimp_FOUND)
-    message(STATUS "Assimp not found locally, downloading...")
-    FetchContent_Declare(
-        Assimp
-        GIT_REPOSITORY https://github.com/assimp/assimp
-        GIT_TAG v5.0.1)
-
-    # Disable a bunch of stuff we don't need. Build assimp dependencies with
-    # assimp
-    set(ASSIMP_BUILD_ZLIB ON)
-    set(ASSIMP_BUILD_ASSIMP_TOOLS OFF)
-    set(ASSIMP_BUILD_SAMPLES OFF)
-    set(ASSIMP_BUILD_TESTS OFF)
-    set(SYSTEM_IRRXML OFF)
-    set(BUILD_SHARED_LIBS OFF)
-    FetchContent_MakeAvailable(Assimp)
-endif()
-
-if(NOT Stb_FOUND)
-    message(STATUS "Stb not found locally, downloading...")
-    FetchContent_Declare(
-        stb
-        GIT_REPOSITORY https://github.com/nothings/stb
-        GIT_TAG master)
-
-    # NOTE: The use of lower case target names
-    FetchContent_GetProperties(stb)
-    if(NOT stb_POPULATED)
-        FetchContent_Populate(stb)
-
-        add_library(Stb::Stb INTERFACE IMPORTED)
-        target_include_directories(Stb::Stb INTERFACE "${stb_SOURCE_DIR}")
-    endif()
-endif()
-
-if(NOT imgui_FOUND)
-    message(STATUS "ImGui not found locally, downloading...")
-    FetchContent_Declare(
-        imgui
-        GIT_REPOSITORY https://github.com/ocornut/imgui
-        GIT_TAG v1.78)
-    FetchContent_MakeAvailable(imgui)
-endif()
-
-if(NOT glfw3_FOUND)
-    message(STATUS "GLFW3 not found locally, downloading...")
-    FetchContent_Declare(
-        glfw3
-        GIT_REPOSITORY https://github.com/glfw/glfw
-        GIT_TAG 3.3.2)
-    # Disable additional targets because the names of imported target collide
-    # with locally defined targets
-    set(GLFW_BUILD_EXAMPLES OFF)
-    set(GLFW_BUILD_DOCS OFF)
-    set(GLFW_BUILD_TESTS OFF)
-    FetchContent_MakeAvailable(glfw3)
-endif()
-
-if(NOT GLEW_FOUND)
-    message(STATUS "GLEW not found locally, downloading...")
-    FetchContent_Declare(
-        GLEW
-        GIT_REPOSITORY https://github.com/Perlmint/glew-cmake
-        GIT_TAG glew-cmake-2.1.0)
-
-    set(glew-cmake_BUILD_STATIC ON)
-    set(glew-cmake_BUILD_SHARED OFF)
-    FetchContent_MakeAvailable(GLEW)
-
-    # Add alias so that the target imported from find_package and this targets
-    # have the same name
-    add_library(GLEW::GLEW ALIAS libglew_static)
-endif()
-
-if(NOT glm_FOUND)
-    message(STATUS "GLM not found locally, downloading...")
-    FetchContent_Declare(
-        glm
-        GIT_REPOSITORY https://github.com/g-truc/glm
-        GIT_TAG 0.9.9.8)
-    FetchContent_MakeAvailable(glm)
+    add_library(assimp::assimp INTERFACE IMPORTED)
+    target_link_libraries(assimp::assimp INTERFACE assimp)
 endif()
 
 # Subdirectories defining actual targets
