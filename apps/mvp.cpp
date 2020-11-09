@@ -4,7 +4,7 @@
 
 using std::chrono::steady_clock;
 
-int main() {
+auto main() -> int {
 	auto window = Window("MVP", 640, 480);
 
 	std::vector<Vertex2D> vertices = {
@@ -36,7 +36,9 @@ int main() {
 		start     = now;
 
 		// Get input
-		float x = 0.0f, y = 0.0f, rot = 0.0f;
+		float x   = 0.0f;
+		float y   = 0.0f;
+		float rot = 0.0f;
 		if (glfwGetKey(window.ptr(), GLFW_KEY_W) == GLFW_PRESS) {
 			y = 1.0f;
 		}

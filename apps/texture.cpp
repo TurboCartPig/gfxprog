@@ -8,7 +8,7 @@
 #include <glove/lib.h>
 #include <iostream>
 
-int main() {
+auto main() -> int {
 	auto window = Window("Square", 640, 480);
 
 	std::vector<Vertex2DTex> vertices = {

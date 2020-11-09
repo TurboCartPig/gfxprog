@@ -6,8 +6,6 @@
  * @brief Generate the maze mesh from the level.
  *
  * @param level The level.
- * @param[out] vertices Unique vertices in the mesh.
- * @param[out] indices Indices representing the mesh.
  */
 auto genLevelMesh(const class Level &level)
     -> std::pair<std::vector<Vertex3DNormTex>, std::vector<uint32_t>>;

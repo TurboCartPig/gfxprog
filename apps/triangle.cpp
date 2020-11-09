@@ -11,7 +11,7 @@
 #include <glove/lib.h>
 #include <iostream>
 
-int main() {
+auto main() -> int {
 	if (!glfwInit()) {
 		throw std::runtime_error("GLFW3 Failed to initialize.");
 	}

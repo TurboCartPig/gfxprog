@@ -27,13 +27,15 @@ class Level {
 	 * @param y T coordinate / height index.
 	 * @return Type of entity in the level at give coordinates.
 	 */
-	EntityType get(int x, int y) const { return m_grid[y * m_width + x]; }
+	[[nodiscard]] auto get(int x, int y) const {
+		return m_grid[y * m_width + x];
+	}
 
 	/**
 	 * @brief Get the size of the level with entities as units.
 	 * @return Width / Height of the level.
 	 */
-	std::pair<int, int> getSize() const {
+	[[nodiscard]] auto getSize() const noexcept {
 		return std::make_pair(m_width, m_height);
 	}
 

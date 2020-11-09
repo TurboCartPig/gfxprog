@@ -13,7 +13,7 @@
 using std::chrono::duration;
 using std::chrono::steady_clock;
 
-int main() {
+auto main() -> int {
 	auto window = Window("Square", 640, 480);
 
 	std::vector<Vertex2D> vertices = {

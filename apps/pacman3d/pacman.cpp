@@ -97,7 +97,7 @@ class GameState : public IGameState {
 	    m_shader_program; ///< Default shader program (Used for the maze)
 };
 
-int main() {
+auto main() -> int {
 	// Manage game state via pushdown automata
 	auto core = Core(std::make_unique<GameState>());
 	core.run();

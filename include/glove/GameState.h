@@ -49,9 +49,9 @@ class IGameState {
 
 	IGameState(const IGameState &&other) = delete;
 
-	const IGameState &operator=(const IGameState &other) = delete;
+	auto operator=(const IGameState &other) = delete;
 
-	const IGameState &&operator=(const IGameState &&other) = delete;
+	auto operator=(const IGameState &&other) = delete;
 
 	virtual ~IGameState() = default;
 
@@ -59,7 +59,7 @@ class IGameState {
 
 	/**
 	 * @brief Pass player input to the game state.
-	 * @param code Key code
+	 * @param input Input event.
 	 * @return Should the game transition states as a result of the input? If so
 	 * how?
 	 */
