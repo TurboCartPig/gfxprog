@@ -87,11 +87,17 @@ class IGameState {
  */
 class IOverlay {
   public:
-	virtual void attach()              = 0;
-	virtual void detach()              = 0;
-	virtual void input(InputCode code) = 0;
-	virtual void update(float dt)      = 0;
-	virtual void render()              = 0;
+	IOverlay()                       = default;
+	IOverlay(const IOverlay &other)  = delete;
+	IOverlay(const IOverlay &&other) = delete;
+	auto operator=(const IOverlay &other) = delete;
+	auto operator=(const IOverlay &&other) = delete;
+	virtual ~IOverlay()                    = default;
+	virtual void attach()                  = 0;
+	virtual void detach()                  = 0;
+	virtual void input(Input input)        = 0;
+	virtual void update(float dt)          = 0;
+	virtual void render()                  = 0;
 };
 
 /**
