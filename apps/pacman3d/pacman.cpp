@@ -41,12 +41,16 @@ class GameState : public IGameState {
 		m_pellets = genPellets(*m_level);
 		m_ghosts  = genGhosts(*m_level);
 
-		// Setup default shader program
-		const auto shaders = {"resources/shaders/model.vert"s,
+		// Setup shader programs
+		const auto model_shaders = {"resources/shaders/model.vert"s,
 		                      "resources/shaders/model.frag"s};
-		m_shader_program   = std::make_unique<ShaderProgram>(shaders);
-		m_shader_program->use();
+		m_model_shader     = std::make_unique<ShaderProgram>(model_shaders);
 
+        const auto minimap_shaders = {"resources/shaders/model.vert"s,
+                              "resources/shaders/minimap.frag"s};
+        m_minimap_shader     = std::make_unique<ShaderProgram>(minimap_shaders);
+
+		// Setup uniforms
 		auto transform = glm::mat4(1.0f);
 
 		auto model_color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
@@ -54,10 +58,14 @@ class GameState : public IGameState {
 		auto directional_light = DirectionalLight{
 		    glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.25f, 1.0f, 0.5f), 2.0f};
 
-		m_shader_program->setUniform("u_transform", transform);
-		m_shader_program->setUniform("u_model_color", model_color);
-		m_shader_program->setUniform("u_directional_light", directional_light);
-		m_shader_program->setUniform("u_diffuse_map", 0u);
+		m_model_shader->use();
+		m_model_shader->setUniform("u_transform", transform);
+		m_model_shader->setUniform("u_model_color", model_color);
+		m_model_shader->setUniform("u_directional_light", directional_light);
+		m_model_shader->setUniform("u_diffuse_map", 0u);
+
+		m_minimap_shader->use();
+		m_minimap_shader->setUniform("u_transform", transform);
 	}
 
 	auto input(Input input) -> StateTransition override {
@@ -85,10 +93,10 @@ class GameState : public IGameState {
 
 		auto view       = m_pacman->view();
 		auto projection = m_pacman->projection();
-//
-		m_shader_program->use();
-		m_shader_program->setUniform("u_view", view);
-		m_shader_program->setUniform("u_projection", projection);
+
+		m_model_shader->use();
+		m_model_shader->setUniform("u_view", view);
+		m_model_shader->setUniform("u_projection", projection);
 
 		m_maze->draw();
 		m_pellets->draw(view, projection);
@@ -111,12 +119,13 @@ class GameState : public IGameState {
                            glm::vec3(0.0f, 0.0f, 1.0f));
 		projection  = glm::ortho(-(float)w, 0.0f, 0.0f, (float)h, 0.0f, 10.0f);
 
-		m_shader_program->use();
-		m_shader_program->setUniform("u_view", view);
-		m_shader_program->setUniform("u_projection", projection);
+		m_minimap_shader->use();
+		m_minimap_shader->setUniform("u_view", view);
+		m_minimap_shader->setUniform("u_projection", projection);
+		m_minimap_shader->setUniform("u_model_color", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 
 		m_maze->draw();
-		m_pellets->draw(view, projection);
+		m_pellets->draw(view, projection); // FIXME: Still uses it's own shader
 
 		m_backbuffer->blit(m_framebuffer.get(), glm::ivec4(0, 0, 240, 240),
 		                   glm::ivec4(0, 0, 240, 240));
@@ -138,7 +147,9 @@ class GameState : public IGameState {
 	std::vector<Ghost>       m_ghosts;  ///< All the ghosts in the level.
 
 	std::unique_ptr<ShaderProgram>
-	    m_shader_program; ///< Default shader program (Used for the maze).
+	    m_model_shader; ///< Default model shader program (Used for e.g. the maze).
+    std::unique_ptr<ShaderProgram>
+        m_minimap_shader; ///< Minimap shader program.
 	std::unique_ptr<Framebuffer> m_framebuffer;
 	std::unique_ptr<Framebuffer>
 	    m_backbuffer; ///< Default framebuffer created by GLFW.

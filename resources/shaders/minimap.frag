@@ -7,6 +7,8 @@ in vec3 v_view_pos;
 
 out vec4 frag_color;
 
+uniform vec4 u_model_color;
+
 void main() {
-	frag_color = vec4(1.0, 1.0, 0.0, 1.0);
+    frag_color = u_model_color;
 }
