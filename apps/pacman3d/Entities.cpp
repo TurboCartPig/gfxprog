@@ -284,7 +284,7 @@ void Pellets::update(Pacman &pacman) {
 	// can be picked up at a time anyway?
 	auto remove = std::remove_if(
 	    begin(m_centroids), end(m_centroids), [&](const auto &c) {
-		    return glm::length(c - pacman.getPosition()) <= 0.30f;
+		    return glm::length(c - pacman.getPosition()) <= 0.4f;
 	    });
 	m_centroids.erase(remove, end(m_centroids));
 
@@ -309,7 +309,7 @@ void Pellets::upload() const {
 	transforms.reserve(m_centroids.size());
 	for (const auto &centroid : m_centroids) {
 		const auto transform = glm::scale(
-		    glm::translate(glm::mat4(1.0f), centroid), glm::vec3(0.3f));
+		    glm::translate(glm::mat4(1.0f), centroid), glm::vec3(0.2f));
 		transforms.push_back(transform);
 	}
 
