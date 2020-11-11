@@ -12,7 +12,6 @@ out vec3 v_view_pos;
 uniform mat4 u_projection;
 uniform mat4 u_view;
 uniform mat4 u_transform;
-// uniform mat4 u_view_projection;
 
 void main() {
     v_frag_pos = a_position;
@@ -24,5 +23,5 @@ void main() {
 
     v_view_pos = u_view[3].xyz;
 
-    gl_Position = u_projection * u_view * u_transform * vec4(v_frag_pos, 1.0);
+    gl_Position = u_projection * u_view * u_transform * vec4(a_position, 1.0);
 }

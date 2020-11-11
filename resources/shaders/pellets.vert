@@ -23,5 +23,5 @@ void main() {
 
     v_view_pos = u_view[3].xyz;
 
-    gl_Position = u_projection * u_view * a_transform * vec4(v_frag_pos, 1.0);
+    gl_Position = u_projection * u_view * a_transform * vec4(a_position, 1.0);
 }

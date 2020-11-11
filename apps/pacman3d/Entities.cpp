@@ -182,7 +182,6 @@ auto genLevelMesh(const Level &level)
 					indices.push_back(index_offset + 1);
 					indices.push_back(index_offset + 2);
 					indices.push_back(index_offset + 3);
-					index_offset += 4;
 				}
 			}
 		}
@@ -339,10 +338,11 @@ void Pacman::input(Input input) {
 			m_forward.x = -1.0f;
 		}
 	} else if (input.state == InputState::Released) {
-		if (input.code == InputCode::W || input.code == InputCode::S)
+		if (input.code == InputCode::W || input.code == InputCode::S) {
 			m_forward.z = 0.0f;
-		else if (input.code == InputCode::A || input.code == InputCode::D)
+		} else if (input.code == InputCode::A || input.code == InputCode::D) {
 			m_forward.x = 0.0f;
+		}
 	}
 }
 
