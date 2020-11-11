@@ -14,24 +14,24 @@ auto genLevelMesh(const Level &level)
 
 	// Add floor
 	vertices.push_back(Vertex3DNormTex{glm::vec3(0.0f, 0.0f, 0.0f),
-	                                   glm::vec3(0.0f, -1.0f, 0.0f),
+	                                   glm::vec3(0.0f, 1.0f, 0.0f),
 	                                   glm::vec2(0.0f, 0.0f)});
 	vertices.push_back(Vertex3DNormTex{glm::vec3(0.0f, 0.0f, (float)h),
-	                                   glm::vec3(0.0f, -1.0f, 0.0f),
+	                                   glm::vec3(0.0f, 1.0f, 0.0f),
 	                                   glm::vec2(0.0f, 0.0f)});
 	vertices.push_back(Vertex3DNormTex{glm::vec3((float)w, 0.0f, 0.0f),
-	                                   glm::vec3(0.0f, -1.0f, 0.0f),
+	                                   glm::vec3(0.0f, 1.0f, 0.0f),
 	                                   glm::vec2(0.0f, 0.0f)});
 	vertices.push_back(Vertex3DNormTex{glm::vec3((float)w, 0.0f, (float)h),
-	                                   glm::vec3(0.0f, -1.0f, 0.0f),
+	                                   glm::vec3(0.0f, 1.0f, 0.0f),
 	                                   glm::vec2(0.0f, 0.0f)});
 
 	indices.push_back(0);
 	indices.push_back(1);
 	indices.push_back(2);
-	indices.push_back(1);
-	indices.push_back(2);
 	indices.push_back(3);
+	indices.push_back(2);
+	indices.push_back(1);
 
 	// Add individual cubes, but only the faces to face inward, upward or
 	// downward, not faces facing other faces within the maze.
@@ -84,9 +84,9 @@ auto genLevelMesh(const Level &level)
 				indices.push_back(index_offset + 0);
 				indices.push_back(index_offset + 1);
 				indices.push_back(index_offset + 2);
-				indices.push_back(index_offset + 1);
-				indices.push_back(index_offset + 2);
 				indices.push_back(index_offset + 3);
+				indices.push_back(index_offset + 2);
+				indices.push_back(index_offset + 1);
 				index_offset += 4;
 
 				if (j - 1 >= 0 && level.get(i, j - 1) != EntityType::Wall) {
@@ -107,9 +107,9 @@ auto genLevelMesh(const Level &level)
 					indices.push_back(index_offset + 0);
 					indices.push_back(index_offset + 1);
 					indices.push_back(index_offset + 2);
-					indices.push_back(index_offset + 1);
-					indices.push_back(index_offset + 2);
 					indices.push_back(index_offset + 3);
+					indices.push_back(index_offset + 2);
+					indices.push_back(index_offset + 1);
 					index_offset += 4;
 				}
 
@@ -128,9 +128,9 @@ auto genLevelMesh(const Level &level)
 					    offset + glm::vec3(0.0f, 1.0f, 1.0f),
 					    glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)});
 
-					indices.push_back(index_offset + 0);
-					indices.push_back(index_offset + 1);
 					indices.push_back(index_offset + 2);
+					indices.push_back(index_offset + 1);
+					indices.push_back(index_offset + 0);
 					indices.push_back(index_offset + 1);
 					indices.push_back(index_offset + 2);
 					indices.push_back(index_offset + 3);
@@ -152,9 +152,9 @@ auto genLevelMesh(const Level &level)
 					    offset + glm::vec3(1.0f, 1.0f, 1.0f),
 					    glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)});
 
-					indices.push_back(index_offset + 0);
-					indices.push_back(index_offset + 1);
 					indices.push_back(index_offset + 2);
+					indices.push_back(index_offset + 1);
+					indices.push_back(index_offset + 0);
 					indices.push_back(index_offset + 1);
 					indices.push_back(index_offset + 2);
 					indices.push_back(index_offset + 3);
@@ -179,9 +179,9 @@ auto genLevelMesh(const Level &level)
 					indices.push_back(index_offset + 0);
 					indices.push_back(index_offset + 1);
 					indices.push_back(index_offset + 2);
-					indices.push_back(index_offset + 1);
-					indices.push_back(index_offset + 2);
 					indices.push_back(index_offset + 3);
+					indices.push_back(index_offset + 2);
+					indices.push_back(index_offset + 1);
 				}
 			}
 		}
