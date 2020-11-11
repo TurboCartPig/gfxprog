@@ -1,12 +1,13 @@
 #include <GL/glew.h>
+#include <optional>
 
 /**
  * @brief Abstract type of framebuffer attachment.
  */
 enum class AttachmentType {
 	Color,
-//	Depth,
-//	Stencil,
+	Depth,
+	//	Stencil,
 	DepthStencil,
 };
 
@@ -66,6 +67,8 @@ class Framebuffer {
 
 	/**
 	 * @brief Add an additional attachment to the framebuffer.
+	 * Misusing the framebuffer will generate OpenGL errors. No errors will be
+	 * generated from this function.
 	 * @param type Type of attachment to add. E.g. Color attachment, Depth
 	 * attachment...
 	 * @param dimensions Dimensions of the attachment.
@@ -74,11 +77,12 @@ class Framebuffer {
 
 	/**
 	 * @brief Clear the framebuffer.
+	 * NOTE: Can not clear the default framebuffer.
 	 */
 	void clear() const;
 
 	/**
-	 * Blit contents of source onto this framebuffer.
+	 * @brief Blit contents of source onto this framebuffer.
 	 * @param source Source framebuffer.
 	 * @param source_extents Extents to blit from framebuffer.
 	 * @param destination_extents Extents to blit onto this framebuffer.
@@ -86,16 +90,26 @@ class Framebuffer {
 	void blit(const Framebuffer *source, glm::ivec4 source_extents,
 	          glm::ivec4 destination_extents);
 
+	/**
+	 * @brief Bind the depth attachment of the framebuffer as a texture.
+	 */
+	void bindDepthAttachmentToSlot(GLuint slot) const;
+
   private:
 	/**
 	 * @brief Wrap an already existing raw framebuffer from it's id.
+	 * FIXME: Should be passed other info about the default framebuffer.
 	 * @param fbo Raw framebuffer object.
 	 */
 	Framebuffer(GLuint fbo);
 
   private:
-	GLuint m_fbo;             ///< Framebuffer object.
-	bool m_has_depth_stencil; ///< Does the Framebuffer have a depth and stencil
-	                          ///< attachment.
-	uint32_t m_color_attachments = 0; ///< Number of color attachments.
+	GLuint              m_fbo;                ///< Framebuffer object.
+	std::vector<GLuint> m_color_attachments;  ///< The color attachment textures
+	std::optional<GLuint> m_depth_attachment; ///< Depth attachment texture
+	std::optional<GLuint>
+	           m_depth_stencil_attachment; ///< Depth stencil attachment texture
+	glm::ivec2 m_dimensions; ///< Larges dimension of all the framebuffer
+	                         ///< attachments. Should be the glViewport when
+	                         ///< rendering to this framebuffer.
 };
