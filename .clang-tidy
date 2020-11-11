@@ -1,8 +1,9 @@
 ---
-Checks: 'clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*,performance-*,portability-*,bugprone-*,readability-*,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-readability-uppercase-literal-suffix,-readability-braces-around-statements,-readability-avoid-const-params-in-decls,-abseil-*'
+Checks: '-*,clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,cert-*,modernize-*,misc-*,performance-*,portability-*,bugprone-*,readability-*,-cppcoreguidelines-avoid-magic-numbers,-cppcoreguidelines-pro-type-union-access,-readability-magic-numbers,-readability-uppercase-literal-suffix'
 WarningsAsErrors: ''
-HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
 FormatStyle: file
-User: dennis
+CheckOptions:
+  - key: readability-braces-around-statements.ShortStatementLines
+    value: '2'
 ...
