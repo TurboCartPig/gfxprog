@@ -55,7 +55,7 @@ class Pellets {
   public:
 	Pellets(std::vector<glm::vec3> centroids);
 	void update(class Pacman &pacman);
-	void draw(const glm::mat4 &view, const glm::mat4 &projection) const;
+	void draw() const;
 
   private:
 	/**
@@ -65,7 +65,6 @@ class Pellets {
 
   private:
 	std::unique_ptr<Model>         m_sphere;
-	std::unique_ptr<ShaderProgram> m_shader_program;
 	std::vector<glm::vec3>         m_centroids;
 };
 

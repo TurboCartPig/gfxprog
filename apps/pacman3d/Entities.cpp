@@ -256,22 +256,7 @@ Maze::Maze(const Level &level) {
 
 Pellets::Pellets(std::vector<glm::vec3> centroids)
     : m_centroids(std::move(centroids)) {
-	using namespace std::string_literals;
-
-	const auto shaders = {"resources/shaders/pellets.vert"s,
-	                      "resources/shaders/model.frag"s};
-	m_shader_program   = std::make_unique<ShaderProgram>(shaders);
-	m_sphere           = std::make_unique<Model>("resources/models/sphere.obj");
-
-	auto model_color = glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
-
-	auto directional_light = DirectionalLight{
-	    glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.25f, 1.0f, 0.5f), 2.0f};
-
-	m_shader_program->use();
-	m_shader_program->setUniform("u_model_color", model_color);
-	m_shader_program->setUniform("u_directional_light", directional_light);
-	m_shader_program->setUniform("u_diffuse_map", 0u);
+	m_sphere = std::make_unique<Model>("resources/models/sphere.obj");
 
 	upload();
 }
@@ -295,11 +280,7 @@ void Pellets::update(Pacman &pacman) {
 		upload();
 }
 
-void Pellets::draw(const glm::mat4 &view, const glm::mat4 &projection) const {
-	m_shader_program->use();
-	m_shader_program->setUniform("u_view", view);
-	m_shader_program->setUniform("u_projection", projection);
-
+void Pellets::draw() const {
 	m_sphere->draw();
 }
 

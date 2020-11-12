@@ -1,6 +1,7 @@
 #version 450 core
 
 in vec3 v_frag_pos;
+in vec4 v_frag_pos_light_space;
 in vec3 v_normal;
 in vec2 v_texcoord;
 in vec3 v_view_pos;
@@ -8,12 +9,42 @@ in vec3 v_view_pos;
 out vec4 frag_color;
 
 uniform sampler2D u_diffuse_map;
+uniform sampler2D u_shadow_map;
 uniform vec4 u_model_color;
 uniform struct DirectionalLight {
     vec3 color;
     vec3 direction;
     float specularity;
 } u_directional_light;
+
+/*
+ * Calculates if the fragment is in shadow or not.
+ */
+float compute_shadow() {
+    // Where should we sample the shadow map?
+    vec3 proj_coords = v_frag_pos_light_space.xyz / v_frag_pos_light_space.w;
+    proj_coords = proj_coords * 0.5 + 0.5;
+    float current_depth = proj_coords.z;
+
+    // float closest_depth = texture(u_shadow_map, proj_coords.xy).r;
+
+    // float bias = max(0.05 * (1.0 - dot(v_normal, u_directional_light.direction)), 0.005);
+    // float shadow = current_depth - bias > closest_depth ? 1.0 : 0.0;
+
+    float bias = 0.00045;
+    float shadow = 0.0;
+    vec2 texel_size = 1.0 / textureSize(u_shadow_map, 0);
+
+    // Percentage closer filtering
+    for (int x = -1; x <= 1; x++) {
+        for (int y = -1; y <= 1; y++) {
+            float pcf_depth = texture(u_shadow_map, proj_coords.xy + vec2(x, y) * texel_size).r;
+            shadow += current_depth - bias > pcf_depth ? 1.0 : 0.0;
+        }
+    }
+
+    return shadow / 9.0;
+}
 
 /*
  * Compute the directional light's color contribution to the fragment color.
@@ -25,17 +56,19 @@ vec3 compute_directional_light() {
     vec3 ambient = ambient_strength * u_directional_light.color;
 
     // Diffuse lighting
-    vec3 light_dir = normalize(u_directional_light.direction);
+    vec3 light_dir = u_directional_light.direction;
     vec3 diffuse = max(dot(v_normal, light_dir), 0.0) * u_directional_light.color;
 
     // Specular lighting
     vec3 view_dir = normalize(v_frag_pos - v_view_pos);
     vec3 reflected_dir = reflect(light_dir, v_normal);
 
-    float spec = pow(max(dot(view_dir, reflected_dir), 0.0), 32);
+    float spec = pow(max(dot(view_dir, reflected_dir), 0.0), 64);
     vec3 specular = u_directional_light.specularity * spec * u_directional_light.color;
 
-    return ambient + diffuse + specular;
+    float shadow = compute_shadow();
+
+    return (ambient + (1.0 - shadow) * (diffuse + specular));
 }
 
 /*
@@ -58,5 +91,6 @@ void main() {
     color += compute_directional_light();
     color += compute_point_light();
 
-    frag_color = base_color * vec4(color, 1.0);
+    vec3 lighting = color * base_color.rgb;
+    frag_color = vec4(lighting, 1.0);
 }
