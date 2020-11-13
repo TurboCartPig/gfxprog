@@ -234,13 +234,6 @@ void VertexBuffer<VertexFormat>::uploadWhole(
 template <typename VertexFormat>
 template <typename InstanceFormat>
 void VertexBuffer<VertexFormat>::enableInstancing() {
-	/*
-	 * 1. Create new VBO
-	 * 2. Upload instance data to VBO
-	 * 3. Setup vertex attributes to use this VBO for additional vertex
-	 * attributes in addition to the normal ones
-	 */
-
 	m_instanced = true;
 
 	// Create a new VBO for per-instance data
