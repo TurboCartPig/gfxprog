@@ -18,7 +18,7 @@ uniform mat4 u_light_space_matrix;
 void main() {
     v_frag_pos = a_position;
 
-    v_frag_pos_light_space = u_light_space_matrix * vec4(a_position, 1.0);
+    v_frag_pos_light_space = u_light_space_matrix * a_transform * vec4(a_position, 1.0);
 
     mat3 norm_mat = mat3(transpose(inverse(a_transform)));
     v_normal = normalize(norm_mat * a_normal);
