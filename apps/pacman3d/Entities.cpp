@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <random>
+#include <utility>
 
 auto genLevelMesh(const Level &level)
     -> std::pair<std::vector<Vertex3DNormTex>, std::vector<uint32_t>> {
@@ -210,19 +211,23 @@ auto genGhosts(const Level &level) -> std::vector<Ghost> {
 	std::vector<Ghost> ghosts;
 	ghosts.reserve(4);
 
+	// Load model
+	auto model = std::make_shared<Model>("resources/models/ghost.obj");
+
+	// Init random number generator
 	std::random_device                    rd;
 	std::default_random_engine            generator(rd());
 	std::uniform_real_distribution<float> distribution(0.0, 1.0);
 
 	for (int k = 0; k < 4; k++) {
 		while (true) {
-			const auto i = distribution(generator) * w;
-			const auto j = distribution(generator) * h;
+			const auto i = std::floor(distribution(generator) * w);
+			const auto j = std::floor(distribution(generator) * h);
 			if (level.get(static_cast<int>(i), static_cast<int>(j)) ==
 			    EntityType::Tunnel) {
 				const auto offset =
-				    glm::vec3((float)i + 0.5f, 0.0f, (float)j + 0.5f);
-				ghosts.emplace_back(Ghost(offset));
+				    glm::vec3(i + 0.5f, 0.0f, j + 0.5f);
+				ghosts.emplace_back(Ghost(offset, model));
 				break;
 			}
 		}
@@ -328,9 +333,9 @@ void Pacman::input(Input input) {
 }
 
 void Pacman::update(float dt, const Level &level) {
-	auto translation = m_transform.translation + m_forward * dt;
+	const auto translation = m_transform.translation + m_forward * dt;
 
-	auto collision =
+	const auto collision =
 	    level.get(static_cast<int>(std::round(translation.x - 0.5f)),
 	              static_cast<int>(std::round(translation.z - 0.5f))) ==
 	    EntityType::Wall;
@@ -339,4 +344,39 @@ void Pacman::update(float dt, const Level &level) {
 	}
 }
 
-Ghost::Ghost(glm::vec3 position) {}
+Ghost::Ghost(glm::vec3 position, std::shared_ptr<Model> model)
+    : m_model(std::move(model)) {
+	m_forward   = glm::vec3(1.0f, 0.0f, 0.0f);
+	m_transform = {position, glm::quat(), glm::vec3(0.25f)};
+}
+
+void Ghost::update(float dt, const Level &level) {
+	// Find new pos based on pos, forward and dt
+	const auto translation = m_transform.translation + m_forward * dt;
+
+	// Check collision against grid
+	const auto collision =
+	    level.get(static_cast<int>(std::round(translation.x - 0.5f)),
+	              static_cast<int>(std::round(translation.z - 0.5f))) ==
+	    EntityType::Wall;
+
+	// FIXME: They currently get stuck because of the order of branches
+
+	// Change direction if they will collide
+	if (!collision) {
+		m_transform.translation = translation;
+	} else if (m_forward.x == -1.0f) {
+		// Float comparison is fine because the are checked
+		// against what they have been set to and whole numbers
+		// will always be represented accurately.
+		m_forward = glm::vec3(0.0f, 0.0f, -1.0f);
+	} else if (m_forward.z == -1.0f) {
+        m_forward = glm::vec3(1.0f, 0.0f, 0.0f);
+    } else if (m_forward.x == 1.0f) {
+        m_forward = glm::vec3(0.0f, 0.0f, -1.0f);
+	} else {
+		m_forward = glm::vec3(-1.0f, 0.0f, 0.0f);
+	}
+}
+
+void Ghost::draw() const { m_model->draw(); }

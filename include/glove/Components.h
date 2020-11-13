@@ -8,6 +8,10 @@ struct TransformComponent {
   public:
 	TransformComponent() = default;
 
+	[[nodiscard]] auto matrix() const {
+		return glm::translate(glm::mat4(1.0f), translation) * glm::scale(glm::mat4(1.0f), scale);
+	}
+
   public:
 	glm::vec3 translation;
 	glm::quat rotation;
@@ -28,5 +32,3 @@ struct CameraComponent {
 	float aspect; ///< Aspect ratio.
 	float vfov;   ///< Vertical field of view in degrees.
 };
-
-struct MeshComponent {};

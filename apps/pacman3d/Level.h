@@ -28,6 +28,8 @@ class Level {
 	 * @return Type of entity in the level at give coordinates.
 	 */
 	[[nodiscard]] auto get(int x, int y) const {
+		x = std::max(0, std::min(m_width, x));
+        y = std::max(0, std::min(m_height, y));
 		return m_grid[y * m_width + x];
 	}
 

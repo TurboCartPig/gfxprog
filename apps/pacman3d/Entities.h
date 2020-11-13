@@ -41,6 +41,7 @@ class Maze {
   public:
 	Maze(const class Level &level);
 	void draw() const { m_vbo->draw(); }
+	[[nodiscard]] auto getTransform() const { return glm::mat4(1.0f); }
 
   private:
 	std::unique_ptr<VertexBuffer<Vertex3DNormTex>> m_vbo;
@@ -64,8 +65,8 @@ class Pellets {
 	void upload() const;
 
   private:
-	std::unique_ptr<Model>         m_sphere;
-	std::vector<glm::vec3>         m_centroids;
+	std::unique_ptr<Model> m_sphere;
+	std::vector<glm::vec3> m_centroids;
 };
 
 /**
@@ -88,15 +89,17 @@ class Pacman {
 };
 
 /**
- * @brief Ghost
+ * @brief Ghost.
  */
 class Ghost {
   public:
-	Ghost(glm::vec3 position);
-	void update(float dt);
+	Ghost(glm::vec3 position, std::shared_ptr<Model> model);
+	void update(float dt, const class Level &level);
 	void draw() const;
+    [[nodiscard]] auto getTransform() const { return m_transform.matrix(); }
 
   private:
-	glm::vec3          m_forward;
-	TransformComponent m_transform;
+	glm::vec3              m_forward;
+	TransformComponent     m_transform;
+	std::shared_ptr<Model> m_model;
 };

@@ -124,6 +124,10 @@ class GameState : public IGameState {
 		m_pacman->update(dt, *m_level);
 		m_pellets->update(*m_pacman);
 
+		for (auto &ghost : m_ghosts) {
+			ghost.update(dt, *m_level);
+		}
+
 		return None{};
 	}
 
@@ -152,8 +156,14 @@ class GameState : public IGameState {
 		m_model_shadow_shader->setUniform("u_light_space_matrix",
 		                                  light_space_matrix);
 
-        // FIXME: Need to draw ghosts, and pacman as well.
-		m_maze->draw();
+        // FIXME: Need to draw pacman as well.
+        m_model_shadow_shader->setUniform("u_transform", m_maze->getTransform());
+        m_maze->draw();
+
+        for (const auto &ghost : m_ghosts) {
+            m_model_shadow_shader->setUniform("u_transform", ghost.getTransform());
+            ghost.draw();
+        }
 
 		m_pellet_shadow_shader->use();
 		m_pellet_shadow_shader->setUniform("u_light_space_matrix",
@@ -177,7 +187,15 @@ class GameState : public IGameState {
 		m_model_shader->setUniform("u_shadow_map", shadow_map_slot);
 		m_model_shader->setUniform("u_light_space_matrix", light_space_matrix);
 
+		m_model_shader->setUniform("u_transform", m_maze->getTransform());
+		m_model_shader->setUniform("u_model_color", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 		m_maze->draw();
+
+        m_model_shader->setUniform("u_model_color", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+        for (const auto &ghost : m_ghosts) {
+            m_model_shader->setUniform("u_transform", ghost.getTransform());
+            ghost.draw();
+        }
 
 		m_pellet_shader->use();
 		m_pellet_shader->setUniform("u_view", view);
@@ -194,7 +212,6 @@ class GameState : public IGameState {
 		m_framebuffer->bind();
 		m_framebuffer->clear();
 
-		// Draw stuff
 		view       = glm::lookAt(glm::vec3(0.0f, 10.0f, 0.0f),
                            glm::vec3(0.0f, 0.0f, 0.0f),
                            glm::vec3(0.0f, 0.0f, 1.0f));
@@ -204,7 +221,15 @@ class GameState : public IGameState {
 		m_minimap_shader->setUniform("u_view", view);
 		m_minimap_shader->setUniform("u_projection", projection);
 
-		m_maze->draw();
+        m_minimap_shader->setUniform("u_transform", m_maze->getTransform());
+		m_minimap_shader->setUniform("u_model_color", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+        m_maze->draw();
+
+        m_minimap_shader->setUniform("u_model_color", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+        for (const auto &ghost : m_ghosts) {
+            m_minimap_shader->setUniform("u_transform", ghost.getTransform());
+            ghost.draw();
+        }
 
 		m_pellet_shader->use();
 		m_pellet_shader->setUniform("u_view", view);
