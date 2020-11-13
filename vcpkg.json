@@ -11,8 +11,8 @@
     "glfw3",
     "catch2",
     {
-			"name": "assimp",
-			"platform": "windows"
-		}
+      "name": "assimp",
+      "platform": "windows"
+    }
   ]
 }
