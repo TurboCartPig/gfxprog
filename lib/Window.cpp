@@ -121,7 +121,7 @@ Window::Window(const std::string &title, const uint32_t width,
 	// Enable debugging
 	glEnable(GL_DEBUG_OUTPUT);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-	glDebugMessageCallback(glDebugOutput, 0);
+	glDebugMessageCallback(glDebugOutput, nullptr);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 

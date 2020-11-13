@@ -225,8 +225,7 @@ auto genGhosts(const Level &level) -> std::vector<Ghost> {
 			const auto j = std::floor(distribution(generator) * h);
 			if (level.get(static_cast<int>(i), static_cast<int>(j)) ==
 			    EntityType::Tunnel) {
-				const auto offset =
-				    glm::vec3(i + 0.5f, 0.0f, j + 0.5f);
+				const auto offset = glm::vec3(i + 0.5f, 0.0f, j + 0.5f);
 				ghosts.emplace_back(Ghost(offset, model));
 				break;
 			}
@@ -369,9 +368,9 @@ void Ghost::update(float dt, const Level &level) {
 		// will always be represented accurately.
 		m_forward = glm::vec3(0.0f, 0.0f, -1.0f);
 	} else if (m_forward.z == -1.0f) {
-        m_forward = glm::vec3(1.0f, 0.0f, 0.0f);
-    } else if (m_forward.x == 1.0f) {
-        m_forward = glm::vec3(0.0f, 0.0f, -1.0f);
+		m_forward = glm::vec3(1.0f, 0.0f, 0.0f);
+	} else if (m_forward.x == 1.0f) {
+		m_forward = glm::vec3(0.0f, 0.0f, -1.0f);
 	} else {
 		m_forward = glm::vec3(-1.0f, 0.0f, 0.0f);
 	}

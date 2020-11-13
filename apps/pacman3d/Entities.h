@@ -40,7 +40,7 @@ auto genPellets(const class Level &level) -> std::unique_ptr<class Pellets>;
 class Maze {
   public:
 	Maze(const class Level &level);
-	void draw() const { m_vbo->draw(); }
+	void               draw() const { m_vbo->draw(); }
 	[[nodiscard]] auto getTransform() const { return glm::mat4(1.0f); }
 
   private:
@@ -94,9 +94,9 @@ class Pacman {
 class Ghost {
   public:
 	Ghost(glm::vec3 position, std::shared_ptr<Model> model);
-	void update(float dt, const class Level &level);
-	void draw() const;
-    [[nodiscard]] auto getTransform() const { return m_transform.matrix(); }
+	void               update(float dt, const class Level &level);
+	void               draw() const;
+	[[nodiscard]] auto getTransform() const { return m_transform.matrix(); }
 
   private:
 	glm::vec3              m_forward;

@@ -39,13 +39,13 @@ class GameState : public IGameState {
 		// Enable depth testing
 		glEnable(GL_DEPTH_TEST);
 
-		// Enable face culling. Which face to cull is set per render pass
+		// Enable back face culling.
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 
 		// Enable blending for transparency
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		// Load level
 		// **********************************************************************************************************
@@ -91,7 +91,8 @@ class GameState : public IGameState {
 
 		m_model_shader->use();
 		m_model_shader->setUniform("u_transform", transform);
-		m_model_shader->setUniform("u_model_color", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+		m_model_shader->setUniform("u_model_color",
+		                           glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 		m_model_shader->setUniform("u_diffuse_map", 0u);
 
 		m_pellet_shader->use();
@@ -133,7 +134,7 @@ class GameState : public IGameState {
 
 	void render() override {
 		// Setup
-		// **********************************************************************************************************
+		// *********************************************************************
 		const auto [w, h] = m_level->getSize();
 
 		const auto eye               = glm::vec3(-2.0f, 20.0f, -1.0f);
@@ -144,7 +145,7 @@ class GameState : public IGameState {
 		const auto shadow_map_slot = 1u;
 
 		// Zeroth render pass - Generate a shadow map
-		// **********************************************************************************************************
+		// *********************************************************************
 		m_shadow_framebuffer->bind();
 		m_shadow_framebuffer->clear();
 
@@ -156,14 +157,16 @@ class GameState : public IGameState {
 		m_model_shadow_shader->setUniform("u_light_space_matrix",
 		                                  light_space_matrix);
 
-        // FIXME: Need to draw pacman as well.
-        m_model_shadow_shader->setUniform("u_transform", m_maze->getTransform());
-        m_maze->draw();
+		// FIXME: Need to draw pacman as well.
+		m_model_shadow_shader->setUniform("u_transform",
+		                                  m_maze->getTransform());
+		m_maze->draw();
 
-        for (const auto &ghost : m_ghosts) {
-            m_model_shadow_shader->setUniform("u_transform", ghost.getTransform());
-            ghost.draw();
-        }
+		for (const auto &ghost : m_ghosts) {
+			m_model_shadow_shader->setUniform("u_transform",
+			                                  ghost.getTransform());
+			ghost.draw();
+		}
 
 		m_pellet_shadow_shader->use();
 		m_pellet_shadow_shader->setUniform("u_light_space_matrix",
@@ -174,7 +177,7 @@ class GameState : public IGameState {
 		m_shadow_framebuffer->bindDepthAttachmentToSlot(shadow_map_slot);
 
 		// First render pass - Draw scene to the backbuffer
-		// **********************************************************************************************************
+		// *********************************************************************
 		m_backbuffer->bind();
 
 		view       = m_pacman->view();
@@ -188,14 +191,16 @@ class GameState : public IGameState {
 		m_model_shader->setUniform("u_light_space_matrix", light_space_matrix);
 
 		m_model_shader->setUniform("u_transform", m_maze->getTransform());
-		m_model_shader->setUniform("u_model_color", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+		m_model_shader->setUniform("u_model_color",
+		                           glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 		m_maze->draw();
 
-        m_model_shader->setUniform("u_model_color", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-        for (const auto &ghost : m_ghosts) {
-            m_model_shader->setUniform("u_transform", ghost.getTransform());
-            ghost.draw();
-        }
+		m_model_shader->setUniform("u_model_color",
+		                           glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+		for (const auto &ghost : m_ghosts) {
+			m_model_shader->setUniform("u_transform", ghost.getTransform());
+			ghost.draw();
+		}
 
 		m_pellet_shader->use();
 		m_pellet_shader->setUniform("u_view", view);
@@ -208,7 +213,7 @@ class GameState : public IGameState {
 
 		// Second render pass - Draw scene to minimap and blit it to the
 		// backbuffer
-		// **********************************************************************************************************
+		// *********************************************************************
 		m_framebuffer->bind();
 		m_framebuffer->clear();
 
@@ -221,15 +226,17 @@ class GameState : public IGameState {
 		m_minimap_shader->setUniform("u_view", view);
 		m_minimap_shader->setUniform("u_projection", projection);
 
-        m_minimap_shader->setUniform("u_transform", m_maze->getTransform());
-		m_minimap_shader->setUniform("u_model_color", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-        m_maze->draw();
+		m_minimap_shader->setUniform("u_transform", m_maze->getTransform());
+		m_minimap_shader->setUniform("u_model_color",
+		                             glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+		m_maze->draw();
 
-        m_minimap_shader->setUniform("u_model_color", glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-        for (const auto &ghost : m_ghosts) {
-            m_minimap_shader->setUniform("u_transform", ghost.getTransform());
-            ghost.draw();
-        }
+		m_minimap_shader->setUniform("u_model_color",
+		                             glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+		for (const auto &ghost : m_ghosts) {
+			m_minimap_shader->setUniform("u_transform", ghost.getTransform());
+			ghost.draw();
+		}
 
 		m_pellet_shader->use();
 		m_pellet_shader->setUniform("u_view", view);
@@ -241,7 +248,7 @@ class GameState : public IGameState {
 		                   glm::ivec4(0, 0, 280, 340));
 
 		// Render pass end
-		// **********************************************************************************************************
+		// *********************************************************************
 
 		// Bind the backbuffer for GLFW to read from
 		m_backbuffer->bind();
