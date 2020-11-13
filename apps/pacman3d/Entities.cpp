@@ -262,7 +262,7 @@ Maze::Maze(const Level &level) {
 Pellets::Pellets(std::vector<glm::vec3> centroids)
     : m_centroids(std::move(centroids)) {
 	m_sphere = std::make_unique<Model>("resources/models/sphere.obj");
-
+	m_sphere->enableInstancing<glm::mat4>();
 	upload();
 }
 
@@ -285,14 +285,13 @@ void Pellets::update(Pacman &pacman) {
 		upload();
 }
 
-void Pellets::draw() const {
-	m_sphere->draw();
-}
+void Pellets::draw() const { m_sphere->draw(); }
 
 void Pellets::upload() const {
-	// Build uniform buffer with data from centroids
+	// Build instance data from centroids
 	std::vector<glm::mat4> transforms;
 	transforms.reserve(m_centroids.size());
+
 	for (const auto &centroid : m_centroids) {
 		const auto transform = glm::scale(
 		    glm::translate(glm::mat4(1.0f), centroid), glm::vec3(0.2f));
@@ -300,7 +299,6 @@ void Pellets::upload() const {
 	}
 
 	// Upload the instance data
-	m_sphere->enableInstancing<glm::mat4>();
 	m_sphere->uploadInstanceData(transforms);
 }
 
