@@ -18,9 +18,9 @@ class GameState : public IGameState {
 		m_framebuffer = std::make_unique<Framebuffer>();
 		m_framebuffer->bind();
 		m_framebuffer->addAttachment(AttachmentType::Color,
-		                             glm::ivec2(240, 240));
+		                             glm::ivec2(280, 340));
 		m_framebuffer->addAttachment(AttachmentType::Depth,
-		                             glm::ivec2(240, 240));
+		                             glm::ivec2(280, 340));
 		assert(m_framebuffer->valid() && "Minimap framebuffer is not valid!");
 
 		m_shadow_framebuffer = std::make_unique<Framebuffer>();
@@ -212,8 +212,8 @@ class GameState : public IGameState {
 
 		m_pellets->draw();
 
-		m_backbuffer->blit(m_framebuffer.get(), glm::ivec4(0, 0, 240, 240),
-		                   glm::ivec4(0, 0, 240, 240));
+		m_backbuffer->blit(m_framebuffer.get(), glm::ivec4(0, 0, 280, 340),
+		                   glm::ivec4(0, 0, 280, 340));
 
 		// Render pass end
 		// **********************************************************************************************************
