@@ -19,13 +19,13 @@ auto genLevelMesh(const Level &level)
 	                                   glm::vec2(0.0f, 0.0f)});
 	vertices.push_back(Vertex3DNormTex{glm::vec3(0.0f, 0.0f, (float)h),
 	                                   glm::vec3(0.0f, 1.0f, 0.0f),
-	                                   glm::vec2(0.0f, 0.0f)});
+	                                   glm::vec2(0.0f, 1.0f)});
 	vertices.push_back(Vertex3DNormTex{glm::vec3((float)w, 0.0f, 0.0f),
 	                                   glm::vec3(0.0f, 1.0f, 0.0f),
-	                                   glm::vec2(0.0f, 0.0f)});
+	                                   glm::vec2(1.0f, 0.0f)});
 	vertices.push_back(Vertex3DNormTex{glm::vec3((float)w, 0.0f, (float)h),
 	                                   glm::vec3(0.0f, 1.0f, 0.0f),
-	                                   glm::vec2(0.0f, 0.0f)});
+	                                   glm::vec2(1.0f, 1.0f)});
 
 	indices.push_back(0);
 	indices.push_back(1);
@@ -74,13 +74,13 @@ auto genLevelMesh(const Level &level)
 				    glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)});
 				vertices.push_back(Vertex3DNormTex{
 				    offset + glm::vec3(0.0f, 1.0f, 1.0f),
-				    glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)});
+				    glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 1.0f)});
 				vertices.push_back(Vertex3DNormTex{
 				    offset + glm::vec3(1.0f, 1.0f, 0.0f),
-				    glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)});
+				    glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 0.0f)});
 				vertices.push_back(Vertex3DNormTex{
 				    offset + glm::vec3(1.0f, 1.0f, 1.0f),
-				    glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(0.0f, 0.0f)});
+				    glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f, 1.0f)});
 
 				indices.push_back(index_offset + 0);
 				indices.push_back(index_offset + 1);
@@ -97,13 +97,13 @@ auto genLevelMesh(const Level &level)
 					    glm::vec3(0.0f, 0.0f, -1.0f), glm::vec2(0.0f, 0.0f)});
 					vertices.push_back(Vertex3DNormTex{
 					    offset + glm::vec3(0.0f, 0.0f, 0.0f),
-					    glm::vec3(0.0f, 0.0f, -1.0f), glm::vec2(0.0f, 0.0f)});
+					    glm::vec3(0.0f, 0.0f, -1.0f), glm::vec2(0.0f, 1.0f)});
 					vertices.push_back(Vertex3DNormTex{
 					    offset + glm::vec3(1.0f, 1.0f, 0.0f),
-					    glm::vec3(0.0f, 0.0f, -1.0f), glm::vec2(0.0f, 0.0f)});
+					    glm::vec3(0.0f, 0.0f, -1.0f), glm::vec2(1.0f, 0.0f)});
 					vertices.push_back(Vertex3DNormTex{
 					    offset + glm::vec3(0.0f, 1.0f, 0.0f),
-					    glm::vec3(0.0f, 0.0f, -1.0f), glm::vec2(0.0f, 0.0f)});
+					    glm::vec3(0.0f, 0.0f, -1.0f), glm::vec2(1.0f, 1.0f)});
 
 					indices.push_back(index_offset + 0);
 					indices.push_back(index_offset + 1);
@@ -121,13 +121,13 @@ auto genLevelMesh(const Level &level)
 					    glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)});
 					vertices.push_back(Vertex3DNormTex{
 					    offset + glm::vec3(0.0f, 0.0f, 1.0f),
-					    glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)});
+					    glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f)});
 					vertices.push_back(Vertex3DNormTex{
 					    offset + glm::vec3(1.0f, 1.0f, 1.0f),
-					    glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)});
+					    glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f)});
 					vertices.push_back(Vertex3DNormTex{
 					    offset + glm::vec3(0.0f, 1.0f, 1.0f),
-					    glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)});
+					    glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f)});
 
 					indices.push_back(index_offset + 2);
 					indices.push_back(index_offset + 1);
@@ -145,13 +145,13 @@ auto genLevelMesh(const Level &level)
 					    glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)});
 					vertices.push_back(Vertex3DNormTex{
 					    offset + glm::vec3(1.0f, 0.0f, 1.0f),
-					    glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)});
+					    glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)});
 					vertices.push_back(Vertex3DNormTex{
 					    offset + glm::vec3(1.0f, 1.0f, 0.0f),
-					    glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)});
+					    glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)});
 					vertices.push_back(Vertex3DNormTex{
 					    offset + glm::vec3(1.0f, 1.0f, 1.0f),
-					    glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)});
+					    glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)});
 
 					indices.push_back(index_offset + 2);
 					indices.push_back(index_offset + 1);
@@ -169,13 +169,13 @@ auto genLevelMesh(const Level &level)
 					    glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)});
 					vertices.push_back(Vertex3DNormTex{
 					    offset + glm::vec3(0.0f, 0.0f, 1.0f),
-					    glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)});
+					    glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f)});
 					vertices.push_back(Vertex3DNormTex{
 					    offset + glm::vec3(0.0f, 1.0f, 0.0f),
-					    glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)});
+					    glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)});
 					vertices.push_back(Vertex3DNormTex{
 					    offset + glm::vec3(0.0f, 1.0f, 1.0f),
-					    glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)});
+					    glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f)});
 
 					indices.push_back(index_offset + 0);
 					indices.push_back(index_offset + 1);
@@ -336,7 +336,7 @@ void Pacman::update(float dt, const Level &level) {
 	const auto translation =
 	    m_transform.translation +
 	    glm::vec3(glm::eulerAngleY(m_transform.rotation.y) *
-	              glm::vec4(m_forward, 1.0f) * dt);
+	              glm::vec4(m_forward, 1.0f)) * dt;
 
 	const auto collision =
 	    level.get(static_cast<int>(std::round(translation.x - 0.5f)),

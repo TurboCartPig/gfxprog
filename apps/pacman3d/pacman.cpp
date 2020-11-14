@@ -59,6 +59,10 @@ class GameState : public IGameState {
 		m_pellets = genPellets(*m_level);
 		m_ghosts  = genGhosts(*m_level);
 
+		// Load texture
+        // **********************************************************************************************************
+		m_texture = std::make_unique<Texture>("resources/textures/wall.jpg");
+
 		// Setup shader programs
 		// **********************************************************************************************************
 		const auto model_shaders = {"resources/shaders/model.vert"s,
@@ -87,27 +91,15 @@ class GameState : public IGameState {
 
 		// Setup uniforms
 		// **********************************************************************************************************
-		auto transform = glm::mat4(1.0f);
+		const auto diffuse_map_slot = 0u;
 
 		m_model_shader->use();
-		m_model_shader->setUniform("u_transform", transform);
-		m_model_shader->setUniform("u_model_color",
-		                           glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-		m_model_shader->setUniform("u_diffuse_map", 0u);
+		m_model_shader->setUniform("u_diffuse_map", diffuse_map_slot);
 
 		m_pellet_shader->use();
 		m_pellet_shader->setUniform("u_model_color",
 		                            glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
-		m_pellet_shader->setUniform("u_diffuse_map", 0u);
-
-		// FIXME: *ALL* models should have their own transforms
-		m_minimap_shader->use();
-		m_minimap_shader->setUniform("u_transform", transform);
-		m_minimap_shader->setUniform("u_model_color",
-		                             glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-
-		m_model_shadow_shader->use();
-		m_model_shadow_shader->setUniform("u_transform", transform);
+		m_pellet_shader->setUniform("u_diffuse_map", diffuse_map_slot);
 	}
 
 	auto input(Input input) -> StateTransition override {
@@ -192,7 +184,7 @@ class GameState : public IGameState {
 
 		m_model_shader->setUniform("u_transform", m_maze->getTransform());
 		m_model_shader->setUniform("u_model_color",
-		                           glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+		                           glm::vec4(1.0f, 0.0f, 0.0f, 0.0f));
 		m_maze->draw();
 
 		m_model_shader->setUniform("u_model_color",
@@ -272,6 +264,8 @@ class GameState : public IGameState {
 	    m_model_shadow_shader; ///< Shadow map generating shader program.
 	std::unique_ptr<ShaderProgram>
 	    m_pellet_shadow_shader; ///< Shadow map generating shader program.
+
+	std::unique_ptr<Texture> m_texture; ///< A texture for the walls.
 
 	std::unique_ptr<Framebuffer>
 	    m_backbuffer; ///< Default framebuffer created by GLFW.
