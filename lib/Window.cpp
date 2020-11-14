@@ -17,39 +17,39 @@ static std::function<void(GLFWwindow *, int, int, int, int)>
  * @return Glove key code.
  */
 static auto glfw_to_inputcode(int key) {
-	InputCode ret;
-
 	switch (key) {
-		case GLFW_KEY_Q: ret = InputCode::Q; break;
-		case GLFW_KEY_W: ret = InputCode::W; break;
-		case GLFW_KEY_E: ret = InputCode::E; break;
-		case GLFW_KEY_R: ret = InputCode::R; break;
-		case GLFW_KEY_T: ret = InputCode::T; break;
-		case GLFW_KEY_Y: ret = InputCode::Y; break;
-		case GLFW_KEY_U: ret = InputCode::U; break;
-		case GLFW_KEY_I: ret = InputCode::I; break;
-		case GLFW_KEY_O: ret = InputCode::O; break;
-		case GLFW_KEY_P: ret = InputCode::P; break;
-		case GLFW_KEY_A: ret = InputCode::A; break;
-		case GLFW_KEY_S: ret = InputCode::S; break;
-		case GLFW_KEY_D: ret = InputCode::D; break;
-		case GLFW_KEY_F: ret = InputCode::F; break;
-		case GLFW_KEY_G: ret = InputCode::G; break;
-		case GLFW_KEY_H: ret = InputCode::H; break;
-		case GLFW_KEY_J: ret = InputCode::J; break;
-		case GLFW_KEY_K: ret = InputCode::K; break;
-		case GLFW_KEY_L: ret = InputCode::L; break;
-		case GLFW_KEY_Z: ret = InputCode::Z; break;
-		case GLFW_KEY_X: ret = InputCode::X; break;
-		case GLFW_KEY_C: ret = InputCode::C; break;
-		case GLFW_KEY_V: ret = InputCode::V; break;
-		case GLFW_KEY_B: ret = InputCode::B; break;
-		case GLFW_KEY_N: ret = InputCode::N; break;
-		case GLFW_KEY_M: ret = InputCode::M; break;
-		case GLFW_KEY_ESCAPE: ret = InputCode::Escape; break;
+		case GLFW_KEY_Q: return InputCode::Q;
+		case GLFW_KEY_W: return InputCode::W;
+		case GLFW_KEY_E: return InputCode::E;
+		case GLFW_KEY_R: return InputCode::R;
+		case GLFW_KEY_T: return InputCode::T;
+		case GLFW_KEY_Y: return InputCode::Y;
+		case GLFW_KEY_U: return InputCode::U;
+		case GLFW_KEY_I: return InputCode::I;
+		case GLFW_KEY_O: return InputCode::O;
+		case GLFW_KEY_P: return InputCode::P;
+		case GLFW_KEY_A: return InputCode::A;
+		case GLFW_KEY_S: return InputCode::S;
+		case GLFW_KEY_D: return InputCode::D;
+		case GLFW_KEY_F: return InputCode::F;
+		case GLFW_KEY_G: return InputCode::G;
+		case GLFW_KEY_H: return InputCode::H;
+		case GLFW_KEY_J: return InputCode::J;
+		case GLFW_KEY_K: return InputCode::K;
+		case GLFW_KEY_L: return InputCode::L;
+		case GLFW_KEY_Z: return InputCode::Z;
+		case GLFW_KEY_X: return InputCode::X;
+		case GLFW_KEY_C: return InputCode::C;
+		case GLFW_KEY_V: return InputCode::V;
+		case GLFW_KEY_B: return InputCode::B;
+		case GLFW_KEY_N: return InputCode::N;
+		case GLFW_KEY_M: return InputCode::M;
+		case GLFW_KEY_ESCAPE: return InputCode::Escape;
+		case GLFW_KEY_UP: return InputCode::Up;
+		case GLFW_KEY_DOWN: return InputCode::Down;
+		case GLFW_KEY_LEFT: return InputCode::Left;
+		case GLFW_KEY_RIGHT: return InputCode::Right;
 	}
-
-	return ret;
 }
 
 Window::Window(const std::string &title, const uint32_t width,

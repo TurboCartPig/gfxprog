@@ -42,6 +42,10 @@ enum class InputCode {
 	RAlt,
 	Tab,
 	Escape,
+	Up,
+	Down,
+	Left,
+	Right,
 	// TODO: Add the rest of a normal keyboard
 };
 
