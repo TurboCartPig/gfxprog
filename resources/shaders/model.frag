@@ -26,24 +26,23 @@ float compute_shadow() {
     proj_coords = proj_coords * 0.5 + 0.5;
     float current_depth = proj_coords.z;
 
-    // float closest_depth = texture(u_shadow_map, proj_coords.xy).r;
+    // Angle base bias
+     float bias = max(0.005 * (1.0 - dot(v_normal, u_directional_light.direction)), 0.0005);
 
-    // float bias = max(0.05 * (1.0 - dot(v_normal, u_directional_light.direction)), 0.005);
-    // float shadow = current_depth - bias > closest_depth ? 1.0 : 0.0;
-
-    float bias = 0.00045;
     float shadow = 0.0;
     vec2 texel_size = 1.0 / textureSize(u_shadow_map, 0);
 
     // Percentage closer filtering
-    for (int x = -1; x <= 1; x++) {
-        for (int y = -1; y <= 1; y++) {
+    // Based on brute force implementation from [GPU Gems](https://developer.nvidia.com/gpugems/gpugems/part-ii-lighting-and-shadows/chapter-11-shadow-map-antialiasing)
+    for (float x = -2.5; x <= 2.5; x += 0.5) {
+        for (float y = -2.5; y <= 2.5; y += 0.5) {
             float pcf_depth = texture(u_shadow_map, proj_coords.xy + vec2(x, y) * texel_size).r;
             shadow += current_depth - bias > pcf_depth ? 1.0 : 0.0;
         }
     }
+    shadow /= 144.0;
 
-    return shadow / 9.0;
+    return shadow;
 }
 
 /*
