@@ -265,7 +265,7 @@ Pellets::Pellets(std::vector<glm::vec3> centroids)
 	upload();
 }
 
-void Pellets::update(Pacman &pacman) {
+auto Pellets::update(const Pacman &pacman) -> bool {
 	auto before = m_centroids.size();
 
 	// Check for collision with pacman, and delete colliding pellets.
@@ -282,6 +282,9 @@ void Pellets::update(Pacman &pacman) {
 	// Update transforms if they changed
 	if (before != after)
 		upload();
+
+	// Return true if pacman has eaten all the pellets
+	return m_centroids.empty();
 }
 
 void Pellets::draw() const { m_sphere->draw(); }
@@ -336,7 +339,8 @@ void Pacman::update(float dt, const Level &level) {
 	const auto translation =
 	    m_transform.translation +
 	    glm::vec3(glm::eulerAngleY(m_transform.rotation.y) *
-	              glm::vec4(m_forward, 1.0f)) * dt;
+	              glm::vec4(m_forward, 1.0f)) *
+	        dt;
 
 	const auto collision =
 	    level.get(static_cast<int>(std::round(translation.x - 0.5f)),
@@ -353,7 +357,7 @@ Ghost::Ghost(glm::vec3 position, std::shared_ptr<Model> model)
 	m_transform = {position, glm::vec3(0.0f), glm::vec3(0.25f)};
 }
 
-void Ghost::update(float dt, const Level &level) {
+auto Ghost::update(float dt, const Pacman &pacman, const Level &level) -> bool {
 	// Find new pos based on pos, forward and dt
 	const auto translation = m_transform.translation + m_forward * dt;
 
@@ -380,6 +384,11 @@ void Ghost::update(float dt, const Level &level) {
 	} else {
 		m_forward = glm::vec3(-1.0f, 0.0f, 0.0f);
 	}
+
+	const auto pacman_collision = glm::length(pacman.getPosition() - m_transform.translation) <= 0.75f;
+
+	// If collide with pacman, return true
+	return pacman_collision;
 }
 
 void Ghost::draw() const { m_model->draw(); }

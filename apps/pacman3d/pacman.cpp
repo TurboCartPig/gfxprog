@@ -114,14 +114,18 @@ class GameState : public IGameState {
 	}
 
 	auto update(float dt) -> StateTransition override {
+		bool should_quit = false;
 		m_pacman->update(dt, *m_level);
-		m_pellets->update(*m_pacman);
+		should_quit |= m_pellets->update(*m_pacman);
 
 		for (auto &ghost : m_ghosts) {
-			ghost.update(dt, *m_level);
+			should_quit |= ghost.update(dt, *m_pacman, *m_level);
 		}
 
-		return None{};
+		if (should_quit)
+			return Pop{};
+		else
+			return None{};
 	}
 
 	void render() override {

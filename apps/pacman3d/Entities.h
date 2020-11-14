@@ -55,8 +55,8 @@ class Maze {
 class Pellets {
   public:
 	Pellets(std::vector<glm::vec3> centroids);
-	void update(class Pacman &pacman);
-	void draw() const;
+	[[nodiscard]] auto update(const class Pacman &pacman) -> bool;
+	void               draw() const;
 
   private:
 	/**
@@ -94,7 +94,8 @@ class Pacman {
 class Ghost {
   public:
 	Ghost(glm::vec3 position, std::shared_ptr<Model> model);
-	void               update(float dt, const class Level &level);
+	[[nodiscard]] auto update(float dt, const Pacman &pacman,
+	                          const class Level &level) -> bool;
 	void               draw() const;
 	[[nodiscard]] auto getTransform() const { return m_transform.matrix(); }
 
