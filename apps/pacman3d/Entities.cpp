@@ -303,10 +303,9 @@ void Pellets::upload() const {
 
 Pacman::Pacman(glm::vec3 position) {
 	m_forward   = glm::vec3(0.0f, 0.0f, 0.0f);
-	glm::quat q = glm::quatLookAt(glm::vec3(0.0f, 0.0f, -1.0f),
-	                              glm::vec3(0.0f, 1.0f, 0.0f));
-	m_transform = {position, q, glm::vec3(1.0f)};
-	m_camera    = CameraComponent(16.0f / 9.0f, 96.0f);
+	m_transform = {position, glm::vec3(0.0f), glm::vec3(1.0f)};
+	// FIXME: Aspect ratio needs to be updated when the window is resized
+	m_camera = CameraComponent(16.0f / 9.0f, 96.0f);
 }
 
 void Pacman::input(Input input) {
@@ -319,6 +318,10 @@ void Pacman::input(Input input) {
 			m_forward.x = 1.0f;
 		} else if (input.code == InputCode::D) {
 			m_forward.x = -1.0f;
+		} else if (input.code == InputCode::Left) {
+			m_transform.rotation.y += 0.25f;
+		} else if (input.code == InputCode::Right) {
+			m_transform.rotation.y -= 0.25f;
 		}
 	} else if (input.state == InputState::Released) {
 		if (input.code == InputCode::W || input.code == InputCode::S) {
@@ -330,7 +333,10 @@ void Pacman::input(Input input) {
 }
 
 void Pacman::update(float dt, const Level &level) {
-	const auto translation = m_transform.translation + m_forward * dt;
+	const auto translation =
+	    m_transform.translation +
+	    glm::vec3(glm::eulerAngleY(m_transform.rotation.y) *
+	              glm::vec4(m_forward, 1.0f) * dt);
 
 	const auto collision =
 	    level.get(static_cast<int>(std::round(translation.x - 0.5f)),
@@ -344,7 +350,7 @@ void Pacman::update(float dt, const Level &level) {
 Ghost::Ghost(glm::vec3 position, std::shared_ptr<Model> model)
     : m_model(std::move(model)) {
 	m_forward   = glm::vec3(1.0f, 0.0f, 0.0f);
-	m_transform = {position, glm::quat(), glm::vec3(0.25f)};
+	m_transform = {position, glm::vec3(0.0f), glm::vec3(0.25f)};
 }
 
 void Ghost::update(float dt, const Level &level) {
