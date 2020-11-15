@@ -6,7 +6,7 @@ file(GLOB GLOVE_HEADER_FILES CONFIGURE_DEPENDS
 file(GLOB GLOVE_SOURCE_FILES CONFIGURE_DEPENDS
      "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 
-add_library(lib ${GLOVE_SOURCE_FILES})
+add_library(lib ${GLOVE_SOURCE_FILES} ${GLOVE_HEADER_FILES})
 target_compile_options(lib PRIVATE ${COMPILER_WARNINGS_AND_ERRORS}
                                    ${COMPILER_SANITIZERS})
 target_compile_definitions(lib PUBLIC _USE_MATH_DEFINES)

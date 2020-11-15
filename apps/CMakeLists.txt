@@ -41,20 +41,24 @@ target_link_libraries(model PRIVATE lib)
 # Assignments
 # ##############################################################################
 
+file(GLOB PACMAN_HEADER_FILES CONFIGURE_DEPENDS
+     "${CMAKE_CURRENT_SOURCE_DIR}/pacman/*.h")
 file(GLOB PACMAN_SOURCE_FILES CONFIGURE_DEPENDS
      "${CMAKE_CURRENT_SOURCE_DIR}/pacman/*.cpp")
 
-add_executable(pacman "${PACMAN_SOURCE_FILES}")
+add_executable(pacman "${PACMAN_SOURCE_FILES}" "${PACMAN_HEADER_FILES}")
 add_dependencies(pacman copy-resources)
 target_include_directories(pacman PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/pacman")
 target_compile_options(pacman PRIVATE ${COMPILER_WARNINGS_AND_ERRORS}
                                       ${COMPILER_SANITIZERS})
 target_link_libraries(pacman PRIVATE lib)
 
+file(GLOB PACMAN3D_HEADER_FILES CONFIGURE_DEPENDS
+     "${CMAKE_CURRENT_SOURCE_DIR}/pacman3d/*.h")
 file(GLOB PACMAN3D_SOURCE_FILES CONFIGURE_DEPENDS
      "${CMAKE_CURRENT_SOURCE_DIR}/pacman3d/*.cpp")
 
-add_executable(pacman3d "${PACMAN3D_SOURCE_FILES}")
+add_executable(pacman3d "${PACMAN3D_SOURCE_FILES}" "${PACMAN3D_HEADER_FILES}")
 add_dependencies(pacman3d copy-resources)
 target_include_directories(pacman3d
                            PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/pacman3d")
