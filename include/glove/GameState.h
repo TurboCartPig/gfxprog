@@ -39,6 +39,13 @@ struct [[nodiscard]] Transition {
 using StateTransition = std::variant<None, Push, Pop, Transition>;
 
 /**
+ * @brief A manifest of static information about a game state.
+ */
+struct StateManifest {
+	std::string title; ///< The game state's title.
+};
+
+/**
  * @brief Interface for a game state object.
  */
 class IGameState {
@@ -55,7 +62,16 @@ class IGameState {
 
 	virtual ~IGameState() = default;
 
+	/**
+	 * @brief Initialize the game state.
+	 */
 	virtual void initialize() = 0;
+
+	/**
+	 * @brief Get a manifest of static information about this game state.
+	 * @return Manifest.
+	 */
+	virtual auto manifest() -> StateManifest = 0;
 
 	/**
 	 * @brief Pass player input to the game state.
@@ -117,6 +133,11 @@ class Core {
 	 * transitions.
 	 */
 	void run();
+
+	/**
+	 * @brief Sets up and initializes the new top state.
+	 */
+	void setupState();
 
   private:
 	std::unique_ptr<Window>                  m_window;

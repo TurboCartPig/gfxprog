@@ -9,10 +9,8 @@ void Core::run() {
 	m_window   = std::make_unique<Window>("Change Me", 1280, 720);
 	auto input = m_window->getInputQueue();
 
-	// Initialize all the game states
-	for (auto &state : m_gamestates) {
-		state->initialize();
-	}
+	// Setup the initial state
+	setupState();
 
 	auto prev_time_point = std::chrono::steady_clock::now();
 
@@ -76,11 +74,23 @@ void Core::run() {
 
 	push_state:
 		m_gamestates.push_back(std::move(std::get<Push>(trans).state));
+        setupState();
 		continue;
 
 	transition_state:
-		m_gamestates[current].reset(
-		    std::get<Transition>(trans).state.release());
+		m_gamestates[current] = std::move(std::get<Transition>(trans).state);
+		setupState();
 		continue;
 	}
+}
+
+void Core::setupState() {
+    auto &top = m_gamestates.back();
+
+	// Initialize the state assuming it is new
+	top->initialize();
+
+	// Set properties from the manifest
+	const auto manifest = top->manifest();
+	m_window->setTitle(manifest.title);
 }

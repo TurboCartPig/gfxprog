@@ -103,6 +103,10 @@ class GameState : public IGameState {
 		m_pellet_shader->setUniform("u_diffuse_map", diffuse_map_slot);
 	}
 
+	auto manifest() -> StateManifest override {
+		return {"Pacman 3D"};
+	}
+
 	auto input(Input input) -> StateTransition override {
 		if (input.state == InputState::Pressed) {
 			if (input.code == InputCode::Escape)

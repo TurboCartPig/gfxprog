@@ -123,6 +123,14 @@ class Window {
 	}
 
 	/**
+	 * Set the title of the window.
+	 * @param title New title.
+	 */
+	void setTitle(const std::string& title) {
+		glfwSetWindowTitle(m_window, title.c_str());
+	}
+
+	/**
 	 * Should the window be fullscreened? If yes, make it so. Otherwise make if
 	 * a window.
 	 * @param should_be_fullscreen Should the window be fullscreened?
