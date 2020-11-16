@@ -255,7 +255,7 @@ void VertexBuffer<VertexFormat>::uploadInstanceData(
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_instance_vbo);
 	glBufferData(GL_ARRAY_BUFFER, instance_data.size() * sizeof(InstanceFormat),
-	             nullptr, GL_STATIC_DRAW);
+	             nullptr, GL_DYNAMIC_DRAW);
 	glBufferSubData(GL_ARRAY_BUFFER, 0,
 	                sizeof(InstanceFormat) * instance_data.size(),
 	                instance_data.data());
