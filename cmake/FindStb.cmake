@@ -36,17 +36,20 @@ The following cache variables may also be set:
 
 include(FindPackageHandleStandardArgs)
 
-# Stb is a header only library, so all we need to do is find the directory in which it resides
-# FIXME: Currently only looks for the headers I actually use in the project, should look for all the headers
-find_path(Stb_INCLUDE_DIR
-        NAMES "stb.h" "stb_image.h"
-        HINTS "/usr/include")
+# Stb is a header only library, so all we need to do is find the directory in
+# which it resides FIXME: Currently only looks for the headers I actually use in
+# the project, should look for all the headers
+find_path(
+    Stb_INCLUDE_DIR
+    NAMES "stb.h" "stb_image.h"
+    HINTS "/usr/include" "/usr/include/stb")
 
-find_package_handle_standard_args(Stb
-        FOUND_VAR Stb_FOUND
-        REQUIRED_VARS Stb_INCLUDE_DIR)
+find_package_handle_standard_args(
+    Stb
+    FOUND_VAR Stb_FOUND
+    REQUIRED_VARS Stb_INCLUDE_DIR)
 
-if (Stb_FOUND)
+if(Stb_FOUND)
     message(STATUS "Stb found in: ${Stb_INCLUDE_DIR}")
 
     # Classic Find*.cmake way
@@ -57,4 +60,4 @@ if (Stb_FOUND)
     target_include_directories(Stb::Stb INTERFACE ${Stb_INCLUDE_DIR})
 
     mark_as_advanced(Stb_INCLUDE_DIR)
-endif ()
+endif()
