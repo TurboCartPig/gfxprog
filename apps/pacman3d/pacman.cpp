@@ -1,5 +1,6 @@
 #include "Entities.h"
 #include "Level.h"
+#include "generation.h"
 
 #include <glove/lib.h>
 

@@ -1,6 +1,7 @@
 #include "Entities.h"
 
 #include "Level.h"
+#include "generation.h"
 
 #include <algorithm>
 #include <random>
