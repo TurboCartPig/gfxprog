@@ -6,6 +6,9 @@
 #include <memory>
 #include <string>
 
+/**
+ * @brief Input codes from keyboard.
+ */
 enum class InputCode {
 	Q,
 	W,
@@ -49,12 +52,18 @@ enum class InputCode {
 	// TODO: Add the rest of a normal keyboard
 };
 
+/**
+ * @brief State of an input code.
+ */
 enum class InputState {
 	Pressed,
 	Released,
 	Held,
 };
 
+/**
+ * @brief Input from the keyboard.
+ */
 struct Input {
 	InputCode  code;
 	InputState state;
@@ -63,12 +72,12 @@ struct Input {
 using InputQueue = std::shared_ptr<std::deque<Input>>;
 
 /**
- * Window object that maintains a window and opengl context.
+ * @brief Window object that maintains a window and opengl context.
  */
 class Window {
   public:
 	/**
-	 * Create a new window and opengl context.
+	 * @brief Create a new window and opengl context.
 	 * @param title Title of the window.
 	 * @param width Width of the window.
 	 * @param height Height of the window.
@@ -79,31 +88,32 @@ class Window {
 
 	Window(const Window &&other) = delete;
 
-	Window operator=(const Window &other) = delete;
+	auto operator=(const Window &other) = delete;
 
-	Window operator=(const Window &&other) = delete;
+	auto operator=(const Window &&other) = delete;
 
 	~Window();
 
 	/**
-	 * Poll for new events and indicate if the window should closed.
+	 * @brief Poll for new events and indicate if the window should closed.
 	 * @return Should the window be closed?
 	 */
-	bool pollEvents();
+	auto pollEvents() -> bool;
 
 	/**
-	 * Swap the back and front buffers.
+	 * @brief Swap the back and front buffers.
 	 */
 	void swapBuffers();
 
 	/**
-	 * Get the internal window pointer for usage width unwrapped glfw calls.
+	 * @brief Get the internal window pointer for usage width unwrapped glfw
+	 * calls.
 	 * @return The internal window pointer.
 	 */
-	[[nodiscard]] auto *ptr() const { return m_window; }
+	[[nodiscard]] auto ptr() const -> auto * { return m_window; }
 
 	/**
-	 * Get the current window dimensions without accounting for DPI. i.e.
+	 * @brief Get the current window dimensions without accounting for DPI. i.e.
 	 * framebuffer size.
 	 * @return Dimensions.
 	 */
@@ -114,7 +124,7 @@ class Window {
 	}
 
 	/**
-	 * Set the dimensions of the window.
+	 * @brief Set the dimensions of the window.
 	 * @param width New width of window.
 	 * @param height New height of window.
 	 */
@@ -123,28 +133,27 @@ class Window {
 	}
 
 	/**
-	 * Set the title of the window.
+	 * @brief Set the title of the window.
 	 * @param title New title.
 	 */
-	void setTitle(const std::string& title) {
+	void setTitle(const std::string &title) {
 		glfwSetWindowTitle(m_window, title.c_str());
 	}
 
 	/**
-	 * Should the window be fullscreened? If yes, make it so. Otherwise make if
-	 * a window.
+	 * @brief Should the window be fullscreened? Change current state if needed.
 	 * @param should_be_fullscreen Should the window be fullscreened?
 	 */
 	void fullscreen(bool should_be_fullscreen);
 
 	/**
-	 * Get the previous delta time.
+	 * @brief Get the previous delta time.
 	 * @return Delta time in seconds.
 	 */
-	[[nodiscard]] float getDeltaTime() const { return m_delta_time; }
+	[[nodiscard]] auto getDeltaTime() const -> float { return m_delta_time; }
 
 	/**
-	 * Get a shared pointer to the input queue.
+	 * @brief Get a shared pointer to the input queue.
 	 * @return A shared pointer to the input queue.
 	 */
 	[[nodiscard]] auto getInputQueue() { return m_input_queue; }
