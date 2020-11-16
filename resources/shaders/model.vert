@@ -20,8 +20,11 @@ void main() {
 
     v_frag_pos_light_space = u_light_space_matrix * u_transform * vec4(a_position, 1.0);
 
-    mat3 norm_mat = transpose(inverse(mat3(u_transform)));
-    v_normal = norm_mat * normalize(a_normal);
+    // FIXME: Does not handle rotation
+//    mat3 norm_mat = transpose(inverse(mat3(u_transform)));
+//    v_normal = norm_mat * normalize(a_normal);
+    // Ignore transformations for now, it's a sphere anyway.
+    v_normal = a_normal;
 
     v_texcoord = a_texcoord;
 
