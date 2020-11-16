@@ -8,7 +8,16 @@
 class Maze {
   public:
 	Maze(const class Level &level);
-	void               draw() const { m_vbo->draw(); }
+
+	/**
+	 * @brief Draw the entire maze.
+	 */
+	void draw() const { m_vbo->draw(); }
+
+	/**
+	 * @brief Get the transformation matrix for rendering.
+	 * @return The transformation matrix.
+	 */
 	[[nodiscard]] auto getTransform() const { return glm::mat4(1.0f); }
 
   private:
@@ -23,8 +32,18 @@ class Maze {
 class Pellets {
   public:
 	Pellets(std::vector<glm::vec3> centroids);
+
+	/**
+	 * @brief Update the internal state of all the pellets.
+	 * @param pacman Pacman entity.
+	 * @return Has pacman picked up all the pellets?
+	 */
 	[[nodiscard]] auto update(const class Pacman &pacman) -> bool;
-	void               draw() const;
+
+	/**
+	 * @brief Draw all the pellets.
+	 */
+	void draw() const;
 
   private:
 	/**
@@ -34,7 +53,8 @@ class Pellets {
 
   private:
 	std::unique_ptr<Model> m_sphere;
-	std::vector<glm::vec3> m_centroids;
+	std::vector<glm::vec3>
+	    m_centroids; ///< Center positions for all the pellets.
 };
 
 /**
@@ -44,14 +64,41 @@ class Pellets {
 class Pacman {
   public:
 	Pacman(glm::vec3 position);
-	void               input(Input input);
-	void               update(float dt, const class Level &level);
+
+	/**
+	 * @brief Pass input to pacman.
+	 * @param input Input from the window.
+	 */
+	void input(Input input);
+
+	/**
+	 * @brief Update the internal state of pacman.
+	 * @param dt Delta time.
+	 * @param level The level grid.
+	 */
+	void update(float dt, const class Level &level);
+
+	/**
+	 * @brief Get pacman's position.
+	 * @return Pacman's position.
+	 */
 	[[nodiscard]] auto getPosition() const { return m_transform.translation; }
+
+	/**
+	 * @brief Get the view matrix from pacman's camera.
+	 * @return The view matrix.
+	 */
 	[[nodiscard]] auto view() const { return m_camera.view(m_transform); }
+
+	/**
+	 * @brief Get the projection matrix from pacman's camera.
+	 * @return The projection matrix.
+	 */
 	[[nodiscard]] auto projection() const { return m_camera.projection(); }
 
   private:
-	glm::vec3          m_forward;
+	float              m_yaw;     ///< Yaw for delta rotation from input.
+	glm::vec3          m_forward; ///< Forward direction based on input.
 	TransformComponent m_transform;
 	CameraComponent    m_camera;
 };
@@ -62,13 +109,30 @@ class Pacman {
 class Ghost {
   public:
 	Ghost(glm::vec3 position, std::shared_ptr<Model> model);
+
+	/**
+	 * @brief Update the internal state of an individual Ghost.
+	 * @param dt Delta time.
+	 * @param pacman Pacman entity.
+	 * @param level Level grid.
+	 * @return Did this ghost collide with pacman?
+	 */
 	[[nodiscard]] auto update(float dt, const Pacman &pacman,
 	                          const class Level &level) -> bool;
-	void               draw() const;
+
+	/**
+	 * @brief Draw the ghost.
+	 */
+	void draw() const;
+
+	/**
+	 * @brief Get the transformation matrix for passing to shaders.
+	 * @return Entities transformation matrix.
+	 */
 	[[nodiscard]] auto getTransform() const { return m_transform.matrix(); }
 
   private:
-	glm::vec3              m_forward;
+	glm::vec3              m_forward; ///< Forward direction based on input.
 	TransformComponent     m_transform;
 	std::shared_ptr<Model> m_model;
 };
