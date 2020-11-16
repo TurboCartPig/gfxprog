@@ -58,7 +58,7 @@ void Pellets::upload() const {
 	m_sphere->uploadInstanceData(transforms);
 }
 
-Pacman::Pacman(glm::vec3 position) {
+Pacman::Pacman(glm::vec3 position) : m_yaw(0.0f) {
 	m_forward   = glm::vec3(0.0f, 0.0f, 0.0f);
 	m_transform = {position, glm::vec3(0.0f), glm::vec3(1.0f)};
 	// FIXME: Aspect ratio needs to be updated when the window is resized
@@ -76,20 +76,24 @@ void Pacman::input(Input input) {
 		} else if (input.code == InputCode::D) {
 			m_forward.x = -1.0f;
 		} else if (input.code == InputCode::Left) {
-			m_transform.rotation.y += 0.25f;
+			m_yaw += 1.25f;
 		} else if (input.code == InputCode::Right) {
-			m_transform.rotation.y -= 0.25f;
+			m_yaw -= 1.25f;
 		}
 	} else if (input.state == InputState::Released) {
 		if (input.code == InputCode::W || input.code == InputCode::S) {
 			m_forward.z = 0.0f;
 		} else if (input.code == InputCode::A || input.code == InputCode::D) {
 			m_forward.x = 0.0f;
+		} else if (input.code == InputCode::Left || input.code == InputCode::Right) {
+			m_yaw = 0.0f;
 		}
 	}
 }
 
 void Pacman::update(float dt, const Level &level) {
+	m_transform.rotation.y += m_yaw * dt;
+
 	const auto translation =
 	    m_transform.translation +
 	    glm::vec3(glm::eulerAngleY(m_transform.rotation.y) *
@@ -139,7 +143,8 @@ auto Ghost::update(float dt, const Pacman &pacman, const Level &level) -> bool {
 		m_forward = glm::vec3(-1.0f, 0.0f, 0.0f);
 	}
 
-	const auto pacman_collision = glm::length(pacman.getPosition() - m_transform.translation) <= 0.75f;
+	const auto pacman_collision =
+	    glm::length(pacman.getPosition() - m_transform.translation) <= 0.75f;
 
 	// If collide with pacman, return true
 	return pacman_collision;
