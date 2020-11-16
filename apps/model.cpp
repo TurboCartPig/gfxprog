@@ -30,11 +30,11 @@ auto main() -> int {
 
 	glm::quat          q = glm::quatLookAt(glm::vec3(0.0f, 0.0f, -1.0f),
                                   glm::vec3(0.0f, 1.0f, 0.0f));
-	TransformComponent transform_component = {glm::vec3(0.0f, 1.0f, -2.0f), q,
-	                                          glm::vec3(1.0f)};
-	CameraComponent    camera(aspect, 96.0f);
-	auto               view       = camera.view(transform_component);
-	auto               projection = camera.projection();
+	TransformComponent transform_component = {
+	    glm::vec3(0.0f, 1.0f, -2.0f), glm::eulerAngles(q), glm::vec3(1.0f)};
+	CameraComponent camera(aspect, 96.0f);
+	auto            view       = camera.view(transform_component);
+	auto            projection = camera.projection();
 
 	auto model_color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 
