@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.16...3.18)
 cmake_policy(SET CMP0012 OLD)
 
 # Pass cmake "-DNO_VCPKG=ON" to disable usage of vcpkg
-if(NOT ${NO_VCPKG})
+if(NOT NO_VCPKG STREQUAL "ON")
     set(CMAKE_TOOLCHAIN_FILE
         "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake"
         CACHE STRING "Vcpkg toolchain file")
