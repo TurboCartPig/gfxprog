@@ -79,6 +79,11 @@ class Pacman {
 	void update(float dt, const class Level &level);
 
 	/**
+	 * @brief Draw pacman to the minimap.
+	 */
+	void draw() const;
+
+	/**
 	 * @brief Update the aspect ratio of pacman's camera.
 	 * @param aspect Aspect ratio.
 	 */
@@ -102,11 +107,18 @@ class Pacman {
 	 */
 	[[nodiscard]] auto projection() const { return m_camera.projection(); }
 
+	/**
+	 * @brief Get pacman's transform matrix.
+	 * @return The transform matrix.
+	 */
+	[[nodiscard]] auto getTransform() const { return m_transform.matrix(); }
+
   private:
-	float              m_yaw;     ///< Yaw for delta rotation from input.
-	glm::vec3          m_forward; ///< Forward direction based on input.
-	TransformComponent m_transform;
-	CameraComponent    m_camera;
+	float                  m_yaw;     ///< Yaw for delta rotation from input.
+	glm::vec3              m_forward; ///< Forward direction based on input.
+	TransformComponent     m_transform;
+	CameraComponent        m_camera;
+	std::unique_ptr<Model> m_model; ///< Model for the minimap.
 };
 
 /**

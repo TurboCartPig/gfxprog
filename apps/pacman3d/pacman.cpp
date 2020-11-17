@@ -239,6 +239,10 @@ class GameState : public IGameState {
 		                             glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 		m_maze->draw();
 
+		m_minimap_shader->setUniform("u_transform", m_pacman->getTransform());
+		m_minimap_shader->setUniform("u_model_color", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+		m_pacman->draw();
+
 		m_minimap_shader->setUniform("u_model_color",
 		                             glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 		for (const auto &ghost : m_ghosts) {

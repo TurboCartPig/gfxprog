@@ -60,9 +60,10 @@ void Pellets::upload() const {
 
 Pacman::Pacman(glm::vec3 position) : m_yaw(0.0f) {
 	m_forward   = glm::vec3(0.0f, 0.0f, 0.0f);
-	m_transform = {position, glm::vec3(0.0f), glm::vec3(1.0f)};
+	m_transform = {position, glm::vec3(0.0f), glm::vec3(0.25f)};
 	// FIXME: Aspect ratio needs to be updated when the window is resized
 	m_camera = CameraComponent(16.0f / 9.0f, 96.0f);
+	m_model = std::make_unique<Model>("resources/models/sphere.obj");
 }
 
 void Pacman::input(Input input) {
@@ -107,6 +108,10 @@ void Pacman::update(float dt, const Level &level) {
 	if (!collision) {
 		m_transform.translation = translation;
 	}
+}
+
+void Pacman::draw() const {
+	m_model->draw();
 }
 
 void Pacman::updateAspectRatio(float aspect) {
