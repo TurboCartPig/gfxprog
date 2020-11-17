@@ -74,6 +74,13 @@ class IGameState {
 	virtual auto manifest() -> StateManifest = 0;
 
 	/**
+	 * @brief Handle window and default framebuffer resize.
+	 * @param width The new width of the default framebuffer.
+	 * @param height The new height of the default framebuffer.
+	 */
+	virtual void resized(int width, int height) = 0;
+
+	/**
 	 * @brief Pass player input to the game state.
 	 * @param input Input event.
 	 * @return Should the game transition states as a result of the input? If so

@@ -158,9 +158,16 @@ class Window {
 	 */
 	[[nodiscard]] auto getInputQueue() { return m_input_queue; }
 
-  private:
-	std::chrono::steady_clock::time_point m_prev_frame;
-	float                                 m_delta_time = 0.016f;
-	GLFWwindow *                          m_window;
-	InputQueue                            m_input_queue;
+	/**
+	 * @brief Register a callback function for resize events.
+	 * @param callback Callback function to be called on framebuffer resize.
+	 */
+	void registerFramebufferResizeCallback(
+	    std::function<void(GLFWwindow *, int, int)> callback);
+
+
+	    private : std::chrono::steady_clock::time_point m_prev_frame;
+	float       m_delta_time = 0.016f;
+	GLFWwindow *m_window;
+	InputQueue  m_input_queue;
 };

@@ -107,6 +107,13 @@ class GameState : public IGameState {
 		return {"Pacman 3D"};
 	}
 
+	void resized(int width, int height) override {
+		m_backbuffer->bind();
+        m_backbuffer->resize(width, height);
+
+		m_pacman->updateAspectRatio((float)width / (float)height);
+	}
+
 	auto input(Input input) -> StateTransition override {
 		if (input.state == InputState::Pressed) {
 			if (input.code == InputCode::Escape)

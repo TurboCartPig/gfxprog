@@ -83,6 +83,31 @@ void Framebuffer::clear() const {
 	             : 0));
 }
 
+void Framebuffer::resize(int width, int height) {
+	// Default framebuffer is resized by glfw
+	if (m_fbo != 0) {
+		// Manually resize framebuffer by reallocating all the attachments
+		for (const auto &attachment : m_color_attachments) {
+			glBindTexture(GL_TEXTURE_2D, attachment);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB,
+			             GL_UNSIGNED_BYTE, nullptr);
+		}
+
+		if (m_depth_attachment) {
+			glBindTexture(GL_TEXTURE_2D, m_depth_attachment.value());
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0,
+			             GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+		}
+
+		if (m_depth_stencil_attachment) {
+			glBindTexture(GL_TEXTURE_2D, m_depth_stencil_attachment.value());
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, width, height,
+			             0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, nullptr);
+		}
+	}
+	m_dimensions = glm::ivec2(width, height);
+}
+
 void Framebuffer::blit(const Framebuffer *source, glm::ivec4 source_extents,
                        glm::ivec4 destination_extents) {
 	source->bind(GL_READ_FRAMEBUFFER);

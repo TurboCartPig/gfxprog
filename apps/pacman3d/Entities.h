@@ -79,6 +79,12 @@ class Pacman {
 	void update(float dt, const class Level &level);
 
 	/**
+	 * @brief Update the aspect ratio of pacman's camera.
+	 * @param aspect Aspect ratio.
+	 */
+	void updateAspectRatio(float aspect);
+
+	/**
 	 * @brief Get pacman's position.
 	 * @return Pacman's position.
 	 */

@@ -82,6 +82,13 @@ class Framebuffer {
 	void clear() const;
 
 	/**
+	 * @brief Resize the framebuffer.
+	 * @param width The new width.
+	 * @param height The new height.
+	 */
+	void resize(int width, int height);
+
+	/**
 	 * @brief Blit contents of source onto this framebuffer.
 	 * @param source Source framebuffer.
 	 * @param source_extents Extents to blit from framebuffer.

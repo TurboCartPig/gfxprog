@@ -3,10 +3,18 @@
 
 Core::Core(std::unique_ptr<IGameState> initial_state) {
 	m_gamestates.push_back(std::move(initial_state));
+
+	// Create the window
+	m_window = std::make_unique<Window>("Change Me", 1280, 720);
+
+	// Register callback that passes control to current game state.
+	m_window->registerFramebufferResizeCallback(
+	    [&]([[maybe_unused]] GLFWwindow *window, int width, int height) {
+		    m_gamestates.back()->resized(width, height);
+	    });
 }
 
 void Core::run() {
-	m_window   = std::make_unique<Window>("Change Me", 1280, 720);
 	auto input = m_window->getInputQueue();
 
 	// Setup the initial state
@@ -74,7 +82,7 @@ void Core::run() {
 
 	push_state:
 		m_gamestates.push_back(std::move(std::get<Push>(trans).state));
-        setupState();
+		setupState();
 		continue;
 
 	transition_state:
@@ -85,7 +93,7 @@ void Core::run() {
 }
 
 void Core::setupState() {
-    auto &top = m_gamestates.back();
+	auto &top = m_gamestates.back();
 
 	// Initialize the state assuming it is new
 	top->initialize();

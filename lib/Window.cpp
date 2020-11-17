@@ -8,6 +8,8 @@ static std::function<void(GLFWwindow *, int, int, int, int)>
     gKeyCallback; ///< Part of hack to allow the key callback to capture the
                   ///< environment
 
+static std::function<void(GLFWwindow *, int, int)> gFramebufferResizeCallback;
+
 /**
  * Convert from glfw key codes to gloves key codes.
  *
@@ -110,6 +112,12 @@ Window::Window(const std::string &title, const uint32_t width,
 		gKeyCallback(window, key, scancode, action, modes);
 	});
 
+	// Set temporary empty callback
+    gFramebufferResizeCallback = std::move([](GLFWwindow *window, int width, int height){});
+	glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow *window, int width, int height){
+		gFramebufferResizeCallback(window, width, height);
+	});
+
 	// Setup GLEW
 	glewExperimental = GL_TRUE;
 	GLenum err       = glewInit();
@@ -161,4 +169,9 @@ void Window::fullscreen(bool should_be_fullscreen) {
 	const auto mode    = glfwGetVideoMode(monitor);
 	glfwSetWindowMonitor(m_window, monitor, 0, 0, mode->width, mode->height,
 	                     mode->refreshRate);
+}
+
+void Window::registerFramebufferResizeCallback(
+    std::function<void(GLFWwindow *, int, int)> callback) {
+	gFramebufferResizeCallback = std::move(callback);
 }

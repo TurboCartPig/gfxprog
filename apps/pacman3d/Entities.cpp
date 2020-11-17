@@ -109,6 +109,10 @@ void Pacman::update(float dt, const Level &level) {
 	}
 }
 
+void Pacman::updateAspectRatio(float aspect) {
+	m_camera.aspect = aspect;
+}
+
 Ghost::Ghost(glm::vec3 position, std::shared_ptr<Model> model)
     : m_model(std::move(model)) {
 	m_forward   = glm::vec3(1.0f, 0.0f, 0.0f);
