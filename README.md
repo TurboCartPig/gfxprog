@@ -4,13 +4,31 @@
 
 Labs and assignments completed in association with Graphics Programming / PROG2002 at NTNU.
 
+## Contents
+
+#### Labs - Smaller samples of specific features and concepts
+  1. Triangle - Draws a triangle to the screen
+  2. Square - Draws a pulsating square to the screen
+  3. MVP - Draws a movable square to the screen
+  4. Texture - Draws a textured square to the screen
+  5. Model - Draws a spinning 3D model
+  6. (Unimplemented) Shadows - Draws a spinning 3D model that casts a shadow.
+
+#### Assignments - More complete game-like demos
+  1. Pacman - A clone of the pacman
+  2. Pacman in 3D - The game rules of pacman, but in 3D
+
+#### Glove - Object Oriented OpenGL Wrapper
+
+Glove is a small OpenGL wrapping library that implements all the common functionality of the labs and assignments, and exposes it in a slightly safer, object oriented API.
+
 ## How to obtain
 
 Cloning:
 ```bash
-git clone https://github.com/TurboCartPig/gfxprog.git --recursive
+git clone https://github.com/TurboCartPig/gfxprog.git --recurse-submodules
 ```
-> Note the use of recursive to automatically clone submodules.
+> Submodules should be checked out at recorded SHA
 
 ## How to build
 
@@ -60,7 +78,7 @@ Windows:
 - Use vcpkg for dependencies
 > Windows instructions are yet to be tested
 
-### Install using vcpkg manually
+### Build using vcpkg manually
 
 [Vcpkg](https://github.com/Microsoft/vcpkg) is a ports like package manager for libraries that is the closest to a sane way of obtaining dependencies on Windows.
 
