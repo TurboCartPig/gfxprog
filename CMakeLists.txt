@@ -1,8 +1,5 @@
 cmake_minimum_required(VERSION 3.16...3.18)
 
-# Needed for assimp on linux
-cmake_policy(SET CMP0012 OLD)
-
 # Pass cmake "-DNO_VCPKG=ON" to disable usage of vcpkg
 if(NOT NO_VCPKG STREQUAL "ON")
     set(CMAKE_TOOLCHAIN_FILE
