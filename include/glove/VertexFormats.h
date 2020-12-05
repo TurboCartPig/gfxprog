@@ -28,3 +28,12 @@ struct Vertex3DNormTex {
 	glm::vec3 normal; ///< Normal
 	glm::vec2 uv;     ///< Normalized texture coordinates
 };
+
+/**
+ * Sets up and enables the vertex attribute pointers for the given vertex
+ * format.
+ *
+ * @tparam VertexFormat A struct containing one field per vertex attribute.
+ */
+template <typename VertexFormat>
+void setVertexAttribs();
