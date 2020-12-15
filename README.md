@@ -15,7 +15,7 @@ Labs and assignments completed in association with Graphics Programming / PROG20
   6. (Unimplemented) Shadows - Draws a spinning 3D model that casts a shadow.
 
 #### Assignments - More complete game-like demos
-  1. Pacman - A clone of the pacman
+  1. Pacman - A clone of pacman
   2. Pacman in 3D - The game rules of pacman, but in 3D
 
 #### Glove - Object Oriented OpenGL Wrapper
@@ -70,13 +70,11 @@ Ubuntu:
 ```bash
 sudo apt install lib{assimp,gl,glfw3,glew,glm}-dev
 ```
-> Ubuntu instructions are yet to be tested
 > catch2 is not available in ubuntu it seems, the projects will build without it.
 
 Windows:
 - Be sure to have the C++ core features package in visual studio installed
 - Use vcpkg for dependencies
-> Windows instructions are yet to be tested
 
 ### Build using vcpkg manually
 
